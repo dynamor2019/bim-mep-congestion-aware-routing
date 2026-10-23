@@ -1,0 +1,305 @@
+{
+  "summary": [
+    {
+      "method": "adaptive",
+      "n": 100,
+      "successes": 17,
+      "success_rate": 0.17,
+      "wilson_ci95": [
+        0.10893476059773155,
+        0.25548181233642975
+      ],
+      "routed_mean": 6.97,
+      "runtime_mean_s": 0.9628685060003772,
+      "runtime_max_s": 1.0867187000112608,
+      "status_counts": {
+        "budget": 43,
+        "iterations": 57
+      }
+    },
+    {
+      "method": "blocker",
+      "n": 100,
+      "successes": 13,
+      "success_rate": 0.13,
+      "wilson_ci95": [
+        0.07757093858414264,
+        0.20980521894809878
+      ],
+      "routed_mean": 6.76,
+      "runtime_mean_s": 0.8081725030011149,
+      "runtime_max_s": 1.0872350000136066,
+      "status_counts": {
+        "budget": 22,
+        "iterations": 78
+      }
+    },
+    {
+      "method": "guided",
+      "n": 100,
+      "successes": 11,
+      "success_rate": 0.11,
+      "wilson_ci95": [
+        0.06254131955225126,
+        0.18631463027903022
+      ],
+      "routed_mean": 6.73,
+      "runtime_mean_s": 0.9226363959975424,
+      "runtime_max_s": 1.0861340999836102,
+      "status_counts": {
+        "budget": 51,
+        "iterations": 49
+      }
+    },
+    {
+      "method": "guided_select_only",
+      "n": 100,
+      "successes": 10,
+      "success_rate": 0.1,
+      "wilson_ci95": [
+        0.05522854161313613,
+        0.1743673043676654
+      ],
+      "routed_mean": 6.72,
+      "runtime_mean_s": 0.8611752109997906,
+      "runtime_max_s": 1.0853180999984033,
+      "status_counts": {
+        "budget": 28,
+        "iterations": 72
+      }
+    },
+    {
+      "method": "length",
+      "n": 100,
+      "successes": 11,
+      "success_rate": 0.11,
+      "wilson_ci95": [
+        0.06254131955225126,
+        0.18631463027903022
+      ],
+      "routed_mean": 6.74,
+      "runtime_mean_s": 0.9034255460018176,
+      "runtime_max_s": 1.096856599993771,
+      "status_counts": {
+        "budget": 46,
+        "iterations": 54
+      }
+    },
+    {
+      "method": "pbs_static",
+      "n": 100,
+      "successes": 13,
+      "success_rate": 0.13,
+      "wilson_ci95": [
+        0.07757093858414264,
+        0.20980521894809878
+      ],
+      "routed_mean": 6.89,
+      "runtime_mean_s": 0.9424871880016872,
+      "runtime_max_s": 1.1388364000013098,
+      "status_counts": {
+        "budget": 82,
+        "individual_infeasible": 6,
+        "solved": 12
+      }
+    },
+    {
+      "method": "random",
+      "n": 100,
+      "successes": 17,
+      "success_rate": 0.17,
+      "wilson_ci95": [
+        0.10893476059773155,
+        0.25548181233642975
+      ],
+      "routed_mean": 6.98,
+      "runtime_mean_s": 0.8612910580012249,
+      "runtime_max_s": 1.0690223000128753,
+      "status_counts": {
+        "budget": 24,
+        "iterations": 76
+      }
+    },
+    {
+      "method": "static_random",
+      "n": 100,
+      "successes": 17,
+      "success_rate": 0.17,
+      "wilson_ci95": [
+        0.10893476059773155,
+        0.25548181233642975
+      ],
+      "routed_mean": 7.02,
+      "runtime_mean_s": 0.9936665689994697,
+      "runtime_max_s": 1.0755386999808252,
+      "status_counts": {
+        "budget": 66,
+        "iterations": 34
+      }
+    }
+  ],
+  "paired_against_random": {
+    "guided": {
+      "n": 100,
+      "both_success": 11,
+      "both_failure": 83,
+      "gain": 0,
+      "loss": 6,
+      "success_difference": -0.06,
+      "paired_bootstrap_ci95": [
+        -0.11,
+        -0.02
+      ],
+      "conservative_difference_ci95": [
+        -0.1363531924117785,
+        0.023810848939677828
+      ],
+      "exact_mcnemar_two_sided": 0.03125,
+      "cost_ties": 8,
+      "cost_wilcoxon_two_sided": 7.531539400178589e-14,
+      "cost_rank_biserial": -0.8978494623655914,
+      "joint_feasible_n": 11,
+      "joint_feasible_cost_delta_mean": 1.1272727272727432,
+      "mcnemar_holm_adjusted": 0.1875
+    },
+    "length": {
+      "n": 100,
+      "both_success": 11,
+      "both_failure": 83,
+      "gain": 0,
+      "loss": 6,
+      "success_difference": -0.06,
+      "paired_bootstrap_ci95": [
+        -0.11,
+        -0.02
+      ],
+      "conservative_difference_ci95": [
+        -0.1363531924117785,
+        0.023810848939677828
+      ],
+      "exact_mcnemar_two_sided": 0.03125,
+      "cost_ties": 14,
+      "cost_wilcoxon_two_sided": 1.0299083627934416e-12,
+      "cost_rank_biserial": -0.8847901630580058,
+      "joint_feasible_n": 11,
+      "joint_feasible_cost_delta_mean": 4.436363636363651,
+      "mcnemar_holm_adjusted": 0.1875
+    },
+    "blocker": {
+      "n": 100,
+      "both_success": 13,
+      "both_failure": 83,
+      "gain": 0,
+      "loss": 4,
+      "success_difference": -0.04,
+      "paired_bootstrap_ci95": [
+        -0.08,
+        -0.01
+      ],
+      "conservative_difference_ci95": [
+        -0.1087476101139302,
+        0.033977791834213546
+      ],
+      "exact_mcnemar_two_sided": 0.125,
+      "cost_ties": 9,
+      "cost_wilcoxon_two_sided": 1.0166747702017632e-12,
+      "cost_rank_biserial": -0.8604873387482083,
+      "joint_feasible_n": 13,
+      "joint_feasible_cost_delta_mean": -3.007692307692303,
+      "mcnemar_holm_adjusted": 0.5
+    },
+    "adaptive": {
+      "n": 100,
+      "both_success": 16,
+      "both_failure": 82,
+      "gain": 1,
+      "loss": 1,
+      "success_difference": 0.0,
+      "paired_bootstrap_ci95": [
+        -0.03,
+        0.03
+      ],
+      "conservative_difference_ci95": [
+        -0.06199344029982059,
+        0.06199344029982059
+      ],
+      "exact_mcnemar_two_sided": 1.0,
+      "cost_ties": 10,
+      "cost_wilcoxon_two_sided": 0.8658002266078982,
+      "cost_rank_biserial": 0.020512820512820513,
+      "joint_feasible_n": 16,
+      "joint_feasible_cost_delta_mean": -5.937499999999991,
+      "mcnemar_holm_adjusted": 1.0
+    },
+    "pbs_static": {
+      "n": 100,
+      "both_success": 13,
+      "both_failure": 83,
+      "gain": 0,
+      "loss": 4,
+      "success_difference": -0.04,
+      "paired_bootstrap_ci95": [
+        -0.08,
+        -0.01
+      ],
+      "conservative_difference_ci95": [
+        -0.1087476101139302,
+        0.033977791834213546
+      ],
+      "exact_mcnemar_two_sided": 0.125,
+      "cost_ties": 6,
+      "cost_wilcoxon_two_sided": 0.261921548798455,
+      "cost_rank_biserial": -0.13325867861142218,
+      "joint_feasible_n": 13,
+      "joint_feasible_cost_delta_mean": -9.692307692307653,
+      "mcnemar_holm_adjusted": 0.5
+    },
+    "guided_select_only": {
+      "n": 100,
+      "both_success": 10,
+      "both_failure": 83,
+      "gain": 0,
+      "loss": 7,
+      "success_difference": -0.07,
+      "paired_bootstrap_ci95": [
+        -0.12,
+        -0.02
+      ],
+      "conservative_difference_ci95": [
+        -0.14959506244307302,
+        0.018060429592530475
+      ],
+      "exact_mcnemar_two_sided": 0.015625,
+      "cost_ties": 11,
+      "cost_wilcoxon_two_sided": 1.0869522588920087e-13,
+      "cost_rank_biserial": -0.9068664169787766,
+      "joint_feasible_n": 10,
+      "joint_feasible_cost_delta_mean": 0.6300000000000097,
+      "mcnemar_holm_adjusted": 0.109375
+    },
+    "static_random": {
+      "n": 100,
+      "both_success": 17,
+      "both_failure": 83,
+      "gain": 0,
+      "loss": 0,
+      "success_difference": 0.0,
+      "paired_bootstrap_ci95": [
+        0.0,
+        0.0
+      ],
+      "conservative_difference_ci95": [
+        -0.04287403023843849,
+        0.04287403023843849
+      ],
+      "exact_mcnemar_two_sided": 1.0,
+      "cost_ties": 13,
+      "cost_wilcoxon_two_sided": 0.002655662056485736,
+      "cost_rank_biserial": -0.3709508881922675,
+      "joint_feasible_n": 17,
+      "joint_feasible_cost_delta_mean": 1.5823529411764827,
+      "mcnemar_holm_adjusted": 1.0
+    }
+  },
+  "inference": "two-sided exact paired feasibility; Holm correction across 7 comparisons; difference CI uses Bonferroni-combined 97.5% Clopper-Pearson intervals for paired gain/loss probabilities; bootstrap also archived, but zero discordances do not prove equivalence; exploratory on same synthetic generator"
+}

@@ -1,0 +1,5 @@
+clearance_m,all_component_box_intersecting_edges,nonowner_box_intersecting_edges,edge_total,by_geometry_category,monotone
+0.0,7474,3909,7913,"{'mep': 3228, 'building': 1055, 'proxy': 0}",True
+0.05,7878,5515,7913,"{'mep': 4810, 'building': 1474, 'proxy': 0}",True
+0.15,7878,7272,7913,"{'mep': 6287, 'building': 3346, 'proxy': 0}",True
+0.3,7902,7717,7913,"{'mep': 6936, 'building': 5353, 'proxy': 0}",True

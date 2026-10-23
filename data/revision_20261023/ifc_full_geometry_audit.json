@@ -1,0 +1,75 @@
+{
+  "source": "Ifc4_Revit_MEP.ifc",
+  "source_sha256": "829c08715d56256e04d04fa7be40ec68928e0397631c3b846efd72d003f96495",
+  "ifc_length_scale_to_m": 0.001,
+  "selected_components": 4091,
+  "geometry_components": 4054,
+  "geometry_failures": {
+    "building:no_representation": 37
+  },
+  "geometry_category_counts": {
+    "mep": 3568,
+    "building": 486
+  },
+  "ifc_distribution_system_count": 0,
+  "native_port_count": 8460,
+  "native_port_edges": 7913,
+  "explicit_port_edges": 4050,
+  "within_component_assumed_edges": 3863,
+  "dimension_property_inventory": {
+    "property_counts": {},
+    "elements_with_properties": 0,
+    "records": []
+  },
+  "intersection_checks": [
+    {
+      "clearance_m": 0.0,
+      "all_component_box_intersecting_edges": 7474,
+      "nonowner_box_intersecting_edges": 3909,
+      "edge_total": 7913,
+      "by_geometry_category": {
+        "mep": 3228,
+        "building": 1055,
+        "proxy": 0
+      },
+      "monotone": true
+    },
+    {
+      "clearance_m": 0.05,
+      "all_component_box_intersecting_edges": 7878,
+      "nonowner_box_intersecting_edges": 5515,
+      "edge_total": 7913,
+      "by_geometry_category": {
+        "mep": 4810,
+        "building": 1474,
+        "proxy": 0
+      },
+      "monotone": true
+    },
+    {
+      "clearance_m": 0.15,
+      "all_component_box_intersecting_edges": 7878,
+      "nonowner_box_intersecting_edges": 7272,
+      "edge_total": 7913,
+      "by_geometry_category": {
+        "mep": 6287,
+        "building": 3346,
+        "proxy": 0
+      },
+      "monotone": true
+    },
+    {
+      "clearance_m": 0.3,
+      "all_component_box_intersecting_edges": 7902,
+      "nonowner_box_intersecting_edges": 7717,
+      "edge_total": 7913,
+      "by_geometry_category": {
+        "mep": 6936,
+        "building": 5353,
+        "proxy": 0
+      },
+      "monotone": true
+    }
+  ],
+  "interpretation": "Port-to-port straight-segment/AABB intersection audit on native installed topology; not a rerouting or code-clearance test. Clearances are sensitivity assumptions. AABBs conservatively overestimate geometry. No IfcDistributionSystem entities or dimensional/maintenance Psets were present."
+}

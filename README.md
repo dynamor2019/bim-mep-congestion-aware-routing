@@ -1,47 +1,34 @@
 # Congestion-Aware Routing for Multi-System MEP Coordination
 
-Reproducibility bundle for manuscript AUTCON-D-26-05125.
+Code and observation-level evidence for manuscript AUTCON-D-26-05125. This revision distinguishes synthetic spatial-routing evidence from temporal MAPF results and from construction-valid BIM routing.
 
-## Contents
+## Corrected revision evidence
 
-- `code/`: deterministic experiment scripts.
-- `data/`: observation-level results, IFC-derived graph artifacts, geometry-envelope diagnostics, and source metadata for the public port-bearing IFC input.
-- `requirements.txt`: tested Python package versions.
-- `CITATION.cff` and `zenodo.json`: metadata for GitHub release and Zenodo DOI minting.
+`data/revision_20261023/` contains the corrected 150-scene benchmark (750 method outputs), 990-observation sensitivity study, 100-scene/eight-method high-stress holdout (800 outputs), nested factor study (800 method-runs), matched-density scale stress (180 outputs), and full native IFC geometry/port audit. The original 150-scene paths were independently checked; all 750 outputs passed route validation and deterministic replay. Archived holdout and scale outputs also carry per-row validation flags.
 
-## Reproduce
-
-From the repository root, create a Python 3.11 environment and install dependencies:
+Recheck the archived tables and regenerate figures:
 
 ```powershell
 python -m pip install -r requirements.txt
+python code/validate_revision_evidence.py --data data/revision_20261023
+python code/plot_corrected_revision.py `
+  --main data/revision_20261023/main_150_raw.csv `
+  --sensitivity data/revision_20261023/sensitivity_990_raw.csv `
+  --holdout data/revision_20261023/high_stress_holdout_800.csv `
+  --factorial data/revision_20261023/factorial_nested_800.csv `
+  --scaling data/revision_20261023/scale_matched_density_180.csv `
+  --ifc-audit data/revision_20261023/ifc_full_geometry_audit.json `
+  --output figures/revision_20261023
 ```
 
-Run the primary benchmark and sensitivity study:
+The validator checks row counts, per-scene/method balance, validation flags, and IFC audit counts. The plotting script regenerates Figures 1–4, 6–8, and Supplementary Figure S1 from the archived observations. TIFF, PNG, and PDF outputs are generated.
 
-```powershell
-python code/run_routing_experiments.py --seeds 50 --output results/main_150
-python code/run_sensitivity_analysis.py --seeds 30 --output results/sensitivity_990
-```
+## What the added comparisons do and do not establish
 
-Run the additional revision checks:
+- The high-stress comparison includes a bounded permanent-space priority-tree adaptation, conflict-blocker control, length-only and adaptive repair. It is not a faithful implementation of temporal MAPF-PBS or MAPF-LNS. No secondary method significantly outperformed random repair after Holm adjustment.
+- The adaptive/multi-operator holdout tied random completion at 17/100; matched-density tests completed no scenes at 27 or 60 systems. This is negative evidence about the present prototype, not evidence of general scalability.
+- The IFC audit covers 4,091 selected components, 4,054 extractable geometries, 8,460 placed ports and 4,050 explicit port relations. Its AABB counts are conservative broad-phase candidates, not exact clashes. No accepted route targets, native distribution-system semantics, or usable engineering dimension/maintenance properties were found. It is not BIM-derived routing validation.
 
-```powershell
-python code/run_envelope_stress.py code/run_routing_experiments.py results/envelope_stress/envelope_stress_raw.csv --seeds 30
-python code/run_factorial_density.py code/run_routing_experiments.py results/factorial_density/factorial_density_raw.csv --seeds 20
-python code/build_port_derived_ifc_graph.py data/Ifc4_Revit_MEP.ifc results/ifc_public_mep/port_derived_graph.json --pairs 20
-python code/run_ifc_graph_adapter.py results/ifc_public_mep/port_derived_graph.json --seeds 10 --output results/ifc_public_mep/adapter_runs
-python code/run_ifc_geometry_envelope.py data/Ifc4_Revit_MEP.ifc data/port_derived_graph.json results/ifc_public_mep/geometry_envelope --seeds 10 --max-elements-per-type 100
-```
+Legacy scripts and files outside `revision_20261023/` are retained for provenance. Some generate earlier exploratory protocols and do not reproduce the corrected holdout/factor/scale tables; do not cite them as the source of those corrected observations. The exact corrected observation tables and summaries are archived here for audit.
 
-The synthetic benchmark is unit-resolution evidence. The envelope and IFC runs are boundary checks; the geometry check uses a deterministic 100-element-per-type sample and explicit isotropic clearances of 0, 0.05, 0.15, and 0.30 m. They do not claim construction-valid pipe/duct sizing, maintenance space, clearance semantics, or IFC write-back.
-
-## Version and DOI
-
-The local source is tagged `v1.0.0`. Create a public GitHub repository, push this tag, then connect the repository to Zenodo and archive the `v1.0.0` release to mint the DOI recorded by Zenodo.
-
-### Exploratory adaptive repair and scale stress
-Run python code/run_advanced_validation.py --seeds 5 to reproduce the exploratory adaptive-operator and scale-stress results. This is not a faithful PBS, CBS, or MAPF-LNS implementation; use it as a disclosed boundary experiment only.
-
-### Bounded priority-tree baseline pilot
-Run python code/run_strong_baselines.py --seeds 3 --max-nodes 4 for the bounded PBS-like pilot. This is an implementation check, not a full PBS or MAPF-LNS baseline.
+The old `v1.0.0` tag predates these corrections. Cite the revision-specific release linked above only after it is published. No DOI is currently claimed.

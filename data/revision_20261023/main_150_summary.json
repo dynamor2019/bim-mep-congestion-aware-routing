@@ -1,0 +1,141 @@
+{
+  "summary": [
+    {
+      "density": "low",
+      "method": "fix_order",
+      "success_rate": 0.9,
+      "normalized_cost_mean": 12.943871209709704,
+      "normalized_cost_ci95": 9.555992230546291,
+      "runtime_mean_s": 0.07866699400183279
+    },
+    {
+      "density": "low",
+      "method": "pbs_random",
+      "success_rate": 0.96,
+      "normalized_cost_mean": 6.191947266418794,
+      "normalized_cost_ci95": 6.405852933634614,
+      "runtime_mean_s": 0.2788558320008451
+    },
+    {
+      "density": "low",
+      "method": "stage1_only",
+      "success_rate": 0.96,
+      "normalized_cost_mean": 6.288064990873387,
+      "normalized_cost_ci95": 6.405606762330574,
+      "runtime_mean_s": 0.13526925799960737
+    },
+    {
+      "density": "low",
+      "method": "stage3_only",
+      "success_rate": 0.96,
+      "normalized_cost_mean": 6.199073822977881,
+      "normalized_cost_ci95": 6.405455576141947,
+      "runtime_mean_s": 0.43047672800021247
+    },
+    {
+      "density": "low",
+      "method": "proposed",
+      "success_rate": 0.96,
+      "normalized_cost_mean": 6.262597687721052,
+      "normalized_cost_ci95": 6.405057288568858,
+      "runtime_mean_s": 0.5391593479982112
+    },
+    {
+      "density": "medium",
+      "method": "fix_order",
+      "success_rate": 0.66,
+      "normalized_cost_mean": 40.30187803249433,
+      "normalized_cost_ci95": 16.956608422265813,
+      "runtime_mean_s": 0.11725862599909305
+    },
+    {
+      "density": "medium",
+      "method": "pbs_random",
+      "success_rate": 0.66,
+      "normalized_cost_mean": 37.38269954784334,
+      "normalized_cost_ci95": 15.88808081574634,
+      "runtime_mean_s": 0.379934990000329
+    },
+    {
+      "density": "medium",
+      "method": "stage1_only",
+      "success_rate": 0.66,
+      "normalized_cost_mean": 42.16270253943826,
+      "normalized_cost_ci95": 17.705208076000755,
+      "runtime_mean_s": 0.19284434399742167
+    },
+    {
+      "density": "medium",
+      "method": "stage3_only",
+      "success_rate": 0.7,
+      "normalized_cost_mean": 34.183377653274555,
+      "normalized_cost_ci95": 15.790989056514997,
+      "runtime_mean_s": 0.4950048660009634
+    },
+    {
+      "density": "medium",
+      "method": "proposed",
+      "success_rate": 0.72,
+      "normalized_cost_mean": 34.496567307359335,
+      "normalized_cost_ci95": 16.408864074471285,
+      "runtime_mean_s": 0.6266072279965738
+    },
+    {
+      "density": "high",
+      "method": "fix_order",
+      "success_rate": 0.16,
+      "normalized_cost_mean": 136.5593264754533,
+      "normalized_cost_ci95": 25.026284983096364,
+      "runtime_mean_s": 0.14541028000297956
+    },
+    {
+      "density": "high",
+      "method": "pbs_random",
+      "success_rate": 0.12,
+      "normalized_cost_mean": 120.06374149454558,
+      "normalized_cost_ci95": 21.81514273898399,
+      "runtime_mean_s": 0.49951019999920393
+    },
+    {
+      "density": "high",
+      "method": "stage1_only",
+      "success_rate": 0.14,
+      "normalized_cost_mean": 125.40088770710403,
+      "normalized_cost_ci95": 23.34578189845513,
+      "runtime_mean_s": 0.2203907440014882
+    },
+    {
+      "density": "high",
+      "method": "stage3_only",
+      "success_rate": 0.18,
+      "normalized_cost_mean": 120.14201559570907,
+      "normalized_cost_ci95": 23.75195685511707,
+      "runtime_mean_s": 0.5398523020010907
+    },
+    {
+      "density": "high",
+      "method": "proposed",
+      "success_rate": 0.18,
+      "normalized_cost_mean": 119.16069447886663,
+      "normalized_cost_ci95": 24.194632120494653,
+      "runtime_mean_s": 0.6756230919994414
+    }
+  ],
+  "tests": {
+    "low": {
+      "wilcoxon_statistic": 33.0,
+      "p_value_one_sided": 0.9999999959056788,
+      "paired_rank_biserial": -0.82
+    },
+    "medium": {
+      "wilcoxon_statistic": 441.0,
+      "p_value_one_sided": 0.9710788606715788,
+      "paired_rank_biserial": -0.36
+    },
+    "high": {
+      "wilcoxon_statistic": 499.0,
+      "p_value_one_sided": 0.9093865407816636,
+      "paired_rank_biserial": -0.28
+    }
+  }
+}

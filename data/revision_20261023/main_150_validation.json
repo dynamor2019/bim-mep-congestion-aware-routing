@@ -1,0 +1,9 @@
+{
+  "stored_rows": 750,
+  "validated_paths": 750,
+  "invalid_paths": 0,
+  "replayed_matches": 750,
+  "mismatch_count": 0,
+  "mismatches": [],
+  "validator": "independent full-occupancy, all-terminal, endpoint, obstacle, bounds, adjacency, uniqueness, and drainage checks"
+}
