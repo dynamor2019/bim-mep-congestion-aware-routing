@@ -125,6 +125,20 @@ python code/audit_ifc_route_readiness.py --ifc path/to/Building-Hvac.ifc path/to
 
 This is a data-readiness screen only. Tessellated geometry does not supply a connected graph or approved rerouting request, so it is not routing-performance or construction-validity evidence.
 
+## West Riverside Hospital IFC schema audit
+
+The IFC-Bench release provides the West Riverside Hospital mechanical model in IFC2X3 and IFC4 under CC BY 3.0. Our matched audit found 39,532 owned ports, 19,766 explicit port connections, 8,732 flow segments, and 8,230 fittings in both files. IFC2X3 contains 1,064 typed flow terminals (923 with ports), whereas its IFC4 counterpart contains none; both have the same 181-component owner graph and no exactly-two-terminal component with complementary `SOURCE`/`SINK` directions. Swept profiles expose circle and rectangle parameters, but outlying values and missing installation-clearance semantics prevent treating them as validated service envelopes. These are installed-network and schema-readiness observations, not approved reroute tasks or route-performance evidence. The raw IFCs are not redistributed here; download them from IFC-Bench. The machine-readable counts, source hashes, and attribution are in `results/ifc_bench_west_riverside_schema_comparison.json`.
+
+Reproduce the audit after downloading the two mechanical IFC files from the [IFC-Bench dataset](https://huggingface.co/datasets/sylvainHellin/ifc-bench):
+
+```powershell
+python code/audit_west_riverside_ifc.py `
+  --ifc path/to/mech_ifc2x3.ifc path/to/mech_ifc4.ifc `
+  --output results/ifc_bench_west_riverside_schema_comparison.json
+```
+
+The model attribution is Solihin, W., *West Riverside Hospital IFC Models*, OpenIFC Model Repository, University of Auckland, CC BY 3.0. The audit does not reconstruct project-approved endpoints or accepted alternatives.
+
 ## Wall-clock-capped adaptive repair comparison
 
 `data/revision_20261023/matched_adaptive_wallclock_90.csv` contains 90 paired synthetic scenes (30 at each of 9, 12, and 15 systems; 180 independently validated outputs). Both repair methods start from the same scene and incumbent and receive a 1-s repair-time cap. The cap is checked only between complete iterations; observed runtimes may exceed it by one iteration, so this is not exact CPU-time matching. Random versus adaptive completion was 4/30 versus 3/30, 14/30 versus 7/30, and 20/30 versus 15/30. The 12-system stratum favored random repair (7 random-only, zero adaptive-only; exact McNemar p=0.0156, Holm-adjusted across three strata p=0.0469); the other strata were inconclusive. This single exploratory cohort does not establish a general random-repair advantage, especially because one-iteration overshoot varies with runtime and differs by operator. The 270-scene equal-iteration cohort remains separately archived; its result is not pooled with this budget-capped comparison.

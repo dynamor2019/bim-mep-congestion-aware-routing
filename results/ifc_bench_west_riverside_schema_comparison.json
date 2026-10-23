@@ -1,0 +1,177 @@
+{
+  "dataset": "West Riverside Hospital IFC models, hosted by IFC-Bench",
+  "attribution": "Solihin, W. West Riverside Hospital IFC Models, OpenIFC Model Repository, University of Auckland. CC BY 3.0.",
+  "models": [
+    {
+      "topology": {
+        "file": "mech_ifc2x3.ifc",
+        "bytes": 78764170,
+        "sha256": "0c0551bf150dae56702515a53d55cf7f289d3637ccd7b399b092c47b9fa9272d",
+        "schema": "IFC2X3",
+        "counts": {
+          "distribution_systems": 0,
+          "systems": 466,
+          "distribution_ports": 39532,
+          "ports_with_owner_relation": 39532,
+          "port_connections": 19766,
+          "flow_terminals": 1064,
+          "flow_segments": 8732,
+          "flow_fittings": 8230,
+          "segments_with_geometry_representation": 8732,
+          "segments_with_dimensions_pset": 0,
+          "dimension_field_occurrences": {},
+          "terminal_owners_with_ports": 923,
+          "port_flow_directions": {
+            "SINK": 12969,
+            "SOURCE": 12969,
+            "SOURCEANDSINK": 13594
+          }
+        },
+        "owner_graph": {
+          "owner_component_count": 181,
+          "largest_owner_component": 9585,
+          "components_by_terminal_owner_count": {
+            "0": 81,
+            "1": 50,
+            "2": 8,
+            "3": 6,
+            "4": 7,
+            "5": 2,
+            "6": 9,
+            "7": 4,
+            "8": 7,
+            "14": 1,
+            "15": 1,
+            "16": 1,
+            "18": 2,
+            "70": 1,
+            "512": 1
+          },
+          "components_with_exact_source_sink_terminal_pair": 0
+        },
+        "scope": "Owner-level connectivity joins ports belonging to the same IFC element and follows explicit IfcRelConnectsPorts relations. It is a readiness screen, not an accepted rerouting task, exact clash test, or route validation."
+      },
+      "profiles": {
+        "schema": "IFC2X3",
+        "length_scale_to_m": 0.001,
+        "flow_segments": 8732,
+        "flow_fittings": 8230,
+        "swept_profile_types": {
+          "IfcCircleProfileDef": 6414,
+          "IfcRectangleProfileDef": 1906
+        },
+        "measured_parameters": {
+          "circular_diameter": {
+            "count": 6414,
+            "median_m": [
+              0.060325
+            ],
+            "p90_m": [
+              0.25
+            ],
+            "maximum_m": [
+              1.1
+            ],
+            "parameters_over_10m": 0
+          },
+          "rectangular_sides": {
+            "count": 1906,
+            "median_m": [
+              0.624841,
+              0.35
+            ],
+            "p90_m": [
+              4.377741,
+              0.75
+            ],
+            "maximum_m": [
+              69.082224,
+              3.65
+            ],
+            "parameters_over_10m": 17
+          }
+        },
+        "interpretation": "Representation parameters are not verified nominal dimensions; orientation, geometry validity, insulation, fitting envelopes, and installation clearance require separate checks."
+      }
+    },
+    {
+      "topology": {
+        "file": "mech_ifc4.ifc",
+        "bytes": 73047260,
+        "sha256": "04a29bc312fe0b026634ad86390e8b72c1d1c1765255351f787503d3d8ce1c13",
+        "schema": "IFC4",
+        "counts": {
+          "distribution_systems": 0,
+          "systems": 466,
+          "distribution_ports": 39532,
+          "ports_with_owner_relation": 39532,
+          "port_connections": 19766,
+          "flow_terminals": 0,
+          "flow_segments": 8732,
+          "flow_fittings": 8230,
+          "segments_with_geometry_representation": 8732,
+          "segments_with_dimensions_pset": 0,
+          "dimension_field_occurrences": {},
+          "terminal_owners_with_ports": 0,
+          "port_flow_directions": {
+            "SINK": 12969,
+            "SOURCE": 12969,
+            "SOURCEANDSINK": 13594
+          }
+        },
+        "owner_graph": {
+          "owner_component_count": 181,
+          "largest_owner_component": 9585,
+          "components_by_terminal_owner_count": {
+            "0": 181
+          },
+          "components_with_exact_source_sink_terminal_pair": 0
+        },
+        "scope": "Owner-level connectivity joins ports belonging to the same IFC element and follows explicit IfcRelConnectsPorts relations. It is a readiness screen, not an accepted rerouting task, exact clash test, or route validation."
+      },
+      "profiles": {
+        "schema": "IFC4",
+        "length_scale_to_m": 0.001,
+        "flow_segments": 8732,
+        "flow_fittings": 8230,
+        "swept_profile_types": {
+          "IfcCircleProfileDef": 6414,
+          "IfcRectangleProfileDef": 1906
+        },
+        "measured_parameters": {
+          "circular_diameter": {
+            "count": 6414,
+            "median_m": [
+              0.060325
+            ],
+            "p90_m": [
+              0.25
+            ],
+            "maximum_m": [
+              1.1
+            ],
+            "parameters_over_10m": 0
+          },
+          "rectangular_sides": {
+            "count": 1906,
+            "median_m": [
+              0.624841,
+              0.35
+            ],
+            "p90_m": [
+              4.377741,
+              0.75
+            ],
+            "maximum_m": [
+              69.082224,
+              3.65
+            ],
+            "parameters_over_10m": 17
+          }
+        },
+        "interpretation": "Representation parameters are not verified nominal dimensions; orientation, geometry validity, insulation, fitting envelopes, and installation clearance require separate checks."
+      }
+    }
+  ],
+  "scope": "Readiness audit only. Existing installed networks do not define approved independent rerouting requests or accepted alternative routes."
+}
