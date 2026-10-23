@@ -1,0 +1,113 @@
+{
+  "design_results": [
+    {
+      "design_cell": "grid_base_9",
+      "paired_scenes": 30,
+      "random_complete": 5,
+      "adaptive_complete": 3,
+      "random_only": 3,
+      "adaptive_only": 1,
+      "exact_two_sided_mcnemar_p": 0.625,
+      "random_median_runtime_s": 1.0108318499987945,
+      "adaptive_median_runtime_s": 1.0329247999907238,
+      "holm_adjusted_p": 1.0
+    },
+    {
+      "design_cell": "grid_large_9",
+      "paired_scenes": 30,
+      "random_complete": 26,
+      "adaptive_complete": 22,
+      "random_only": 5,
+      "adaptive_only": 1,
+      "exact_two_sided_mcnemar_p": 0.21875,
+      "random_median_runtime_s": 1.059522650000872,
+      "adaptive_median_runtime_s": 1.0689318000077037,
+      "holm_adjusted_p": 1.0
+    },
+    {
+      "design_cell": "grid_xlarge_9",
+      "paired_scenes": 30,
+      "random_complete": 27,
+      "adaptive_complete": 27,
+      "random_only": 0,
+      "adaptive_only": 0,
+      "exact_two_sided_mcnemar_p": 1.0,
+      "random_median_runtime_s": 1.1351090499956626,
+      "adaptive_median_runtime_s": 1.1328300499881152,
+      "holm_adjusted_p": 1.0
+    },
+    {
+      "design_cell": "count_12_xlarge",
+      "paired_scenes": 30,
+      "random_complete": 26,
+      "adaptive_complete": 25,
+      "random_only": 2,
+      "adaptive_only": 1,
+      "exact_two_sided_mcnemar_p": 1.0,
+      "random_median_runtime_s": 1.1161845000024186,
+      "adaptive_median_runtime_s": 1.228498500015121,
+      "holm_adjusted_p": 1.0
+    },
+    {
+      "design_cell": "count_15_xlarge",
+      "paired_scenes": 30,
+      "random_complete": 21,
+      "adaptive_complete": 20,
+      "random_only": 2,
+      "adaptive_only": 1,
+      "exact_two_sided_mcnemar_p": 1.0,
+      "random_median_runtime_s": 1.1892182500014314,
+      "adaptive_median_runtime_s": 1.216321150015574,
+      "holm_adjusted_p": 1.0
+    }
+  ],
+  "paired_scenes": 150,
+  "validated_outputs": 300,
+  "protocol": "paired repair with grid size and system count varied separately",
+  "design": [
+    {
+      "cell": "grid_base_9",
+      "generator_scale": "base",
+      "systems": 9
+    },
+    {
+      "cell": "grid_large_9",
+      "generator_scale": "large",
+      "systems": 9
+    },
+    {
+      "cell": "grid_xlarge_9",
+      "generator_scale": "xlarge",
+      "systems": 9
+    },
+    {
+      "cell": "count_12_xlarge",
+      "generator_scale": "xlarge",
+      "systems": 12
+    },
+    {
+      "cell": "count_15_xlarge",
+      "generator_scale": "xlarge",
+      "systems": 15
+    }
+  ],
+  "seeds_per_cell": 30,
+  "start_seed": 130000,
+  "budget_seconds_per_method": 1.0,
+  "methods": [
+    "mspp_random_repair",
+    "adaptive_multi_operator"
+  ],
+  "timer_note": "Budget checked between complete iterations; runtime may overrun.",
+  "scope_note": "Synthetic factor-separation experiment; no BIM or scaling-law claim.",
+  "python": "3.11.0 (main, Oct 24 2022, 18:26:48) [MSC v.1933 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "runner_sha256": "0578a5b06a4b762663117a14d9e1c8d631976249bb055e6e7f7763c6a92bbf06",
+  "implementation_sha256": {
+    "run_matched_adaptive_wallclock.py": "3ca2bbb74ee334506724e3f3b5e11e3ca8a7e704ca99a78820bdf97618d5d06b",
+    "run_advanced_validation.py": "96b5dd3269c0c248222e660d61b05f99945faf049b6b586fee30f7897c830ef0",
+    "run_routing_experiments.py": "f74d25b5db8579d84f3b853ca43256df5e26f41575b5d9e5906cf41449dcc03d",
+    "routing_revision_solvers.py": "9f111372f515044740d193e54b64afaf9625cfab43288b1305a799b8d3c76a34",
+    "run_revision_benchmark.py": "e6c3624c2010b842b545e61bb5e337284933e7a0fb99605536eebeb20ab93a86"
+  }
+}

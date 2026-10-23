@@ -488,6 +488,106 @@ def validate_matched_permanent_baselines(data: Path) -> None:
             "matched baseline completion counts mismatch")
 
 
+def validate_adaptive_factor_separation(data: Path) -> None:
+    """Verify paired outcomes and crossed grid/system factor invariants."""
+    archive_dir = data.parent / "revision_20261024"
+    archive = archive_dir / "adaptive_factor_separation_150.csv"
+    summary_path = archive_dir / "adaptive_factor_separation_150_summary.json"
+    manifest_path = archive.with_suffix(archive.suffix + ".manifest.json")
+    observations = rows(archive)
+    summary = json.loads(summary_path.read_text(encoding="utf-8"))
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    require(len(observations) == 300 and all(row["validated"] == "1" for row in observations),
+            "factor-separated archive must contain 300 validated outputs")
+    require(manifest["outputs"] == 300
+            and manifest["raw_sha256"] == hashlib.sha256(archive.read_bytes()).hexdigest()
+            and manifest["summary_sha256"] == hashlib.sha256(summary_path.read_bytes()).hexdigest(),
+            "factor-separated archive checksum mismatch")
+    code_dir = data.parent.parent / "code"
+    runner = code_dir / "run_adaptive_factor_separation.py"
+    require(summary["runner_sha256"] == hashlib.sha256(runner.read_bytes()).hexdigest()
+            and manifest["runner_sha256"] == summary["runner_sha256"],
+            "factor-separated runner checksum mismatch")
+    implementation = {
+        name: hashlib.sha256((code_dir / name).read_bytes()).hexdigest()
+        for name in ("run_matched_adaptive_wallclock.py", "run_advanced_validation.py",
+                     "run_routing_experiments.py", "routing_revision_solvers.py",
+                     "run_revision_benchmark.py")
+    }
+    require(summary["implementation_sha256"] == implementation
+            and manifest["implementation_sha256"] == implementation,
+            "factor-separated implementation checksum mismatch")
+    pairs = defaultdict(dict)
+    for row in observations:
+        pairs[(row["design_cell"], row["seed"])][row["method"]] = row
+    require(len(pairs) == 150 and all(set(pair) == {
+        "mspp_random_repair", "adaptive_multi_operator"} for pair in pairs.values()),
+        "factor-separated archive must contain 150 complete method pairs")
+    require(all(len({row["scene_hash"] for row in pair.values()}) == 1
+                and len({row["environment_hash"] for row in pair.values()}) == 1
+                and len({row["terminal_hash"] for row in pair.values()}) == 1
+                for pair in pairs.values()),
+        "factor-separated method pairs must share scene, geometry, and terminals")
+    expected = {
+        "grid_base_9": ("16x12x3", 9, 5, 3, 3, 1),
+        "grid_large_9": ("24x18x4", 9, 26, 22, 5, 1),
+        "grid_xlarge_9": ("32x24x5", 9, 27, 27, 0, 0),
+        "count_12_xlarge": ("32x24x5", 12, 26, 25, 2, 1),
+        "count_15_xlarge": ("32x24x5", 15, 21, 20, 2, 1),
+    }
+    p_values = []
+    for cell, (grid, systems, random_n, adaptive_n, random_only, adaptive_only) in expected.items():
+        selected = [pair for (name, _), pair in pairs.items() if name == cell]
+        require(len(selected) == 30 and all(
+            row["grid"] == grid and int(row["systems"]) == systems
+            for pair in selected for row in pair.values()),
+            f"factor-separated cell dimensions or sample count mismatch: {cell}")
+        actual = (
+            sum(int(pair["mspp_random_repair"]["success"]) for pair in selected),
+            sum(int(pair["adaptive_multi_operator"]["success"]) for pair in selected),
+            sum(int(pair["mspp_random_repair"]["success"])
+                > int(pair["adaptive_multi_operator"]["success"]) for pair in selected),
+            sum(int(pair["mspp_random_repair"]["success"])
+                < int(pair["adaptive_multi_operator"]["success"]) for pair in selected),
+        )
+        require(actual == (random_n, adaptive_n, random_only, adaptive_only),
+                f"factor-separated cell outcomes mismatch: {cell}")
+        discordant = random_only + adaptive_only
+        exact_p = (min(1.0, 2 * sum(math.comb(discordant, k)
+                                    for k in range(min(random_only, adaptive_only) + 1))
+                       / (2 ** discordant)) if discordant else 1.0)
+        result = next(item for item in summary["design_results"]
+                      if item["design_cell"] == cell)
+        require(result["exact_two_sided_mcnemar_p"] == exact_p,
+                f"factor-separated exact test mismatch: {cell}")
+        p_values.append(exact_p)
+    ordered = sorted(range(len(p_values)), key=p_values.__getitem__)
+    adjusted = [1.0] * len(p_values)
+    running = 0.0
+    for rank, index in enumerate(ordered):
+        running = max(running, min(1.0, (len(p_values) - rank) * p_values[index]))
+        adjusted[index] = running
+    for cell, p_value in zip(expected.keys(), adjusted):
+        result = next(item for item in summary["design_results"]
+                      if item["design_cell"] == cell)
+        require(result["holm_adjusted_p"] == p_value,
+                f"factor-separated Holm correction mismatch: {cell}")
+    for seed in range(130000, 130030):
+        nine = pairs[("grid_xlarge_9", str(seed))]["mspp_random_repair"]
+        twelve = pairs[("count_12_xlarge", str(seed))]["mspp_random_repair"]
+        fifteen = pairs[("count_15_xlarge", str(seed))]["mspp_random_repair"]
+        require(twelve["environment_hash"]
+                == fifteen["environment_hash"] == nine["environment_hash"],
+                "system-count cells must reuse the same xlarge obstacle geometry")
+        require(twelve["terminal_prefix_9_hash"] == nine["terminal_hash"]
+                and fifteen["terminal_prefix_9_hash"] == nine["terminal_hash"]
+                and fifteen["terminal_prefix_12_hash"] == twelve["terminal_hash"],
+                "system-count cells must preserve nested terminal sets")
+    require(summary["paired_scenes"] == 150 and summary["validated_outputs"] == 300
+            and summary["seeds_per_cell"] == 30 and summary["start_seed"] == 130000,
+            "factor-separated protocol metadata mismatch")
+
+
 def validate(data: Path) -> None:
     """Validate row totals, method balance, and source-audit counts."""
     main = rows(data / "main_150_raw.csv")
@@ -758,6 +858,7 @@ def validate(data: Path) -> None:
     validate_current_cbs_incumbent_diagnostic(data)
     validate_matched_pbs_diagnostic(data)
     validate_matched_permanent_baselines(data)
+    validate_adaptive_factor_separation(data)
     print("PASS: primary archives, IFC readiness screens, budget diagnostics, paired studies, and route validation")
 
 

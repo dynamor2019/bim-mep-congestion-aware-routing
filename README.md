@@ -145,6 +145,17 @@ python code/summarize_adaptive_wallclock.py data/revision_20261024/adaptive_wall
 python code/validate_revision_evidence.py --data data/revision_20261023
 ```
 
+## Adaptive-repair factor-separation cohort
+
+`data/revision_20261024/adaptive_factor_separation_150.csv` contains 150 paired scenes (300 independently validated outputs) in five cells. Three cells hold demand count at nine while using 16x12x3, 24x18x4, and 32x24x5 grids; two additional cells hold the 32x24x5 geometry fixed and increase the nested demand set from 9 to 12 and 15 systems. Environment and terminal-prefix hashes verify the fixed-geometry and nested-demand design. Random versus adaptive completion was 5/30 vs 3/30, 26/30 vs 22/30, and 27/30 vs 27/30 in the fixed-nine-system cells, and 27/30 vs 26/30 vs 21/30 for random repair and 27/30 vs 25/30 vs 20/30 for adaptive repair in the fixed-grid 9/12/15-system cells. Each within-cell exact McNemar test was inconclusive after Holm correction (all adjusted p=1.00). The nominal 1-s cap was checked between full iterations; all measured runs exceeded 1 s and the maximum was 1.86 s. Grid-size cells also differ in generator topology, so they are not a pure causal estimate of geometric scale. This synthetic factor-separation test does not establish BIM or general scalability.
+
+Reproduce and validate it with:
+
+```powershell
+python code/run_adaptive_factor_separation.py --seeds 30 --start-seed 130000 --budget-seconds 1.0 --output data/revision_20261024/adaptive_factor_separation_150.csv
+python code/validate_revision_evidence.py --data data/revision_20261023
+```
+
 ## Shared-incumbent permanent-space CBS diagnostic
 
 `data/revision_20261023/spatial_cbs_shared_incumbent_100_5s/` contains a new 100-scene paired comparison. The CBS root contains the same best-of-two partial incumbent passed to random repair; it adds independently shortest paths for unserved demands and branches on permanent-vertex conflicts. With the same 5-s cap, 100-iteration limit, 256-node limit, scene seeds, and independent validator, random repair completed 19/100 scenes and routed 7.10/9 demands on average; spatial CBS completed 9/100 and routed 6.71/9. Ten discordant pairs favored random repair and none favored CBS (exact two-sided McNemar $p=0.001953$). Mean observed runtimes were 3.00 s and 4.56 s. All 200 route sets passed validation. This is an equal-scene, common-incumbent permanent-space diagnostic, not a faithful temporal MAPF CBS implementation and not evidence about unrestricted CBS.
