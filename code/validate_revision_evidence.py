@@ -61,7 +61,27 @@ def validate(data: Path) -> None:
     require(audit["geometry_components"] == 4054, "IFC geometry count mismatch")
     require(audit["native_port_count"] == 8460, "IFC port count mismatch")
     require(audit["explicit_port_edges"] == 4050, "IFC explicit port-edge count mismatch")
-    print("PASS: 150/750 main, 990 sensitivity, 100x8 holdout, 800 factorial, 180 scale, IFC audit counts")
+
+    digital_hub = json.loads((data / "digital_hub" / "digital_hub_ifc_audit.json").read_text(encoding="utf-8"))
+    inputs = digital_hub["inputs"]
+    mep_names = ("heating.ifc", "plumbing.ifc", "ventilation.ifc")
+    require(sum(inputs[name]["systems"] for name in mep_names) == 65,
+            "Digital Hub IFC system count mismatch")
+    require(sum(inputs[name]["ports_with_placement"] for name in mep_names) == 8497,
+            "Digital Hub placed-port count mismatch")
+    require(sum(inputs[name]["ports_with_system"] for name in mep_names) == 8497,
+            "Digital Hub port-system membership count mismatch")
+    require(sum(inputs[name]["explicit_port_relations"] for name in mep_names) == 4208,
+            "Digital Hub explicit port-relation count mismatch")
+    identities = {json.dumps(inputs[name]["identity"], sort_keys=True) for name in ("arc.ifc", *mep_names)}
+    require(len(identities) == 1, "Digital Hub IFC identities are not co-registered")
+    require(all(inputs[name]["crs"] == "EPSG:3857" for name in ("arc.ifc", *mep_names)),
+            "Digital Hub CRS mismatch")
+    pair_counts = [item["count"] for item in digital_hub["geometry_sample"]["aabb_pair_candidates"]]
+    require(pair_counts == [179, 300, 433, 676], "Digital Hub geometry-sample counts mismatch")
+    require(digital_hub["geometry_sample"]["not_full_model_geometry"],
+            "Digital Hub geometry scope must remain explicitly sampled")
+    print("PASS: main/sensitivity/holdout/factor/scale; prior IFC; Digital Hub identity, semantics, and sampled geometry")
 
 
 def main() -> None:

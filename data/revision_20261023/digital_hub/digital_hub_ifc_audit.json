@@ -1,0 +1,199 @@
+{
+  "source": "RWTH Aachen Digital Hub IFC-Bench",
+  "inputs": {
+    "arc.ifc": {
+      "identity": {
+        "IfcProject": "1OVsTAdVr0zxMeLRosmk1W",
+        "IfcSite": "1OVsTAdVr0zxMeLRosmk1Y",
+        "IfcBuilding": "1OVsTAdVr0zxMeLRosmk1X"
+      },
+      "crs": "EPSG:3857",
+      "map_conversion": {
+        "Eastings": 0.0,
+        "Northings": 0.0,
+        "OrthogonalHeight": 0.0,
+        "XAxisAbscissa": 1.0,
+        "XAxisOrdinate": 6.12303176911189e-17,
+        "Scale": null
+      },
+      "sha256": "19d7d02d53c2b88e86890ee236297b12bbb0f7748030cd32ff6a22762e9966bb",
+      "length_scale_to_m": 1,
+      "geometry_boxes_sampled": 162
+    },
+    "heating.ifc": {
+      "identity": {
+        "IfcProject": "1OVsTAdVr0zxMeLRosmk1W",
+        "IfcSite": "1OVsTAdVr0zxMeLRosmk1Y",
+        "IfcBuilding": "1OVsTAdVr0zxMeLRosmk1X"
+      },
+      "crs": "EPSG:3857",
+      "map_conversion": {
+        "Eastings": 0.0,
+        "Northings": 0.0,
+        "OrthogonalHeight": 0.0,
+        "XAxisAbscissa": 1.0,
+        "XAxisOrdinate": 6.12303176911189e-17,
+        "Scale": null
+      },
+      "sha256": "a5603e8f6aa4cbf63aece92f92f503e9a578702d8fe96a6d4661490f1843710d",
+      "length_scale_to_m": 0.001,
+      "systems": 42,
+      "ports_with_placement": 3760,
+      "ports_with_system": 3760,
+      "explicit_port_relations": 1873,
+      "flow_fittings": 743,
+      "segment_properties": {
+        "flow_segments": 914,
+        "dimensions": {
+          "external_diameter_m": {
+            "count": 914,
+            "p05_m": 0.01,
+            "median_m": 0.018000000000000002,
+            "p95_m": 0.054
+          },
+          "internal_diameter_m": {
+            "count": 914,
+            "p05_m": 0.008,
+            "median_m": 0.016,
+            "p95_m": 0.05
+          }
+        },
+        "segments_with_slope_property": 697
+      },
+      "geometry_boxes_sampled": 107
+    },
+    "plumbing.ifc": {
+      "identity": {
+        "IfcProject": "1OVsTAdVr0zxMeLRosmk1W",
+        "IfcSite": "1OVsTAdVr0zxMeLRosmk1Y",
+        "IfcBuilding": "1OVsTAdVr0zxMeLRosmk1X"
+      },
+      "crs": "EPSG:3857",
+      "map_conversion": {
+        "Eastings": 0.0,
+        "Northings": 0.0,
+        "OrthogonalHeight": 0.0,
+        "XAxisAbscissa": 1.0,
+        "XAxisOrdinate": 6.12303176911189e-17,
+        "Scale": null
+      },
+      "sha256": "0b1d6b0abd8d4cc3f5f798c7581bed2b39b40110ba6348d5470bbef646cfed79",
+      "length_scale_to_m": 0.001,
+      "systems": 19,
+      "ports_with_placement": 2081,
+      "ports_with_system": 2081,
+      "explicit_port_relations": 1025,
+      "flow_fittings": 411,
+      "segment_properties": {
+        "flow_segments": 504,
+        "dimensions": {
+          "external_diameter_m": {
+            "count": 504,
+            "p05_m": 0.015,
+            "median_m": 0.015,
+            "p95_m": 0.11
+          },
+          "internal_diameter_m": {
+            "count": 504,
+            "p05_m": 0.013000000000000001,
+            "median_m": 0.013000000000000001,
+            "p95_m": 0.096
+          }
+        },
+        "segments_with_slope_property": 408
+      },
+      "geometry_boxes_sampled": 80
+    },
+    "ventilation.ifc": {
+      "identity": {
+        "IfcProject": "1OVsTAdVr0zxMeLRosmk1W",
+        "IfcSite": "1OVsTAdVr0zxMeLRosmk1Y",
+        "IfcBuilding": "1OVsTAdVr0zxMeLRosmk1X"
+      },
+      "crs": "EPSG:3857",
+      "map_conversion": {
+        "Eastings": 0.0,
+        "Northings": 0.0,
+        "OrthogonalHeight": 0.0,
+        "XAxisAbscissa": 1.0,
+        "XAxisOrdinate": 6.12303176911189e-17,
+        "Scale": null
+      },
+      "sha256": "c0a1807875957c4154d45d14a3b5ed480dd3178a5bdc3262302a7eccf76d5cb1",
+      "length_scale_to_m": 0.001,
+      "systems": 4,
+      "ports_with_placement": 2656,
+      "ports_with_system": 2656,
+      "explicit_port_relations": 1310,
+      "flow_fittings": 538,
+      "segment_properties": {
+        "flow_segments": 595,
+        "dimensions": {
+          "width_m": {
+            "count": 435,
+            "p05_m": 0.15,
+            "median_m": 0.25,
+            "p95_m": 0.85
+          },
+          "height_m": {
+            "count": 435,
+            "p05_m": 0.15,
+            "median_m": 0.25,
+            "p95_m": 0.85
+          },
+          "diameter_m": {
+            "count": 160,
+            "p05_m": 0.123,
+            "median_m": 0.123,
+            "p95_m": 0.16
+          }
+        },
+        "segments_with_slope_property": 583
+      },
+      "geometry_boxes_sampled": 100
+    }
+  },
+  "geometry_sample": {
+    "max_per_type": 25,
+    "mep_boxes": 287,
+    "architecture_boxes": 162,
+    "architecture_types": [
+      "IfcWall",
+      "IfcSlab",
+      "IfcBeam",
+      "IfcColumn",
+      "IfcDoor",
+      "IfcWindow",
+      "IfcBuildingElementProxy"
+    ],
+    "mep_types": [
+      "IfcFlowSegment",
+      "IfcFlowFitting",
+      "IfcFlowTerminal",
+      "IfcFlowController",
+      "IfcFlowMovingDevice",
+      "IfcFlowStorageDevice",
+      "IfcFlowTreatmentDevice"
+    ],
+    "not_full_model_geometry": true,
+    "aabb_pair_candidates": [
+      {
+        "added_margin_m": 0.0,
+        "count": 179
+      },
+      {
+        "added_margin_m": 0.05,
+        "count": 300
+      },
+      {
+        "added_margin_m": 0.15,
+        "count": 433
+      },
+      {
+        "added_margin_m": 0.3,
+        "count": 676
+      }
+    ]
+  },
+  "interpretation": "AABB candidates are broad-phase pairs, not exact clashes or route outcomes. The data audit does not establish accepted reroutes or construction validity."
+}
