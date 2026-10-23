@@ -1,0 +1,29 @@
+{
+  "protocol": "same-scene adaptive versus random repair; equal 8-iteration budget",
+  "paired_scenes": 270,
+  "scenes_per_scale": 90,
+  "validated_outputs": 540,
+  "scales": {
+    "base": {"systems": 9, "random_complete": 8, "adaptive_complete": 6, "exact_two_sided_mcnemar_p": 0.5},
+    "large": {"systems": 12, "random_complete": 42, "adaptive_complete": 47, "exact_two_sided_mcnemar_p": 0.332305908203125},
+    "xlarge": {"systems": 15, "random_complete": 72, "adaptive_complete": 69, "exact_two_sided_mcnemar_p": 0.5078125}
+  },
+  "runtime_median_seconds_random_vs_adaptive": {
+    "base": [0.2520823500024788, 0.5306909000064479],
+    "large": [0.8452895500086015, 2.11969575000694],
+    "xlarge": [2.4903173000056995, 3.7018373000028078]
+  },
+  "input_archives": [
+    {"file": "matched_adaptive_scale_90.csv", "sha256": "93cbca0eb918f4ce9e678f9c0339b47ea8f9663d8e3e81a25424b22c0b3f1203", "seed_range": [70000, 70029]},
+    {"file": "matched_adaptive_scale_180_new.csv", "sha256": "20cf854873ac8f625d72ef18ab740a3ca5713460e95579bc924a363aef133c60", "seed_range": [80000, 80059]}
+  ],
+  "raw_sha256": "a6cd1be1ace972f10699e00893b2282afd13532328c0f017c6d2459a5a04b150",
+  "summary_sha256": "8e4b228dc1ad65f63db42ccdd907e421832eb38bf0446445b2a94578ddaa9fb8",
+  "runner_sha256": "052847924bbb2f87a63bdde322a57584070b708735227ed138ccbca5f16da16e",
+  "summarizer_sha256": "2fdf67346ad1846f5de8960eb0a718b4a4c269cde1f0098e6799d00d6fd63fff",
+  "limitations": [
+    "Iteration-matched, not wall-clock or compute-matched.",
+    "Synthetic grids; grid dimensions and system count covary.",
+    "This comparison does not establish general scalability or real-BIM performance."
+  ]
+}

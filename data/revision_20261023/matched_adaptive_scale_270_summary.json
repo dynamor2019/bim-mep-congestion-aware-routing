@@ -1,0 +1,74 @@
+{
+  "protocol": "equal 8 iterations, same generated scene and shared initial route",
+  "total_pairs": 270,
+  "validated_outputs": 540,
+  "scale_results": [
+    {
+      "scale": "base",
+      "systems": 9,
+      "paired_scenes": 90,
+      "random_only_successes": 2,
+      "adaptive_only_successes": 0,
+      "exact_two_sided_mcnemar_p": 0.5,
+      "methods": {
+        "adaptive_multi_operator": {
+          "complete_scenes": 6,
+          "scenes": 90,
+          "mean_routed_systems": 6.844444444444444,
+          "median_runtime_s": 0.5306909000064479
+        },
+        "mspp_random_repair": {
+          "complete_scenes": 8,
+          "scenes": 90,
+          "mean_routed_systems": 6.877777777777778,
+          "median_runtime_s": 0.2520823500090046
+        }
+      }
+    },
+    {
+      "scale": "large",
+      "systems": 12,
+      "paired_scenes": 90,
+      "random_only_successes": 6,
+      "adaptive_only_successes": 11,
+      "exact_two_sided_mcnemar_p": 0.332305908203125,
+      "methods": {
+        "adaptive_multi_operator": {
+          "complete_scenes": 47,
+          "scenes": 90,
+          "mean_routed_systems": 11.322222222222223,
+          "median_runtime_s": 2.11969575000694
+        },
+        "mspp_random_repair": {
+          "complete_scenes": 42,
+          "scenes": 90,
+          "mean_routed_systems": 11.244444444444444,
+          "median_runtime_s": 0.8452895500086015
+        }
+      }
+    },
+    {
+      "scale": "xlarge",
+      "systems": 15,
+      "paired_scenes": 90,
+      "random_only_successes": 6,
+      "adaptive_only_successes": 3,
+      "exact_two_sided_mcnemar_p": 0.5078125,
+      "methods": {
+        "adaptive_multi_operator": {
+          "complete_scenes": 69,
+          "scenes": 90,
+          "mean_routed_systems": 14.722222222222221,
+          "median_runtime_s": 3.7018373000028078
+        },
+        "mspp_random_repair": {
+          "complete_scenes": 72,
+          "scenes": 90,
+          "mean_routed_systems": 14.777777777777779,
+          "median_runtime_s": 2.4903173000056995
+        }
+      }
+    }
+  ],
+  "interpretation_boundary": "Equal iterations are not equal wall-clock time. All scenes are synthetic; grid dimensions increase with system count, so scale effects are not isolated."
+}

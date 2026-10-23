@@ -93,6 +93,42 @@ def validate_clinic_ifc_audit(data: Path) -> None:
     ).hexdigest(), "clinic IFC audit script checksum mismatch")
 
 
+def validate_expanded_adaptive_archive(data: Path) -> None:
+    """Check the 270-pair adaptive archive, checksums, pairing, and outcomes."""
+    archive = data / "matched_adaptive_scale_270.csv"
+    manifest = json.loads(
+        (data / "matched_adaptive_scale_270.manifest.json").read_text(encoding="utf-8")
+    )
+    observations = rows(archive)
+    require(len(observations) == 540 and all(row["validated"] == "1" for row in observations),
+            "expanded adaptive archive must contain 540 validated outputs")
+    require(manifest["paired_scenes"] == 270 and manifest["validated_outputs"] == 540
+            and manifest["raw_sha256"] == hashlib.sha256(archive.read_bytes()).hexdigest(),
+            "expanded adaptive manifest or raw checksum mismatch")
+    for source in manifest["input_archives"]:
+        source_path = data / source["file"]
+        require(hashlib.sha256(source_path.read_bytes()).hexdigest() == source["sha256"],
+                f"expanded adaptive source checksum mismatch: {source['file']}")
+    summary = data / "matched_adaptive_scale_270_summary.json"
+    require(hashlib.sha256(summary.read_bytes()).hexdigest() == manifest["summary_sha256"],
+            "expanded adaptive summary checksum mismatch")
+    pairs = defaultdict(dict)
+    for row in observations:
+        pairs[(row["scale"], row["seed"])][row["method"]] = row
+    require(len(pairs) == 270 and all(set(pair) == {
+        "mspp_random_repair", "adaptive_multi_operator"} for pair in pairs.values()),
+        "expanded adaptive archive must contain 270 complete pairs")
+    require(all(len({row["scene_hash"] for row in pair.values()}) == 1
+                for pair in pairs.values()), "adaptive methods must use identical scenes")
+    expected = {"base": (8, 6), "large": (42, 47), "xlarge": (72, 69)}
+    for scale, counts in expected.items():
+        selected = [pair for (name, _), pair in pairs.items() if name == scale]
+        actual = tuple(sum(int(pair[method]["success"]) for pair in selected)
+                       for method in ("mspp_random_repair", "adaptive_multi_operator"))
+        require(len(selected) == 90 and actual == counts,
+                f"expanded adaptive completion counts mismatch: {scale}")
+
+
 def validate_new_revision_evidence(data: Path) -> None:
     """Check the new paired adaptive, CBS-incumbent, and plant-room audits."""
     adaptive = rows(data / "matched_adaptive_scale_90.csv")
@@ -120,6 +156,7 @@ def validate_new_revision_evidence(data: Path) -> None:
                        for method in ("mspp_random_repair", "adaptive_multi_operator"))
         require(len(selected) == 30 and actual == counts,
                 f"matched adaptive completion counts mismatch: {scale}")
+    validate_expanded_adaptive_archive(data)
     cbs = rows(data / "cbs_incumbent_5s_holdout_10.csv")
     require(len(cbs) == 20 and all(row["validated"] == "1" for row in cbs),
             "CBS incumbent diagnostic must contain 20 validated method outputs")
