@@ -1,0 +1,85 @@
+{
+  "scale_results": [
+    {
+      "scale": "base",
+      "paired_scenes": 30,
+      "random_only_successes": 2,
+      "adaptive_only_successes": 0,
+      "exact_two_sided_mcnemar_p": 0.5,
+      "methods": {
+        "mspp_random_repair": {
+          "complete_scenes": 3,
+          "median_runtime_s": 1.000098300006357,
+          "max_runtime_s": 1.0003373000072315,
+          "median_iterations": 30.5
+        },
+        "adaptive_multi_operator": {
+          "complete_scenes": 1,
+          "median_runtime_s": 1.0001200500119012,
+          "max_runtime_s": 1.000665300001856,
+          "median_iterations": 15.0
+        }
+      }
+    },
+    {
+      "scale": "large",
+      "paired_scenes": 30,
+      "random_only_successes": 1,
+      "adaptive_only_successes": 1,
+      "exact_two_sided_mcnemar_p": 1.0,
+      "methods": {
+        "mspp_random_repair": {
+          "complete_scenes": 10,
+          "median_runtime_s": 1.0002004999987548,
+          "max_runtime_s": 1.0005964000010863,
+          "median_iterations": 8.0
+        },
+        "adaptive_multi_operator": {
+          "complete_scenes": 10,
+          "median_runtime_s": 1.0002687999804039,
+          "max_runtime_s": 1.0007220999978017,
+          "median_iterations": 3.0
+        }
+      }
+    },
+    {
+      "scale": "xlarge",
+      "paired_scenes": 30,
+      "random_only_successes": 0,
+      "adaptive_only_successes": 2,
+      "exact_two_sided_mcnemar_p": 0.5,
+      "methods": {
+        "mspp_random_repair": {
+          "complete_scenes": 19,
+          "median_runtime_s": 1.0004812499973923,
+          "max_runtime_s": 1.018978199979756,
+          "median_iterations": 2.0
+        },
+        "adaptive_multi_operator": {
+          "complete_scenes": 21,
+          "median_runtime_s": 1.0006718499935232,
+          "max_runtime_s": 1.0019610000017565,
+          "median_iterations": 1.0
+        }
+      }
+    }
+  ],
+  "paired_scenes": 90,
+  "validated_outputs": 180,
+  "protocol": "paired same-scene repair under a hard A* wall-clock deadline",
+  "budget_seconds_per_method": 1.0,
+  "seeds_per_scale": 30,
+  "start_seed": 140000,
+  "scales": [
+    "base",
+    "large",
+    "xlarge"
+  ],
+  "methods": [
+    "mspp_random_repair",
+    "adaptive_multi_operator"
+  ],
+  "runner_sha256": "e4e3fbfa8a3fbaf30646b1e05e11661dd8da6f1ecf793b5c868fbb08363326af",
+  "timer_note": "Deadline checked inside A*; small interpreter and return overhead may exceed the cap.",
+  "scope_note": "Synthetic comparison; this does not establish general scaling behavior."
+}
