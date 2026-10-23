@@ -90,6 +90,61 @@ def segment_properties(model, unit_scale: float) -> dict:
             "segments_with_slope_property": slope_count}
 
 
+def system_topology_summary(graph: dict) -> dict:
+    """Summarize native port-graph fragmentation by authored IFC system."""
+    vertices = graph["vertices"]
+    edges = graph["edges"]
+    records = []
+    for system in graph["systems"]:
+        system_id = system["id"]
+        node_ids = {v["id"] for v in vertices if system_id in v["systems"]}
+        adjacency = {node_id: set() for node_id in node_ids}
+        for edge in edges:
+            a, b = edge["from"], edge["to"]
+            if a in node_ids and b in node_ids:
+                adjacency[a].add(b)
+                adjacency[b].add(a)
+        unseen = set(node_ids)
+        component_sizes = []
+        while unseen:
+            stack = [unseen.pop()]
+            size = 0
+            while stack:
+                node_id = stack.pop()
+                size += 1
+                reached = adjacency[node_id] & unseen
+                unseen.difference_update(reached)
+                stack.extend(reached)
+            component_sizes.append(size)
+        degrees = [len(adjacency[node_id]) for node_id in node_ids]
+        records.append({
+            "system_ifc_id": system_id,
+            "system_name": system["name"],
+            "ports": len(node_ids),
+            "connected_components": len(component_sizes),
+            "largest_component_ports": max(component_sizes, default=0),
+            "isolated_ports": sum(degree == 0 for degree in degrees),
+            "branch_ports_degree_gt_2": sum(degree > 2 for degree in degrees),
+        })
+    return {
+        "systems": records,
+        "summary": {
+            "system_count": len(records),
+            "median_ports_per_system": float(np.median([r["ports"] for r in records])),
+            "median_components_per_system": float(np.median([r["connected_components"] for r in records])),
+            "systems_with_multiple_components": sum(r["connected_components"] > 1 for r in records),
+            "isolated_port_memberships": sum(r["isolated_ports"] for r in records),
+            "branch_port_memberships": sum(r["branch_ports_degree_gt_2"] for r in records),
+        },
+        "interpretation": (
+            "Components use explicit port relations plus the stated within-segment/fitting "
+            "assumption and describe only the extracted graph. Multiple components do not "
+            "prove that authored systems are physically disconnected; this graph is not a "
+            "validated route instance or accepted reroute target."
+        ),
+    }
+
+
 def architecture_boxes(model, max_per_type: int) -> list[dict]:
     """Extract a deterministic architectural AABB sample."""
     settings = ifcopenshell.geom.settings()
@@ -144,6 +199,7 @@ def audit_dataset(source: Path, output: Path, max_per_type: int) -> dict:
                        "length_scale_to_m": calculate_unit_scale(model)})
         if filename in MEP_FILES:
             graph = native_graph(model)
+            record["native_topology"] = system_topology_summary(graph)
             record.update({
                 "systems": len(model.by_type("IfcSystem")),
                 "ports_with_placement": len(graph["vertices"]),

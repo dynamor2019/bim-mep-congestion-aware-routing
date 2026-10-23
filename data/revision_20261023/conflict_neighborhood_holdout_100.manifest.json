@@ -1,0 +1,23 @@
+{
+  "dataset": "Conflict-graph neighborhood control",
+  "cohort": "High-density holdout; seeds 100000-100099",
+  "scene_count": 100,
+  "output_rows": 100,
+  "complete_scenes": 13,
+  "validated_outputs": 100,
+  "method": "conflict",
+  "budget": {
+    "improvement_seconds": 1.0,
+    "iterations": 20,
+    "node_limit": 256,
+    "destroy_fraction": 0.25,
+    "initialization": "shared best-of-two priority orders"
+  },
+  "interpretation": "Permanent-occupancy spatial LNS control, not a faithful temporal MAPF-LNS2 implementation.",
+  "sha256": {
+    "raw_csv": "d24cc40f801e8baa5059bf51989077402914cb36bed135f3a6dd4f369885e000",
+    "solver": "30391be96bc09aa580834f44819c2f17c2bb71a2223c61b119ed1f0c5cb6c911",
+    "benchmark_runner": "983c2ed0549d82dfd0ea935d7820ad58b8aac99cb8b95b95fc9d940ab4bd3c57",
+    "scene_generator": "2b46a1b4ff9ae1a93ee841984d190ef996e2f01427686194be6836caf8ff21c0"
+  }
+}

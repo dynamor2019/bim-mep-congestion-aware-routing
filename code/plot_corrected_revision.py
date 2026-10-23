@@ -17,14 +17,16 @@ COLORS = {
     "fix_order": "#687480", "pbs_random": "#D97706", "stage1_only": "#2876B8",
     "stage3_only": "#07877C", "proposed": "#B43767", "random": "#687480",
     "guided": "#07877C", "length": "#2876B8", "blocker": "#D97706",
-    "adaptive": "#775DA6", "pbs_static": "#253B53",
+    "adaptive": "#775DA6", "pbs_static": "#253B53", "spatial_cbs": "#323B45",
+    "conflict": "#9A6B45",
 }
 LABELS = {
     "fix_order": "Fixed order", "pbs_random": "MSPP + random",
     "stage1_only": "Static + random", "stage3_only": "Guided repair",
     "proposed": "Full method", "random": "Random repair", "guided": "Guided",
     "length": "Length only", "blocker": "Conflict blockers", "adaptive": "Adaptive",
-    "pbs_static": "Spatial PBS",
+    "pbs_static": "Spatial PBS", "spatial_cbs": "Spatial CBS",
+    "conflict": "Conflict graph",
 }
 DENSITY_COLORS = {"low": "#687480", "medium": "#07877C", "high": "#B43767"}
 
@@ -194,14 +196,14 @@ def ablation_figure(rows: list[dict[str, str]], out_dir: Path) -> None:
 
 def holdout_figure(rows: list[dict[str, str]], out_dir: Path) -> None:
     """Plot holdout success counts and paired differences by method."""
-    methods = ["random", "static_random", "guided", "guided_select_only", "length", "blocker", "adaptive", "pbs_static"]
-    labels = ["Random", "Static + random", "Guided", "Guided select only", "Length", "Blocker", "Adaptive", "Spatial PBS"]
+    methods = ["random", "static_random", "guided", "guided_select_only", "length", "blocker", "conflict", "adaptive", "pbs_static", "spatial_cbs"]
+    labels = ["Random", "Static + random", "Guided", "Guided select only", "Length", "Blocker", "Conflict graph", "Adaptive", "Spatial PBS", "Spatial CBS"]
     fig, ax = plt.subplots(figsize=(7.2, 3.5), constrained_layout=True)
     for i, method in enumerate(methods):
         subset = [r for r in rows if r["method"] == method]
         n = len(subset); k = sum(int(r["success"]) for r in subset)
         lo, hi = wilson(k, n)
-        ax.errorbar(k, i, xerr=[[k - n * lo], [n * hi - k]], fmt="o", ms=4,
+        ax.errorbar(k, i, xerr=[[max(0.0, k - n * lo)], [max(0.0, n * hi - k)]], fmt="o", ms=4,
                     capsize=2, color=COLORS.get(method, "#555555"), lw=.9)
     ax.set_yticks(range(len(methods)), labels)
     ax.invert_yaxis(); ax.set_xlim(0, 36)
@@ -283,6 +285,8 @@ def main() -> None:
     parser.add_argument("--main", type=Path, required=True)
     parser.add_argument("--sensitivity", type=Path, required=True)
     parser.add_argument("--holdout", type=Path, required=True)
+    parser.add_argument("--conflict-neighborhood", type=Path)
+    parser.add_argument("--spatial-cbs", type=Path)
     parser.add_argument("--factorial", type=Path, required=True)
     parser.add_argument("--scaling", type=Path, required=True)
     parser.add_argument("--ifc-audit", type=Path, required=True)
@@ -294,7 +298,12 @@ def main() -> None:
     paired_figure(main_rows, args.output)
     ablation_figure(main_rows, args.output)
     sensitivity_figure(read_rows(args.sensitivity), args.output)
-    holdout_figure(read_rows(args.holdout), args.output)
+    holdout_rows = read_rows(args.holdout)
+    if args.conflict_neighborhood:
+        holdout_rows.extend(read_rows(args.conflict_neighborhood))
+    if args.spatial_cbs:
+        holdout_rows.extend(read_rows(args.spatial_cbs))
+    holdout_figure(holdout_rows, args.output)
     factor_figure(read_rows(args.factorial), args.output)
     scaling_figure(read_rows(args.scaling), args.output)
     ifc_figure(args.ifc_audit, args.output)

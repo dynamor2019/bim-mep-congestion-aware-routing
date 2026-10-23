@@ -235,7 +235,9 @@ def improve(
         selected.sort(key=lambda index: scores[index], reverse=True)
         for index in selected:
             item = instance.commodities[index]
-            path = astar(instance, item, occupied, predicted, congestion_weight if guided else 0.0)
+            terminals = {p for other in instance.commodities for p in (other.start, other.goal)}
+            forbidden = occupied | (terminals - {item.start, item.goal})
+            path = astar(instance, item, forbidden, predicted, congestion_weight if guided else 0.0)
             if path is not None:
                 candidate[index] = path
                 occupied.update(path[1:-1])

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import csv
 import json
 import math
@@ -129,4 +130,8 @@ def run(output_dir: Path, seeds: int = 15) -> None:
 
 
 if __name__ == "__main__":
-    run(Path("results"))
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", type=Path, default=Path("results"))
+    parser.add_argument("--seeds", type=int, default=15)
+    args = parser.parse_args()
+    run(args.output, args.seeds)

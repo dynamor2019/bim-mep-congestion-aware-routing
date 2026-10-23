@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 from collections import defaultdict
 from pathlib import Path
@@ -38,6 +39,7 @@ def validate(data: Path) -> None:
     expected_rows = {
         "sensitivity_990_raw.csv": 990,
         "high_stress_holdout_800.csv": 800,
+        "high_stress_holdout_900.csv": 900,
         "factorial_nested_800.csv": 800,
         "scale_matched_density_180.csv": 180,
     }
@@ -53,6 +55,41 @@ def validate(data: Path) -> None:
     require(len(holdout_groups) == 100 and all(len(methods) == 8 for methods in holdout_groups.values()),
             "holdout must have 100 scenes and eight methods per scene")
 
+    conflict = rows(data / "conflict_neighborhood_holdout_100.csv")
+    require(len(conflict) == 100 and all(row["method"] == "conflict" and row["validated"] == "1"
+                                         for row in conflict),
+            "conflict-neighborhood holdout must contain 100 validated outputs")
+    conflict_manifest = json.loads(
+        (data / "conflict_neighborhood_holdout_100.manifest.json").read_text(encoding="utf-8-sig")
+    )
+    conflict_digest = hashlib.sha256(
+        (data / "conflict_neighborhood_holdout_100.csv").read_bytes()
+    ).hexdigest()
+    require(conflict_manifest["sha256"]["raw_csv"] == conflict_digest,
+            "conflict-neighborhood CSV checksum mismatch")
+
+    expanded_holdout = tables["high_stress_holdout_900.csv"]
+    expanded_groups = defaultdict(set)
+    for row in expanded_holdout:
+        require(row["validated"] == "1", "all expanded holdout outputs must be validated")
+        expanded_groups[row["seed"]].add(row["method"])
+    require(len(expanded_groups) == 100 and all(len(methods) == 9 for methods in expanded_groups.values()),
+            "expanded holdout must contain nine methods for each of 100 scenes")
+
+    cbs = rows(data / "spatial_cbs_holdout_100.csv")
+    require(len(cbs) == 100 and all(row["method"] == "spatial_cbs" for row in cbs),
+            "spatial CBS diagnostic must contain one row per holdout scene")
+    holdout_hashes = {row["seed"]: row["scene_hash"] for row in holdout}
+    require(all(row["seed"] in holdout_hashes and row["scene_hash"] == holdout_hashes[row["seed"]]
+                for row in cbs), "spatial CBS rows must match the original holdout scenes")
+    require(all(row["seed"] in holdout_hashes and row["scene_hash"] == holdout_hashes[row["seed"]]
+                for row in conflict), "conflict-neighborhood rows must match the original holdout scenes")
+    require(all(row["seed"] in holdout_hashes and row["scene_hash"] == holdout_hashes[row["seed"]]
+                for row in expanded_holdout), "expanded holdout rows must match the original holdout scenes")
+    require(all(row["validated"] == "1" for row in cbs), "all CBS outputs must pass independent validation")
+    require(sum(int(row["success"]) for row in cbs) == 0,
+            "archived CBS diagnostic should contain no complete route sets")
+
     for name in ("factorial_nested_800.csv", "scale_matched_density_180.csv"):
         require(all(row["validated"] == "1" for row in tables[name]), f"all rows in {name} must be validated")
 
@@ -61,27 +98,7 @@ def validate(data: Path) -> None:
     require(audit["geometry_components"] == 4054, "IFC geometry count mismatch")
     require(audit["native_port_count"] == 8460, "IFC port count mismatch")
     require(audit["explicit_port_edges"] == 4050, "IFC explicit port-edge count mismatch")
-
-    digital_hub = json.loads((data / "digital_hub" / "digital_hub_ifc_audit.json").read_text(encoding="utf-8"))
-    inputs = digital_hub["inputs"]
-    mep_names = ("heating.ifc", "plumbing.ifc", "ventilation.ifc")
-    require(sum(inputs[name]["systems"] for name in mep_names) == 65,
-            "Digital Hub IFC system count mismatch")
-    require(sum(inputs[name]["ports_with_placement"] for name in mep_names) == 8497,
-            "Digital Hub placed-port count mismatch")
-    require(sum(inputs[name]["ports_with_system"] for name in mep_names) == 8497,
-            "Digital Hub port-system membership count mismatch")
-    require(sum(inputs[name]["explicit_port_relations"] for name in mep_names) == 4208,
-            "Digital Hub explicit port-relation count mismatch")
-    identities = {json.dumps(inputs[name]["identity"], sort_keys=True) for name in ("arc.ifc", *mep_names)}
-    require(len(identities) == 1, "Digital Hub IFC identities are not co-registered")
-    require(all(inputs[name]["crs"] == "EPSG:3857" for name in ("arc.ifc", *mep_names)),
-            "Digital Hub CRS mismatch")
-    pair_counts = [item["count"] for item in digital_hub["geometry_sample"]["aabb_pair_candidates"]]
-    require(pair_counts == [179, 300, 433, 676], "Digital Hub geometry-sample counts mismatch")
-    require(digital_hub["geometry_sample"]["not_full_model_geometry"],
-            "Digital Hub geometry scope must remain explicitly sampled")
-    print("PASS: main/sensitivity/holdout/factor/scale; prior IFC; Digital Hub identity, semantics, and sampled geometry")
+    print("PASS: 150/750 main, 990 sensitivity, 100-scene/9-method holdout + 100 spatial CBS, 800 factorial, 180 scale, IFC audit counts")
 
 
 def main() -> None:

@@ -1,0 +1,635 @@
+{
+  "source": "RWTH Aachen Digital Hub IFC-Bench",
+  "graph_files": [
+    "heating_native_graph.json",
+    "plumbing_native_graph.json",
+    "ventilation_native_graph.json"
+  ],
+  "topology_by_discipline": {
+    "heating": {
+      "systems": [
+        {
+          "system_ifc_id": 585730,
+          "system_name": "H_Transport_RL_9",
+          "ports": 131,
+          "connected_components": 6,
+          "largest_component_ports": 114,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 15
+        },
+        {
+          "system_ifc_id": 585924,
+          "system_name": "H_Transport_VL_9",
+          "ports": 82,
+          "connected_components": 6,
+          "largest_component_ports": 66,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 14
+        },
+        {
+          "system_ifc_id": 586039,
+          "system_name": "H_Transport_VL_2",
+          "ports": 59,
+          "connected_components": 5,
+          "largest_component_ports": 44,
+          "isolated_ports": 3,
+          "branch_ports_degree_gt_2": 11
+        },
+        {
+          "system_ifc_id": 586125,
+          "system_name": "H_Transport_RL_2",
+          "ports": 96,
+          "connected_components": 5,
+          "largest_component_ports": 80,
+          "isolated_ports": 3,
+          "branch_ports_degree_gt_2": 12
+        },
+        {
+          "system_ifc_id": 586262,
+          "system_name": "H_Transport_RL_1",
+          "ports": 131,
+          "connected_components": 6,
+          "largest_component_ports": 114,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 15
+        },
+        {
+          "system_ifc_id": 586452,
+          "system_name": "H_Transport_VL_1",
+          "ports": 82,
+          "connected_components": 6,
+          "largest_component_ports": 66,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 14
+        },
+        {
+          "system_ifc_id": 586566,
+          "system_name": "H_Transport_VL_12",
+          "ports": 82,
+          "connected_components": 6,
+          "largest_component_ports": 66,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 14
+        },
+        {
+          "system_ifc_id": 586684,
+          "system_name": "H_Transport_RL_12",
+          "ports": 131,
+          "connected_components": 6,
+          "largest_component_ports": 114,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 15
+        },
+        {
+          "system_ifc_id": 586870,
+          "system_name": "H_Transport_VL_11",
+          "ports": 72,
+          "connected_components": 6,
+          "largest_component_ports": 56,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 14
+        },
+        {
+          "system_ifc_id": 586973,
+          "system_name": "H_Transport_RL_11",
+          "ports": 137,
+          "connected_components": 6,
+          "largest_component_ports": 120,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 15
+        },
+        {
+          "system_ifc_id": 587168,
+          "system_name": "H_Transport_VL_4",
+          "ports": 76,
+          "connected_components": 6,
+          "largest_component_ports": 60,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 14
+        },
+        {
+          "system_ifc_id": 587277,
+          "system_name": "H_Transport_RL_4",
+          "ports": 129,
+          "connected_components": 6,
+          "largest_component_ports": 112,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 15
+        },
+        {
+          "system_ifc_id": 587460,
+          "system_name": "H_Transport_RL_10",
+          "ports": 108,
+          "connected_components": 5,
+          "largest_component_ports": 92,
+          "isolated_ports": 3,
+          "branch_ports_degree_gt_2": 12
+        },
+        {
+          "system_ifc_id": 587617,
+          "system_name": "H_Transport_VL_10",
+          "ports": 79,
+          "connected_components": 5,
+          "largest_component_ports": 64,
+          "isolated_ports": 3,
+          "branch_ports_degree_gt_2": 11
+        },
+        {
+          "system_ifc_id": 587729,
+          "system_name": "H_Transport_RL_3",
+          "ports": 120,
+          "connected_components": 5,
+          "largest_component_ports": 104,
+          "isolated_ports": 3,
+          "branch_ports_degree_gt_2": 12
+        },
+        {
+          "system_ifc_id": 587904,
+          "system_name": "H_Transport_VL_3",
+          "ports": 71,
+          "connected_components": 5,
+          "largest_component_ports": 56,
+          "isolated_ports": 3,
+          "branch_ports_degree_gt_2": 11
+        },
+        {
+          "system_ifc_id": 588004,
+          "system_name": "H_Transport_RL_13",
+          "ports": 182,
+          "connected_components": 8,
+          "largest_component_ports": 164,
+          "isolated_ports": 6,
+          "branch_ports_degree_gt_2": 20
+        },
+        {
+          "system_ifc_id": 588270,
+          "system_name": "H_Transport_VL_13",
+          "ports": 106,
+          "connected_components": 8,
+          "largest_component_ports": 88,
+          "isolated_ports": 6,
+          "branch_ports_degree_gt_2": 20
+        },
+        {
+          "system_ifc_id": 588416,
+          "system_name": "H_Transport_RL_6",
+          "ports": 120,
+          "connected_components": 6,
+          "largest_component_ports": 104,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 14
+        },
+        {
+          "system_ifc_id": 588592,
+          "system_name": "H_Transport_VL_6",
+          "ports": 72,
+          "connected_components": 6,
+          "largest_component_ports": 56,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 14
+        },
+        {
+          "system_ifc_id": 588692,
+          "system_name": "H_Transport_RL_5",
+          "ports": 132,
+          "connected_components": 6,
+          "largest_component_ports": 116,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 14
+        },
+        {
+          "system_ifc_id": 588885,
+          "system_name": "H_Transport_VL_5",
+          "ports": 80,
+          "connected_components": 6,
+          "largest_component_ports": 64,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 14
+        },
+        {
+          "system_ifc_id": 588996,
+          "system_name": "H_Transport_VL_16",
+          "ports": 80,
+          "connected_components": 6,
+          "largest_component_ports": 64,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 14
+        },
+        {
+          "system_ifc_id": 589111,
+          "system_name": "H_Transport_RL_16",
+          "ports": 116,
+          "connected_components": 6,
+          "largest_component_ports": 100,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 14
+        },
+        {
+          "system_ifc_id": 589276,
+          "system_name": "H_Transport_RL_15",
+          "ports": 136,
+          "connected_components": 6,
+          "largest_component_ports": 120,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 14
+        },
+        {
+          "system_ifc_id": 589475,
+          "system_name": "H_Transport_VL_15",
+          "ports": 72,
+          "connected_components": 6,
+          "largest_component_ports": 56,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 14
+        },
+        {
+          "system_ifc_id": 589574,
+          "system_name": "H_Transport_RL_8",
+          "ports": 182,
+          "connected_components": 8,
+          "largest_component_ports": 164,
+          "isolated_ports": 6,
+          "branch_ports_degree_gt_2": 20
+        },
+        {
+          "system_ifc_id": 589839,
+          "system_name": "H_Transport_VL_8",
+          "ports": 106,
+          "connected_components": 8,
+          "largest_component_ports": 88,
+          "isolated_ports": 6,
+          "branch_ports_degree_gt_2": 20
+        },
+        {
+          "system_ifc_id": 589984,
+          "system_name": "H_Transport_VL_14",
+          "ports": 71,
+          "connected_components": 5,
+          "largest_component_ports": 56,
+          "isolated_ports": 3,
+          "branch_ports_degree_gt_2": 11
+        },
+        {
+          "system_ifc_id": 590087,
+          "system_name": "H_Transport_RL_14",
+          "ports": 103,
+          "connected_components": 5,
+          "largest_component_ports": 88,
+          "isolated_ports": 3,
+          "branch_ports_degree_gt_2": 11
+        },
+        {
+          "system_ifc_id": 590235,
+          "system_name": "H_Transport_VL_7",
+          "ports": 71,
+          "connected_components": 5,
+          "largest_component_ports": 56,
+          "isolated_ports": 3,
+          "branch_ports_degree_gt_2": 11
+        },
+        {
+          "system_ifc_id": 590338,
+          "system_name": "H_Transport_RL_7",
+          "ports": 119,
+          "connected_components": 5,
+          "largest_component_ports": 104,
+          "isolated_ports": 3,
+          "branch_ports_degree_gt_2": 11
+        },
+        {
+          "system_ifc_id": 590510,
+          "system_name": "H_Wandlung_VL",
+          "ports": 87,
+          "connected_components": 15,
+          "largest_component_ports": 38,
+          "isolated_ports": 9,
+          "branch_ports_degree_gt_2": 18
+        },
+        {
+          "system_ifc_id": 590621,
+          "system_name": "H_Wandlung_RL",
+          "ports": 107,
+          "connected_components": 14,
+          "largest_component_ports": 46,
+          "isolated_ports": 9,
+          "branch_ports_degree_gt_2": 18
+        },
+        {
+          "system_ifc_id": 590762,
+          "system_name": "H_WP_VL",
+          "ports": 27,
+          "connected_components": 5,
+          "largest_component_ports": 23,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 6
+        },
+        {
+          "system_ifc_id": 590799,
+          "system_name": "H_WP_RL",
+          "ports": 76,
+          "connected_components": 7,
+          "largest_component_ports": 67,
+          "isolated_ports": 5,
+          "branch_ports_degree_gt_2": 6
+        },
+        {
+          "system_ifc_id": 590905,
+          "system_name": "H_Transport_VL_0",
+          "ports": 85,
+          "connected_components": 8,
+          "largest_component_ports": 36,
+          "isolated_ports": 1,
+          "branch_ports_degree_gt_2": 22
+        },
+        {
+          "system_ifc_id": 591012,
+          "system_name": "H_Transport_VL_17",
+          "ports": 85,
+          "connected_components": 8,
+          "largest_component_ports": 36,
+          "isolated_ports": 1,
+          "branch_ports_degree_gt_2": 22
+        },
+        {
+          "system_ifc_id": 591119,
+          "system_name": "H_Transport_RL_0",
+          "ports": 90,
+          "connected_components": 4,
+          "largest_component_ports": 52,
+          "isolated_ports": 0,
+          "branch_ports_degree_gt_2": 26
+        },
+        {
+          "system_ifc_id": 591234,
+          "system_name": "H_Transport_RL_17",
+          "ports": 74,
+          "connected_components": 4,
+          "largest_component_ports": 36,
+          "isolated_ports": 0,
+          "branch_ports_degree_gt_2": 26
+        },
+        {
+          "system_ifc_id": 591325,
+          "system_name": "H_Transport_RL_18",
+          "ports": 96,
+          "connected_components": 11,
+          "largest_component_ports": 27,
+          "isolated_ports": 5,
+          "branch_ports_degree_gt_2": 24
+        },
+        {
+          "system_ifc_id": 591450,
+          "system_name": "H_Transport_VL_18",
+          "ports": 97,
+          "connected_components": 12,
+          "largest_component_ports": 16,
+          "isolated_ports": 1,
+          "branch_ports_degree_gt_2": 19
+        }
+      ],
+      "summary": {
+        "system_count": 42,
+        "median_ports_per_system": 93.0,
+        "median_components_per_system": 6.0,
+        "systems_with_multiple_components": 42,
+        "isolated_port_memberships": 161,
+        "branch_port_memberships": 637
+      },
+      "interpretation": "Components use explicit port relations plus the stated within-segment/fitting assumption and describe only the extracted graph. Multiple components do not prove that authored systems are physically disconnected; this graph is not a validated route instance or accepted reroute target."
+    },
+    "plumbing": {
+      "systems": [
+        {
+          "system_ifc_id": 775149,
+          "system_name": "S_PWC",
+          "ports": 970,
+          "connected_components": 78,
+          "largest_component_ports": 879,
+          "isolated_ports": 72,
+          "branch_ports_degree_gt_2": 159
+        },
+        {
+          "system_ifc_id": 776506,
+          "system_name": "S_Schmutzwasser",
+          "ports": 841,
+          "connected_components": 45,
+          "largest_component_ports": 797,
+          "isolated_ports": 44,
+          "branch_ports_degree_gt_2": 153
+        },
+        {
+          "system_ifc_id": 777688,
+          "system_name": "S_PWH_3",
+          "ports": 24,
+          "connected_components": 5,
+          "largest_component_ports": 20,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 0
+        },
+        {
+          "system_ifc_id": 777724,
+          "system_name": "S_PWH_4",
+          "ports": 24,
+          "connected_components": 5,
+          "largest_component_ports": 20,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 0
+        },
+        {
+          "system_ifc_id": 777760,
+          "system_name": "S_PWH_5",
+          "ports": 24,
+          "connected_components": 5,
+          "largest_component_ports": 20,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 0
+        },
+        {
+          "system_ifc_id": 777796,
+          "system_name": "S_PWH_6",
+          "ports": 24,
+          "connected_components": 5,
+          "largest_component_ports": 20,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 0
+        },
+        {
+          "system_ifc_id": 777832,
+          "system_name": "S_PWH_1",
+          "ports": 24,
+          "connected_components": 5,
+          "largest_component_ports": 20,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 0
+        },
+        {
+          "system_ifc_id": 777868,
+          "system_name": "S_PWH_7",
+          "ports": 21,
+          "connected_components": 6,
+          "largest_component_ports": 16,
+          "isolated_ports": 5,
+          "branch_ports_degree_gt_2": 0
+        },
+        {
+          "system_ifc_id": 777898,
+          "system_name": "S_PWH_2",
+          "ports": 24,
+          "connected_components": 5,
+          "largest_component_ports": 20,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 0
+        },
+        {
+          "system_ifc_id": 777934,
+          "system_name": "S_PWH_8",
+          "ports": 24,
+          "connected_components": 5,
+          "largest_component_ports": 20,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 0
+        },
+        {
+          "system_ifc_id": 777970,
+          "system_name": "S_PWH_9",
+          "ports": 21,
+          "connected_components": 6,
+          "largest_component_ports": 16,
+          "isolated_ports": 5,
+          "branch_ports_degree_gt_2": 0
+        },
+        {
+          "system_ifc_id": 778001,
+          "system_name": "S_PWH_11",
+          "ports": 24,
+          "connected_components": 5,
+          "largest_component_ports": 20,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 0
+        },
+        {
+          "system_ifc_id": 778037,
+          "system_name": "S_PWH_10",
+          "ports": 24,
+          "connected_components": 5,
+          "largest_component_ports": 20,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 0
+        },
+        {
+          "system_ifc_id": 778073,
+          "system_name": "S_PWH_12",
+          "ports": 24,
+          "connected_components": 5,
+          "largest_component_ports": 20,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 0
+        },
+        {
+          "system_ifc_id": 778109,
+          "system_name": "S_PWH_13",
+          "ports": 24,
+          "connected_components": 5,
+          "largest_component_ports": 20,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 0
+        },
+        {
+          "system_ifc_id": 778145,
+          "system_name": "S_PWH_14",
+          "ports": 24,
+          "connected_components": 5,
+          "largest_component_ports": 20,
+          "isolated_ports": 4,
+          "branch_ports_degree_gt_2": 0
+        },
+        {
+          "system_ifc_id": 778181,
+          "system_name": "S_PWH_15",
+          "ports": 21,
+          "connected_components": 6,
+          "largest_component_ports": 16,
+          "isolated_ports": 5,
+          "branch_ports_degree_gt_2": 0
+        },
+        {
+          "system_ifc_id": 778211,
+          "system_name": "S_PWH_16",
+          "ports": 21,
+          "connected_components": 6,
+          "largest_component_ports": 16,
+          "isolated_ports": 5,
+          "branch_ports_degree_gt_2": 0
+        },
+        {
+          "system_ifc_id": 778241,
+          "system_name": "S_Regenwasser",
+          "ports": 59,
+          "connected_components": 1,
+          "largest_component_ports": 59,
+          "isolated_ports": 0,
+          "branch_ports_degree_gt_2": 3
+        }
+      ],
+      "summary": {
+        "system_count": 19,
+        "median_ports_per_system": 24.0,
+        "median_components_per_system": 5.0,
+        "systems_with_multiple_components": 18,
+        "isolated_port_memberships": 184,
+        "branch_port_memberships": 315
+      },
+      "interpretation": "Components use explicit port relations plus the stated within-segment/fitting assumption and describe only the extracted graph. Multiple components do not prove that authored systems are physically disconnected; this graph is not a validated route instance or accepted reroute target."
+    },
+    "ventilation": {
+      "systems": [
+        {
+          "system_ifc_id": 337480,
+          "system_name": "V_Fortluft",
+          "ports": 39,
+          "connected_components": 8,
+          "largest_component_ports": 26,
+          "isolated_ports": 5,
+          "branch_ports_degree_gt_2": 0
+        },
+        {
+          "system_ifc_id": 335562,
+          "system_name": "V_Zuluft",
+          "ports": 1298,
+          "connected_components": 38,
+          "largest_component_ports": 342,
+          "isolated_ports": 24,
+          "branch_ports_degree_gt_2": 198
+        },
+        {
+          "system_ifc_id": 333645,
+          "system_name": "V_Abluft",
+          "ports": 1288,
+          "connected_components": 25,
+          "largest_component_ports": 378,
+          "isolated_ports": 14,
+          "branch_ports_degree_gt_2": 223
+        },
+        {
+          "system_ifc_id": 333577,
+          "system_name": "V_Aussenluft",
+          "ports": 43,
+          "connected_components": 9,
+          "largest_component_ports": 26,
+          "isolated_ports": 5,
+          "branch_ports_degree_gt_2": 0
+        }
+      ],
+      "summary": {
+        "system_count": 4,
+        "median_ports_per_system": 665.5,
+        "median_components_per_system": 17.0,
+        "systems_with_multiple_components": 4,
+        "isolated_port_memberships": 48,
+        "branch_port_memberships": 421
+      },
+      "interpretation": "Components use explicit port relations plus the stated within-segment/fitting assumption and describe only the extracted graph. Multiple components do not prove that authored systems are physically disconnected; this graph is not a validated route instance or accepted reroute target."
+    }
+  },
+  "interpretation": "System graphs use explicit port relations plus the documented within-segment/fitting assumption. Multiple components describe the extracted graph only and do not prove physical disconnection; the graphs do not establish accepted route targets or alternatives."
+}

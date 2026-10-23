@@ -1,0 +1,46 @@
+{
+  "protocol": "matched-density synthetic scale stress test",
+  "source_sha256": "caf755ed1a75cdab76142bb5386d8cb318b077b3d9d2a5a7efda7a2ba434e8f5",
+  "output_sha256": "ecdefcbabb38eeb0923c3bda2e2d8a3cb7cc5a83ef8100ac2b21a5476456aa17",
+  "python": "3.11.0 (main, Oct 24 2022, 18:26:48) [MSC v.1933 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "seeds_per_scale": 15,
+  "scales": [
+    {
+      "systems": 9,
+      "shape": [
+        16,
+        12,
+        3
+      ]
+    },
+    {
+      "systems": 27,
+      "shape": [
+        24,
+        18,
+        4
+      ]
+    },
+    {
+      "systems": 60,
+      "shape": [
+        32,
+        24,
+        5
+      ]
+    }
+  ],
+  "methods": [
+    "random",
+    "blocker",
+    "adaptive",
+    "pbs_static"
+  ],
+  "budget": {
+    "seconds": 1,
+    "iterations": 20,
+    "nodes": 256
+  },
+  "generator": "8.5% random obstacles plus two probabilistic wall motifs; each commodity is individually reachable before routing."
+}

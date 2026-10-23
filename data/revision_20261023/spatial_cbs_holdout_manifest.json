@@ -1,0 +1,23 @@
+{
+  "arguments": {
+    "seeds": 100,
+    "start_seed": 100000,
+    "cohort": "cbs_holdout",
+    "seconds": 1.0,
+    "iterations": 20,
+    "methods": [
+      "spatial_cbs"
+    ],
+    "output": "results\\cbs_holdout_100"
+  },
+  "budget": {
+    "seconds": 1.0,
+    "iterations": 20,
+    "nodes": 256,
+    "fraction": 0.25
+  },
+  "python": "3.11.0 (main, Oct 24 2022, 18:26:48) [MSC v.1933 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "timing": "Improvement phase including probes; shared initial planning reported separately. Deadline checked between A* calls; actual elapsed and overshoot recorded.",
+  "scope": "Permanent-occupancy PBS/CBS adaptations and LNS selector controls; no temporal MAPF claim."
+}
