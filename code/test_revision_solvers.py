@@ -53,6 +53,16 @@ class RevisedSolverTests(unittest.TestCase):
         self.assertEqual(paths, initial)
         self.assertTrue(validate_paths(self.instance, paths))
 
+    def test_spatial_cbs_expands_shared_partial_incumbent(self):
+        initial = {0: self.context.plan(0)}
+        paths, _, info = spatial_cbs(
+            self.context, SearchBudget(seconds=1, nodes=100), initial
+        )
+
+        self.assertEqual(info["status"], "solved")
+        self.assertEqual(len(paths), 2)
+        self.assertTrue(validate_paths(self.instance, paths))
+
     def test_spatial_cbs_keeps_feasible_routes_if_one_demand_is_blocked(self):
         instance = Instance((3, 3, 1), {(1, 0, 0), (0, 1, 0)}, [
             Commodity((0, 0, 0), (2, 0, 0), "pressure", 0, 0),

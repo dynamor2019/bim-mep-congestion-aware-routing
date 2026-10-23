@@ -1,0 +1,91 @@
+{
+  "scale_results": [
+    {
+      "scale": "base",
+      "paired_scenes": 30,
+      "random_only_successes": 1,
+      "adaptive_only_successes": 0,
+      "exact_two_sided_mcnemar_p": 1.0,
+      "methods": {
+        "mspp_random_repair": {
+          "complete_scenes": 4,
+          "scenes": 30,
+          "median_runtime_s": 1.0181950499973027,
+          "median_iterations": 37.5
+        },
+        "adaptive_multi_operator": {
+          "complete_scenes": 3,
+          "scenes": 30,
+          "median_runtime_s": 1.039055350003764,
+          "median_iterations": 16.0
+        }
+      }
+    },
+    {
+      "scale": "large",
+      "paired_scenes": 30,
+      "random_only_successes": 7,
+      "adaptive_only_successes": 0,
+      "exact_two_sided_mcnemar_p": 0.015625,
+      "methods": {
+        "mspp_random_repair": {
+          "complete_scenes": 14,
+          "scenes": 30,
+          "median_runtime_s": 1.0477563999884296,
+          "median_iterations": 10.0
+        },
+        "adaptive_multi_operator": {
+          "complete_scenes": 7,
+          "scenes": 30,
+          "median_runtime_s": 1.080179800017504,
+          "median_iterations": 4.0
+        }
+      }
+    },
+    {
+      "scale": "xlarge",
+      "paired_scenes": 30,
+      "random_only_successes": 5,
+      "adaptive_only_successes": 1,
+      "exact_two_sided_mcnemar_p": 0.21875,
+      "methods": {
+        "mspp_random_repair": {
+          "complete_scenes": 19,
+          "scenes": 30,
+          "median_runtime_s": 1.1288955500058364,
+          "median_iterations": 3.0
+        },
+        "adaptive_multi_operator": {
+          "complete_scenes": 15,
+          "scenes": 30,
+          "median_runtime_s": 1.2362490500090644,
+          "median_iterations": 2.0
+        }
+      }
+    }
+  ],
+  "paired_scenes": 90,
+  "validated_outputs": 180,
+  "protocol": "same scene and incumbent; equal wall-clock repair cap per method",
+  "budget_seconds_per_method": 1.0,
+  "seeds_per_scale": 30,
+  "start_seed": 110000,
+  "scales": [
+    "base",
+    "large",
+    "xlarge"
+  ],
+  "methods": [
+    "mspp_random_repair",
+    "adaptive_multi_operator"
+  ],
+  "source_sha256": "3ca2bbb74ee334506724e3f3b5e11e3ca8a7e704ca99a78820bdf97618d5d06b",
+  "implementation_sha256": {
+    "run_routing_experiments.py": "f74d25b5db8579d84f3b853ca43256df5e26f41575b5d9e5906cf41449dcc03d",
+    "run_advanced_validation.py": "96b5dd3269c0c248222e660d61b05f99945faf049b6b586fee30f7897c830ef0"
+  },
+  "python": "3.11.0 (main, Oct 24 2022, 18:26:48) [MSC v.1933 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "wallclock_note": "Budget checked between complete repair iterations; observed runtimes may exceed the cap by one iteration.",
+  "scope_note": "Synthetic generated cases; exploratory compute-matched repair comparison, not a general scaling claim."
+}

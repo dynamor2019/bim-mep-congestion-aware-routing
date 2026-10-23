@@ -1,0 +1,170 @@
+{
+  "protocol": "three executions of the same seeded 90-scene wall-clock-capped cohort",
+  "repeat_runs": [
+    "data\\revision_20261023\\matched_adaptive_wallclock_90.csv",
+    "data\\revision_20261023\\adaptive_wallclock_repeat02.csv",
+    "data\\revision_20261023\\adaptive_wallclock_repeat03.csv"
+  ],
+  "repeat_count": 3,
+  "unique_paired_scenes": 90,
+  "validated_outputs_per_run": 180,
+  "outcome_switches_across_repeats": {
+    "mspp_random_repair": 2,
+    "adaptive_multi_operator": 0
+  },
+  "scale_results": [
+    {
+      "scale": "base",
+      "per_run": [
+        {
+          "run": 1,
+          "paired_scenes": 30,
+          "random_complete": 4,
+          "adaptive_complete": 3,
+          "random_only": 1,
+          "adaptive_only": 0,
+          "exact_two_sided_mcnemar_p": 1.0
+        },
+        {
+          "run": 2,
+          "paired_scenes": 30,
+          "random_complete": 4,
+          "adaptive_complete": 3,
+          "random_only": 1,
+          "adaptive_only": 0,
+          "exact_two_sided_mcnemar_p": 1.0
+        },
+        {
+          "run": 3,
+          "paired_scenes": 30,
+          "random_complete": 4,
+          "adaptive_complete": 3,
+          "random_only": 1,
+          "adaptive_only": 0,
+          "exact_two_sided_mcnemar_p": 1.0
+        }
+      ],
+      "runtime_across_repeats": {
+        "mspp_random_repair": {
+          "median_s": 1.0160123499954352,
+          "p10_s": 1.0032563999993727,
+          "p90_s": 1.030455100000836,
+          "min_s": 1.0001961000089068,
+          "max_s": 1.0484001000004355
+        },
+        "adaptive_multi_operator": {
+          "median_s": 1.0290582000016002,
+          "p10_s": 1.0052965999930166,
+          "p90_s": 1.0674598000186961,
+          "min_s": 1.000409900007071,
+          "max_s": 1.1013633999973536
+        }
+      }
+    },
+    {
+      "scale": "large",
+      "per_run": [
+        {
+          "run": 1,
+          "paired_scenes": 30,
+          "random_complete": 14,
+          "adaptive_complete": 7,
+          "random_only": 7,
+          "adaptive_only": 0,
+          "exact_two_sided_mcnemar_p": 0.015625
+        },
+        {
+          "run": 2,
+          "paired_scenes": 30,
+          "random_complete": 14,
+          "adaptive_complete": 7,
+          "random_only": 7,
+          "adaptive_only": 0,
+          "exact_two_sided_mcnemar_p": 0.015625
+        },
+        {
+          "run": 3,
+          "paired_scenes": 30,
+          "random_complete": 14,
+          "adaptive_complete": 7,
+          "random_only": 7,
+          "adaptive_only": 0,
+          "exact_two_sided_mcnemar_p": 0.015625
+        }
+      ],
+      "runtime_across_repeats": {
+        "mspp_random_repair": {
+          "median_s": 1.049430549988756,
+          "p10_s": 1.015098699979717,
+          "p90_s": 1.1168937000038568,
+          "min_s": 1.0011582000006456,
+          "max_s": 1.1793982000090182
+        },
+        "adaptive_multi_operator": {
+          "median_s": 1.1220259999972768,
+          "p10_s": 1.0295026999956463,
+          "p90_s": 1.2831845000036992,
+          "min_s": 1.0058887999912258,
+          "max_s": 1.473492500022985
+        }
+      }
+    },
+    {
+      "scale": "xlarge",
+      "per_run": [
+        {
+          "run": 1,
+          "paired_scenes": 30,
+          "random_complete": 20,
+          "adaptive_complete": 15,
+          "random_only": 6,
+          "adaptive_only": 1,
+          "exact_two_sided_mcnemar_p": 0.125
+        },
+        {
+          "run": 2,
+          "paired_scenes": 30,
+          "random_complete": 19,
+          "adaptive_complete": 15,
+          "random_only": 5,
+          "adaptive_only": 1,
+          "exact_two_sided_mcnemar_p": 0.21875
+        },
+        {
+          "run": 3,
+          "paired_scenes": 30,
+          "random_complete": 18,
+          "adaptive_complete": 15,
+          "random_only": 4,
+          "adaptive_only": 1,
+          "exact_two_sided_mcnemar_p": 0.375
+        }
+      ],
+      "runtime_across_repeats": {
+        "mspp_random_repair": {
+          "median_s": 1.1498797000094783,
+          "p10_s": 1.0236998000182211,
+          "p90_s": 1.3208226999850012,
+          "min_s": 1.001539800025057,
+          "max_s": 1.4609630999912042
+        },
+        "adaptive_multi_operator": {
+          "median_s": 1.236888999992516,
+          "p10_s": 1.052569300023606,
+          "p90_s": 1.8641639999987092,
+          "min_s": 1.0017722999909893,
+          "max_s": 2.300000599992927
+        }
+      }
+    }
+  ],
+  "inference_note": "Repeated executions are timing/reproducibility checks, not independent scenes; do not pool them for inferential tests.",
+  "timing_note": "The nominal 1-s cap is checked between complete iterations and can be exceeded by a final iteration.",
+  "python": "3.11.0",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "input_sha256": {
+    "data\\revision_20261023\\matched_adaptive_wallclock_90.csv": "f478205243a9f27dbbbf3c27a46b31231da6007668b59e98d73331b96b399725",
+    "data\\revision_20261023\\adaptive_wallclock_repeat02.csv": "523737ada408ff4f7aa4040289c37caf735a8376964300afa679d905458e2c45",
+    "data\\revision_20261023\\adaptive_wallclock_repeat03.csv": "3a863400596b23960252f0124344070807e99b031fe111aa209b70dd5728c914"
+  }
+}

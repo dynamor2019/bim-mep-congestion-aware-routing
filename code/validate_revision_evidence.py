@@ -10,6 +10,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 LEGACY_CBS_SOURCE_SHA256 = "bee3be91f0f65e1762fbf0e44785701a16deca39475652a7e2abf8ff39968667"
+PRE_CBS_UPDATE_SOLVERS_SHA256 = "df9b81f21f64e0f8982454a975f64208f229f0edd15007d7e14817dd9ff05643"
 
 
 def rows(path: Path) -> list[dict[str, str]]:
@@ -315,8 +316,8 @@ def validate_extended_cbs_diagnostic(data: Path) -> None:
 
 
 def validate_current_cbs_incumbent_diagnostic(data: Path) -> None:
-    """Verify the corrected same-cohort CBS comparison and provenance hashes."""
-    archive = data / "spatial_cbs_incumbent_matched_100_5s" / "raw.csv"
+    """Verify the latest common-incumbent CBS comparison and provenance hashes."""
+    archive = data / "spatial_cbs_shared_incumbent_100_5s" / "raw.csv"
     manifest_path = archive.with_name("manifest.json")
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     observations = rows(archive)
@@ -326,9 +327,13 @@ def validate_current_cbs_incumbent_diagnostic(data: Path) -> None:
             "all corrected CBS route outputs must be independently validated")
     require(manifest["raw_sha256"] == hashlib.sha256(archive.read_bytes()).hexdigest(),
             "corrected CBS archive checksum mismatch")
-    require(manifest["provenance"]["cbs_solver_sha256"] == hashlib.sha256(
-        (data.parent.parent / "code" / "routing_revision_solvers.py").read_bytes()
-    ).hexdigest(), "corrected CBS solver checksum mismatch")
+    code_dir = data.parent.parent / "code"
+    for key, filename in (("cbs_solver_sha256", "routing_revision_solvers.py"),
+                          ("cbs_runner_sha256", "run_revision_benchmark.py"),
+                          ("random_solver_sha256", "run_routing_experiments.py")):
+        expected = hashlib.sha256((code_dir / filename).read_bytes()).hexdigest()
+        require(manifest["provenance"][key] == expected,
+                f"corrected CBS source checksum mismatch: {filename}")
     pairs = defaultdict(dict)
     for row in observations:
         pairs[row["seed"]][row["method"]] = row
@@ -363,9 +368,8 @@ def validate_matched_pbs_diagnostic(data: Path) -> None:
             "all matched PBS route outputs must be independently validated")
     require(manifest["raw_sha256"] == hashlib.sha256(archive.read_bytes()).hexdigest(),
             "matched PBS raw archive checksum mismatch")
-    require(manifest["solver_source_sha256"] == hashlib.sha256(
-        (data.parent.parent / "code" / "routing_revision_solvers.py").read_bytes()
-    ).hexdigest(), "matched PBS solver source checksum mismatch")
+    require(manifest["solver_source_sha256"] == PRE_CBS_UPDATE_SOLVERS_SHA256,
+            "matched PBS archive no longer points to its recorded solver version")
     pairs = defaultdict(dict)
     for row in observations:
         pairs[row["seed"]][row["method"]] = row

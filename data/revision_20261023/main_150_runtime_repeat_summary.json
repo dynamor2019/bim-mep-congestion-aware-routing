@@ -1,0 +1,252 @@
+{
+  "protocol": "two executions of identical seeded main-study scenes using the public current solver",
+  "observations_per_run": 750,
+  "scene_level_outcomes_identical": true,
+  "runtime_note": "Only runtime_s may vary; repeated timings are not additional experimental scenes.",
+  "machine": {
+    "processor": "Intel Core i7-11700, 8 cores / 16 threads",
+    "memory_gb": 64,
+    "os": "Windows-10-10.0.26300-SP0",
+    "python": "3.11.0"
+  },
+  "scale_results": [
+    {
+      "density": "low",
+      "scenes": 50,
+      "methods": {
+        "fix_order": {
+          "successes_per_50": 45,
+          "mean_runtime_by_run_s": [
+            0.07866699400183279,
+            0.05812784200068563
+          ],
+          "median_runtime_across_repeats_s": 0.06672830000752583,
+          "p10_runtime_across_repeats_s": 0.037619999988237396,
+          "p90_runtime_across_repeats_s": 0.10112599999411032
+        },
+        "pbs_random": {
+          "successes_per_50": 48,
+          "mean_runtime_by_run_s": [
+            0.2788558320008451,
+            0.2123521459987387
+          ],
+          "median_runtime_across_repeats_s": 0.24159344998770393,
+          "p10_runtime_across_repeats_s": 0.1422307000029832,
+          "p90_runtime_across_repeats_s": 0.35625359998084605
+        },
+        "stage1_only": {
+          "successes_per_50": 48,
+          "mean_runtime_by_run_s": [
+            0.13526925799960737,
+            0.09877120400196873
+          ],
+          "median_runtime_across_repeats_s": 0.11196159999235533,
+          "p10_runtime_across_repeats_s": 0.08103469997877255,
+          "p90_runtime_across_repeats_s": 0.16175589998601936
+        },
+        "stage3_only": {
+          "successes_per_50": 48,
+          "mean_runtime_by_run_s": [
+            0.43047672800021247,
+            0.3156710319971899
+          ],
+          "median_runtime_across_repeats_s": 0.36135755000577774,
+          "p10_runtime_across_repeats_s": 0.2558464999892749,
+          "p90_runtime_across_repeats_s": 0.5120176000054926
+        },
+        "proposed": {
+          "successes_per_50": 48,
+          "mean_runtime_by_run_s": [
+            0.5391593479982112,
+            0.3973103419988183
+          ],
+          "median_runtime_across_repeats_s": 0.45032844999514055,
+          "p10_runtime_across_repeats_s": 0.32292920001782477,
+          "p90_runtime_across_repeats_s": 0.6253054999979213
+        }
+      },
+      "paired_tests": {
+        "stage3_only": {
+          "random_only": 0,
+          "method_only": 0,
+          "exact_two_sided_p": 1.0,
+          "exact_method_better_one_sided_p": 1.0
+        },
+        "proposed": {
+          "random_only": 0,
+          "method_only": 0,
+          "exact_two_sided_p": 1.0,
+          "exact_method_better_one_sided_p": 1.0
+        }
+      },
+      "stage3_runtime_overhead": {
+        "mean_paired_relative_overhead_pct": 60.18680865093876,
+        "bootstrap_95_ci_pct": [
+          49.523504980583496,
+          71.21509952336733
+        ],
+        "ratio_of_mean_runtimes_pct": 51.90057845478122
+      }
+    },
+    {
+      "density": "medium",
+      "scenes": 50,
+      "methods": {
+        "fix_order": {
+          "successes_per_50": 33,
+          "mean_runtime_by_run_s": [
+            0.11725862599909305,
+            0.08334561999654397
+          ],
+          "median_runtime_across_repeats_s": 0.09569249999185558,
+          "p10_runtime_across_repeats_s": 0.05818719998933375,
+          "p90_runtime_across_repeats_s": 0.1468763000157196
+        },
+        "pbs_random": {
+          "successes_per_50": 33,
+          "mean_runtime_by_run_s": [
+            0.379934990000329,
+            0.26605695800099055
+          ],
+          "median_runtime_across_repeats_s": 0.3060140000015963,
+          "p10_runtime_across_repeats_s": 0.2175627999822609,
+          "p90_runtime_across_repeats_s": 0.4355121999979019
+        },
+        "stage1_only": {
+          "successes_per_50": 33,
+          "mean_runtime_by_run_s": [
+            0.19284434399742167,
+            0.13741255799599458
+          ],
+          "median_runtime_across_repeats_s": 0.1594545999832917,
+          "p10_runtime_across_repeats_s": 0.11912220000522211,
+          "p90_runtime_across_repeats_s": 0.21912230001180433
+        },
+        "stage3_only": {
+          "successes_per_50": 35,
+          "mean_runtime_by_run_s": [
+            0.4950048660009634,
+            0.35006439000018874
+          ],
+          "median_runtime_across_repeats_s": 0.41238670000166167,
+          "p10_runtime_across_repeats_s": 0.283984200010309,
+          "p90_runtime_across_repeats_s": 0.5791380000009667
+        },
+        "proposed": {
+          "successes_per_50": 36,
+          "mean_runtime_by_run_s": [
+            0.6266072279965738,
+            0.4424826440005563
+          ],
+          "median_runtime_across_repeats_s": 0.500941000005696,
+          "p10_runtime_across_repeats_s": 0.3633655000012368,
+          "p90_runtime_across_repeats_s": 0.7229267999937292
+        }
+      },
+      "paired_tests": {
+        "stage3_only": {
+          "random_only": 0,
+          "method_only": 2,
+          "exact_two_sided_p": 0.5,
+          "exact_method_better_one_sided_p": 0.25
+        },
+        "proposed": {
+          "random_only": 2,
+          "method_only": 5,
+          "exact_two_sided_p": 0.453125,
+          "exact_method_better_one_sided_p": 0.2265625
+        }
+      },
+      "stage3_runtime_overhead": {
+        "mean_paired_relative_overhead_pct": 32.72042439361553,
+        "bootstrap_95_ci_pct": [
+          26.93638109518175,
+          38.47222803120536
+        ],
+        "ratio_of_mean_runtimes_pct": 30.817304862045415
+      }
+    },
+    {
+      "density": "high",
+      "scenes": 50,
+      "methods": {
+        "fix_order": {
+          "successes_per_50": 8,
+          "mean_runtime_by_run_s": [
+            0.14541028000297956,
+            0.09906071999983396
+          ],
+          "median_runtime_across_repeats_s": 0.12073535000672564,
+          "p10_runtime_across_repeats_s": 0.07396029998199083,
+          "p90_runtime_across_repeats_s": 0.1799878999881912
+        },
+        "pbs_random": {
+          "successes_per_50": 6,
+          "mean_runtime_by_run_s": [
+            0.49951019999920393,
+            0.33941032199712934
+          ],
+          "median_runtime_across_repeats_s": 0.40846500000043306,
+          "p10_runtime_across_repeats_s": 0.28193820000160486,
+          "p90_runtime_across_repeats_s": 0.566121399984695
+        },
+        "stage1_only": {
+          "successes_per_50": 7,
+          "mean_runtime_by_run_s": [
+            0.2203907440014882,
+            0.14608246800024063
+          ],
+          "median_runtime_across_repeats_s": 0.18013820001215208,
+          "p10_runtime_across_repeats_s": 0.12410970000200905,
+          "p90_runtime_across_repeats_s": 0.2522238999954425
+        },
+        "stage3_only": {
+          "successes_per_50": 9,
+          "mean_runtime_by_run_s": [
+            0.5398523020010907,
+            0.36380016000126486
+          ],
+          "median_runtime_across_repeats_s": 0.43244059999415185,
+          "p10_runtime_across_repeats_s": 0.29789489999529906,
+          "p90_runtime_across_repeats_s": 0.6078866999887396
+        },
+        "proposed": {
+          "successes_per_50": 9,
+          "mean_runtime_by_run_s": [
+            0.6756230919994414,
+            0.45259971600258725
+          ],
+          "median_runtime_across_repeats_s": 0.5420722999988357,
+          "p10_runtime_across_repeats_s": 0.3875160000170581,
+          "p90_runtime_across_repeats_s": 0.762503799982369
+        }
+      },
+      "paired_tests": {
+        "stage3_only": {
+          "random_only": 1,
+          "method_only": 4,
+          "exact_two_sided_p": 0.375,
+          "exact_method_better_one_sided_p": 0.1875
+        },
+        "proposed": {
+          "random_only": 2,
+          "method_only": 5,
+          "exact_two_sided_p": 0.453125,
+          "exact_method_better_one_sided_p": 0.2265625
+        }
+      },
+      "stage3_runtime_overhead": {
+        "mean_paired_relative_overhead_pct": 10.330506554629219,
+        "bootstrap_95_ci_pct": [
+          4.209171730802864,
+          17.09643097878044
+        ],
+        "ratio_of_mean_runtimes_pct": 7.716099238099838
+      }
+    }
+  ],
+  "input_sha256": {
+    "data\\revision_20261023\\main_150_raw.csv": "39da005a0ac71096406f1ef8c25546b4a770f7c3bfb56a5e8b9d10adf89a7acc",
+    "results\\main_150_runtime_repeat02\\raw_results.csv": "604032076ba12e2bf7a962acd043a86378651c59d5a52978ee474af3674b057a"
+  }
+}

@@ -132,3 +132,14 @@ python code/run_matched_adaptive_wallclock.py --seeds 30 --start-seed 110000 --b
 python code/summarize_adaptive_wallclock.py results/matched_adaptive_wallclock_90.csv results/matched_adaptive_wallclock_90_summary.json --run-source code/run_matched_adaptive_wallclock.py --implementation-source code/run_routing_experiments.py code/run_advanced_validation.py
 python code/validate_revision_evidence.py --data data/revision_20261023
 ```
+
+## Shared-incumbent permanent-space CBS diagnostic
+
+`data/revision_20261023/spatial_cbs_shared_incumbent_100_5s/` contains a new 100-scene paired comparison. The CBS root contains the same best-of-two partial incumbent passed to random repair; it adds independently shortest paths for unserved demands and branches on permanent-vertex conflicts. With the same 5-s cap, 100-iteration limit, 256-node limit, scene seeds, and independent validator, random repair completed 19/100 scenes and routed 7.10/9 demands on average; spatial CBS completed 9/100 and routed 6.71/9. Ten discordant pairs favored random repair and none favored CBS (exact two-sided McNemar $p=0.001953$). Mean observed runtimes were 3.00 s and 4.56 s. All 200 route sets passed validation. This is an equal-scene, common-incumbent permanent-space diagnostic, not a faithful temporal MAPF CBS implementation and not evidence about unrestricted CBS.
+
+Reproduce and summarize it with:
+
+```powershell
+python code/run_revision_benchmark.py --seeds 100 --start-seed 100000 --cohort shared_incumbent_cbs_100_5s --seconds 5 --iterations 100 --nodes 256 --methods random spatial_cbs --output results/shared_incumbent_cbs_100_5s
+python code/summarize_revision_benchmark.py results/shared_incumbent_cbs_100_5s/raw.csv results/shared_incumbent_cbs_100_5s/summary.json
+```

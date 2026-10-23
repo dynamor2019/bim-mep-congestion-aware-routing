@@ -200,13 +200,15 @@ def _cbs_child(context, constraints, dropped, paths, agent, vertex):
 
 
 def spatial_cbs(context, budget, initial=None):
-    """Search permanent vertex conflicts, allowing infeasible demands to drop."""
+    """Search permanent vertex conflicts from a shared partial incumbent."""
     started = time.perf_counter()
     deadline = started + budget.seconds
     best = dict(initial or {})
     best_cost = objective(context.instance, best)
-    constraints, dropped, paths = {}, set(), {}
+    constraints, dropped, paths = {}, set(), dict(initial or {})
     for index in range(len(context.instance.commodities)):
+        if index in paths:
+            continue
         if time.perf_counter() >= deadline:
             return best, [], {"status": "budget", "nodes": 0}
         route = context.plan(index)
