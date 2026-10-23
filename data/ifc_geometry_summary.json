@@ -1,0 +1,58 @@
+{
+  "flow_types": [
+    "IfcFlowSegment",
+    "IfcFlowFitting",
+    "IfcFlowTerminal",
+    "IfcFlowController",
+    "IfcFlowMovingDevice",
+    "IfcFlowStorageDevice",
+    "IfcFlowTreatmentDevice"
+  ],
+  "max_elements_per_type": 100,
+  "summaries": [
+    {
+      "clearance_m": 0.0,
+      "elements_with_geometry": 300,
+      "median_envelope_size_m": [
+        0.3465,
+        0.35,
+        0.225
+      ],
+      "total_envelope_volume_m3": 24.409742473662902,
+      "p95_envelope_volume_m3": 0.3101557282957164
+    },
+    {
+      "clearance_m": 0.05,
+      "elements_with_geometry": 300,
+      "median_envelope_size_m": [
+        0.4465,
+        0.45,
+        0.325
+      ],
+      "total_envelope_volume_m3": 45.208415255318535,
+      "p95_envelope_volume_m3": 0.527061384436304
+    },
+    {
+      "clearance_m": 0.15,
+      "elements_with_geometry": 300,
+      "median_envelope_size_m": [
+        0.6465,
+        0.65,
+        0.525
+      ],
+      "total_envelope_volume_m3": 118.29930278725803,
+      "p95_envelope_volume_m3": 1.2001172627750185
+    },
+    {
+      "clearance_m": 0.3,
+      "elements_with_geometry": 300,
+      "median_envelope_size_m": [
+        0.9465,
+        0.95,
+        0.825
+      ],
+      "total_envelope_volume_m3": 333.66948900673776,
+      "p95_envelope_volume_m3": 2.760077326383658
+    }
+  ]
+}
