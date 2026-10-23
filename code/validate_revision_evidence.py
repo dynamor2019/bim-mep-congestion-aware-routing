@@ -121,6 +121,25 @@ def validate(data: Path) -> None:
     require(sum(int(row["success"]) for row in cbs) == 0,
             "archived CBS diagnostic should contain no complete route sets")
 
+    cbs_5s = rows(data / "spatial_cbs_holdout_100_5s.csv")
+    cbs_5s_manifest = json.loads(
+        (data / "spatial_cbs_holdout_100_5s.manifest.json").read_text(encoding="utf-8-sig")
+    )
+    cbs_5s_digest = hashlib.sha256(
+        (data / "spatial_cbs_holdout_100_5s.csv").read_bytes()
+    ).hexdigest()
+    require(len(cbs_5s) == 100 and all(row["method"] == "spatial_cbs" for row in cbs_5s),
+            "five-second spatial CBS diagnostic must contain 100 outputs")
+    require(cbs_5s_manifest["sha256"] == cbs_5s_digest,
+            "five-second spatial CBS CSV checksum mismatch")
+    require(all(row["validated"] == "1" and float(row["runtime_s"]) <= 5.2 for row in cbs_5s),
+            "five-second spatial CBS outputs must be validated and respect the time budget")
+    require(all(row["seed"] in holdout_hashes and row["scene_hash"] == holdout_hashes[row["seed"]]
+                for row in cbs_5s), "five-second CBS rows must match the original holdout scenes")
+    require(sum(int(row["success"]) for row in cbs_5s) == 0
+            and cbs_5s_manifest["status_counts"] == {"budget": 94, "individual_infeasible": 6},
+            "five-second CBS diagnostic outcome mismatch")
+
     for name in ("factorial_nested_800.csv", "scale_matched_density_180.csv"):
         require(all(row["validated"] == "1" for row in tables[name]), f"all rows in {name} must be validated")
 
@@ -129,7 +148,7 @@ def validate(data: Path) -> None:
     require(audit["geometry_components"] == 4054, "IFC geometry count mismatch")
     require(audit["native_port_count"] == 8460, "IFC port count mismatch")
     require(audit["explicit_port_edges"] == 4050, "IFC explicit port-edge count mismatch")
-    print("PASS: 150/750 main, 990 sensitivity, 100-scene/10-method holdout + spatial CBS, 800 factorial, 180 scale, IFC audit counts")
+    print("PASS: 150/750 main, 990 sensitivity, 100-scene/10-method holdout + 1s/5s spatial CBS diagnostics, 800 factorial, 180 scale, IFC audit counts")
 
 
 def main() -> None:
