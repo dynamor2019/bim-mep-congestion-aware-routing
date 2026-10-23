@@ -1,0 +1,23 @@
+{
+  "protocol": "same-scene adaptive versus random repair; equal 8-iteration budget",
+  "seeds_per_scale": 30,
+  "start_seed": 70000,
+  "scales": [
+    "base",
+    "large",
+    "xlarge"
+  ],
+  "methods": [
+    "mspp_random_repair",
+    "adaptive_multi_operator"
+  ],
+  "outputs": 180,
+  "all_validated": true,
+  "scene_hash_count": 90,
+  "runtime_note": "Equal iteration count, not equal wall-clock time; runtime is reported per method.",
+  "scope_note": "Synthetic generated cases; no causal or real-project claim.",
+  "python": "3.11.0 (main, Oct 24 2022, 18:26:48) [MSC v.1933 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "source_sha256": "052847924bbb2f87a63bdde322a57584070b708735227ed138ccbca5f16da16e",
+  "output_sha256": "93cbca0eb918f4ce9e678f9c0339b47ea8f9663d8e3e81a25424b22c0b3f1203"
+}

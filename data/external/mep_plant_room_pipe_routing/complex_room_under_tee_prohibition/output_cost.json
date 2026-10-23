@@ -1,0 +1,369 @@
+{
+    "case_info": {
+        "case_id": "Chiller_Room_complex_under_tee_prohibition"
+    },
+    "layout_cost": {
+        "construction_cross_cost": 17.600000381469727,
+        "construction_material_cost": 276.52001953125,
+        "construction_total_cost": 294.1200256347656,
+        "lifecycle_cost": 409.84686279296875,
+        "maintenance_regularity_ratio": 0.4817122519016266,
+        "maintenance_serviceability_ratio": 0.30522382259368896,
+        "maintenance_value": 0.3934680223464966
+    },
+    "pipe_costs": [
+        {
+            "construction_cost": {
+                "material_header_transition_segment": {
+                    "cross_count": 0,
+                    "cross_single_cost": 0,
+                    "cross_total_cost": 0,
+                    "elbow_L_coefficient": 0.75,
+                    "elbow_L_count": 1,
+                    "elbow_T_coefficient": 249.9499969482422,
+                    "elbow_T_count": 0,
+                    "elbow_total_cost": 0.75,
+                    "length": 28,
+                    "length_cost": 28,
+                    "sum_cost": 28.75,
+                    "unit_cost": 1
+                },
+                "material_riser_segment": {
+                    "down_elbow_L_coefficient": 0.75,
+                    "down_elbow_L_count": 0,
+                    "down_elbow_T_coefficient": 1.25,
+                    "down_elbow_T_count": 0,
+                    "down_riser_count": 0,
+                    "down_single_cost": 0,
+                    "down_single_elbow_cost": 0,
+                    "down_single_length": 0,
+                    "down_single_length_cost": 0,
+                    "down_unit_cost": 1,
+                    "sum_cost": 11,
+                    "up_elbow_L_coefficient": 0.75,
+                    "up_elbow_L_count": 0,
+                    "up_elbow_T_coefficient": 1.25,
+                    "up_elbow_T_count": 1,
+                    "up_riser_count": 4,
+                    "up_single_cost": 2.75,
+                    "up_single_elbow_cost": 1.25,
+                    "up_single_length": 1.5,
+                    "up_single_length_cost": 1.5,
+                    "up_unit_cost": 1
+                },
+                "total_cost": 39.75
+            },
+            "name": "CWS",
+            "pipe_id": "CWS"
+        },
+        {
+            "construction_cost": {
+                "material_header_transition_segment": {
+                    "cross_count": 0,
+                    "cross_single_cost": 0,
+                    "cross_total_cost": 0,
+                    "elbow_L_coefficient": 0.75,
+                    "elbow_L_count": 1,
+                    "elbow_T_coefficient": 249.9499969482422,
+                    "elbow_T_count": 0,
+                    "elbow_total_cost": 0.75,
+                    "length": 13.449999809265137,
+                    "length_cost": 13.449999809265137,
+                    "sum_cost": 14.199999809265137,
+                    "unit_cost": 1
+                },
+                "material_riser_segment": {
+                    "down_elbow_L_coefficient": 0.25,
+                    "down_elbow_L_count": 0,
+                    "down_elbow_T_coefficient": 0.5,
+                    "down_elbow_T_count": 1,
+                    "down_riser_count": 5,
+                    "down_single_cost": 1.4000000953674316,
+                    "down_single_elbow_cost": 0.5,
+                    "down_single_length": 1.5,
+                    "down_single_length_cost": 0.9000000357627869,
+                    "down_unit_cost": 0.6000000238418579,
+                    "sum_cost": 8.15000057220459,
+                    "up_elbow_L_coefficient": 0.25,
+                    "up_elbow_L_count": 1,
+                    "up_elbow_T_coefficient": 0.5,
+                    "up_elbow_T_count": 0,
+                    "up_riser_count": 1,
+                    "up_single_cost": 1.1500000953674316,
+                    "up_single_elbow_cost": 0.25,
+                    "up_single_length": 1.5,
+                    "up_single_length_cost": 0.9000000357627869,
+                    "up_unit_cost": 0.6000000238418579
+                },
+                "total_cost": 22.350000381469727
+            },
+            "name": "CHWR-PP",
+            "pipe_id": "CHWR-PP"
+        },
+        {
+            "construction_cost": {
+                "material_header_transition_segment": {
+                    "cross_count": 1,
+                    "cross_single_cost": 4.400000095367432,
+                    "cross_total_cost": 4.400000095367432,
+                    "elbow_L_coefficient": 0.75,
+                    "elbow_L_count": 2,
+                    "elbow_T_coefficient": 249.9499969482422,
+                    "elbow_T_count": 0,
+                    "elbow_total_cost": 1.5,
+                    "length": 19.25,
+                    "length_cost": 19.25,
+                    "sum_cost": 25.149999618530273,
+                    "unit_cost": 1
+                },
+                "material_riser_segment": {
+                    "down_elbow_L_coefficient": 0.5,
+                    "down_elbow_L_count": 2,
+                    "down_elbow_T_coefficient": 1,
+                    "down_elbow_T_count": 1,
+                    "down_riser_count": 2,
+                    "down_single_cost": 5.279999732971191,
+                    "down_single_elbow_cost": 2,
+                    "down_single_length": 4.099999904632568,
+                    "down_single_length_cost": 3.2799999713897705,
+                    "down_unit_cost": 0.800000011920929,
+                    "sum_cost": 14.760000228881836,
+                    "up_elbow_L_coefficient": 0.25,
+                    "up_elbow_L_count": 0,
+                    "up_elbow_T_coefficient": 0.5,
+                    "up_elbow_T_count": 1,
+                    "up_riser_count": 3,
+                    "up_single_cost": 1.4000000953674316,
+                    "up_single_elbow_cost": 0.5,
+                    "up_single_length": 1.5,
+                    "up_single_length_cost": 0.9000000357627869,
+                    "up_unit_cost": 0.6000000238418579
+                },
+                "total_cost": 39.90999984741211
+            },
+            "name": "CHWR-AP1",
+            "pipe_id": "CHWR-AP1"
+        },
+        {
+            "construction_cost": {
+                "material_header_transition_segment": {
+                    "cross_count": 0,
+                    "cross_single_cost": 0,
+                    "cross_total_cost": 0,
+                    "elbow_L_coefficient": 0.75,
+                    "elbow_L_count": 2,
+                    "elbow_T_coefficient": 249.9499969482422,
+                    "elbow_T_count": 0,
+                    "elbow_total_cost": 1.5,
+                    "length": 15.34999942779541,
+                    "length_cost": 15.34999942779541,
+                    "sum_cost": 16.849998474121094,
+                    "unit_cost": 1
+                },
+                "material_riser_segment": {
+                    "down_elbow_L_coefficient": 0.5,
+                    "down_elbow_L_count": 2,
+                    "down_elbow_T_coefficient": 1,
+                    "down_elbow_T_count": 1,
+                    "down_riser_count": 2,
+                    "down_single_cost": 5.840000152587891,
+                    "down_single_elbow_cost": 2,
+                    "down_single_length": 4.800000190734863,
+                    "down_single_length_cost": 3.8400001525878906,
+                    "down_unit_cost": 0.800000011920929,
+                    "sum_cost": 15.880001068115234,
+                    "up_elbow_L_coefficient": 0.25,
+                    "up_elbow_L_count": 0,
+                    "up_elbow_T_coefficient": 0.5,
+                    "up_elbow_T_count": 1,
+                    "up_riser_count": 3,
+                    "up_single_cost": 1.4000000953674316,
+                    "up_single_elbow_cost": 0.5,
+                    "up_single_length": 1.5,
+                    "up_single_length_cost": 0.9000000357627869,
+                    "up_unit_cost": 0.6000000238418579
+                },
+                "total_cost": 32.72999954223633
+            },
+            "name": "CWR-AP1",
+            "pipe_id": "CWR-AP1"
+        },
+        {
+            "construction_cost": {
+                "material_header_transition_segment": {
+                    "cross_count": 1,
+                    "cross_single_cost": 4.400000095367432,
+                    "cross_total_cost": 4.400000095367432,
+                    "elbow_L_coefficient": 0.75,
+                    "elbow_L_count": 2,
+                    "elbow_T_coefficient": 249.9499969482422,
+                    "elbow_T_count": 0,
+                    "elbow_total_cost": 1.5,
+                    "length": 15,
+                    "length_cost": 15,
+                    "sum_cost": 20.899999618530273,
+                    "unit_cost": 1
+                },
+                "material_riser_segment": {
+                    "down_elbow_L_coefficient": 0.5,
+                    "down_elbow_L_count": 2,
+                    "down_elbow_T_coefficient": 1,
+                    "down_elbow_T_count": 1,
+                    "down_riser_count": 2,
+                    "down_single_cost": 5.279999732971191,
+                    "down_single_elbow_cost": 2,
+                    "down_single_length": 4.099999904632568,
+                    "down_single_length_cost": 3.2799999713897705,
+                    "down_unit_cost": 0.800000011920929,
+                    "sum_cost": 13.359999656677246,
+                    "up_elbow_L_coefficient": 0.25,
+                    "up_elbow_L_count": 0,
+                    "up_elbow_T_coefficient": 0.5,
+                    "up_elbow_T_count": 1,
+                    "up_riser_count": 2,
+                    "up_single_cost": 1.4000000953674316,
+                    "up_single_elbow_cost": 0.5,
+                    "up_single_length": 1.5,
+                    "up_single_length_cost": 0.9000000357627869,
+                    "up_unit_cost": 0.6000000238418579
+                },
+                "total_cost": 34.25999927520752
+            },
+            "name": "CHWR-AP2",
+            "pipe_id": "CHWR-AP2"
+        },
+        {
+            "construction_cost": {
+                "material_header_transition_segment": {
+                    "cross_count": 1,
+                    "cross_single_cost": 4.400000095367432,
+                    "cross_total_cost": 4.400000095367432,
+                    "elbow_L_coefficient": 0.75,
+                    "elbow_L_count": 2,
+                    "elbow_T_coefficient": 249.9499969482422,
+                    "elbow_T_count": 0,
+                    "elbow_total_cost": 1.5,
+                    "length": 15.149999618530273,
+                    "length_cost": 15.149999618530273,
+                    "sum_cost": 21.049999237060547,
+                    "unit_cost": 1
+                },
+                "material_riser_segment": {
+                    "down_elbow_L_coefficient": 0.5,
+                    "down_elbow_L_count": 2,
+                    "down_elbow_T_coefficient": 1,
+                    "down_elbow_T_count": 1,
+                    "down_riser_count": 2,
+                    "down_single_cost": 5.840000152587891,
+                    "down_single_elbow_cost": 2,
+                    "down_single_length": 4.800000190734863,
+                    "down_single_length_cost": 3.8400001525878906,
+                    "down_unit_cost": 0.800000011920929,
+                    "sum_cost": 14.480000495910645,
+                    "up_elbow_L_coefficient": 0.25,
+                    "up_elbow_L_count": 0,
+                    "up_elbow_T_coefficient": 0.5,
+                    "up_elbow_T_count": 1,
+                    "up_riser_count": 2,
+                    "up_single_cost": 1.4000000953674316,
+                    "up_single_elbow_cost": 0.5,
+                    "up_single_length": 1.5,
+                    "up_single_length_cost": 0.9000000357627869,
+                    "up_unit_cost": 0.6000000238418579
+                },
+                "total_cost": 35.52999973297119
+            },
+            "name": "CWR-AP2",
+            "pipe_id": "CWR-AP2"
+        },
+        {
+            "construction_cost": {
+                "material_header_transition_segment": {
+                    "cross_count": 1,
+                    "cross_single_cost": 4.400000095367432,
+                    "cross_total_cost": 4.400000095367432,
+                    "elbow_L_coefficient": 0.75,
+                    "elbow_L_count": 1,
+                    "elbow_T_coefficient": 249.9499969482422,
+                    "elbow_T_count": 0,
+                    "elbow_total_cost": 0.75,
+                    "length": 22.499998092651367,
+                    "length_cost": 22.499998092651367,
+                    "sum_cost": 27.64999771118164,
+                    "unit_cost": 1
+                },
+                "material_riser_segment": {
+                    "down_elbow_L_coefficient": 0.5,
+                    "down_elbow_L_count": 1,
+                    "down_elbow_T_coefficient": 1,
+                    "down_elbow_T_count": 0,
+                    "down_riser_count": 1,
+                    "down_single_cost": 1.7000000476837158,
+                    "down_single_elbow_cost": 0.5,
+                    "down_single_length": 1.5,
+                    "down_single_length_cost": 1.2000000476837158,
+                    "down_unit_cost": 0.800000011920929,
+                    "sum_cost": 16.740001678466797,
+                    "up_elbow_L_coefficient": 0.5,
+                    "up_elbow_L_count": 2,
+                    "up_elbow_T_coefficient": 1,
+                    "up_elbow_T_count": 1,
+                    "up_riser_count": 4,
+                    "up_single_cost": 3.760000228881836,
+                    "up_single_elbow_cost": 2,
+                    "up_single_length": 2.200000047683716,
+                    "up_single_length_cost": 1.7600001096725464,
+                    "up_unit_cost": 0.800000011920929
+                },
+                "total_cost": 44.38999938964844
+            },
+            "name": "CHWS",
+            "pipe_id": "CHWS"
+        },
+        {
+            "construction_cost": {
+                "material_header_transition_segment": {
+                    "cross_count": 0,
+                    "cross_single_cost": 0,
+                    "cross_total_cost": 0,
+                    "elbow_L_coefficient": 0.75,
+                    "elbow_L_count": 3,
+                    "elbow_T_coefficient": 249.9499969482422,
+                    "elbow_T_count": 0,
+                    "elbow_total_cost": 2.25,
+                    "length": 35.95000076293945,
+                    "length_cost": 35.95000076293945,
+                    "sum_cost": 38.20000076293945,
+                    "unit_cost": 1
+                },
+                "material_riser_segment": {
+                    "down_elbow_L_coefficient": 0.25,
+                    "down_elbow_L_count": 0,
+                    "down_elbow_T_coefficient": 0.5,
+                    "down_elbow_T_count": 1,
+                    "down_riser_count": 5,
+                    "down_single_cost": 1.4000000953674316,
+                    "down_single_elbow_cost": 0.5,
+                    "down_single_length": 1.5,
+                    "down_single_length_cost": 0.9000000357627869,
+                    "down_unit_cost": 0.6000000238418579,
+                    "sum_cost": 7.000000476837158,
+                    "up_elbow_L_coefficient": 0.25,
+                    "up_elbow_L_count": 0,
+                    "up_elbow_T_coefficient": 0.5,
+                    "up_elbow_T_count": 0,
+                    "up_riser_count": 0,
+                    "up_single_cost": 0,
+                    "up_single_elbow_cost": 0,
+                    "up_single_length": 0,
+                    "up_single_length_cost": 0,
+                    "up_unit_cost": 0.6000000238418579
+                },
+                "total_cost": 45.20000123977661
+            },
+            "name": "CWR-PP",
+            "pipe_id": "CWR-PP"
+        }
+    ],
+    "schema_version": "1.0"
+}

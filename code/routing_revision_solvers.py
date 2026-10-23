@@ -201,9 +201,13 @@ def spatial_cbs(context, budget):
     seen = {()}
     expanded = 0
     trace = []
+    best = feasible_subset(root_paths)
     while nodes and expanded < budget.nodes and time.perf_counter() < deadline:
         _, _, constraints, paths = heapq.heappop(nodes)
         expanded += 1
+        candidate = feasible_subset(paths)
+        if objective(context.instance, candidate) < objective(context.instance, best):
+            best = candidate
         conflict = first_conflict(paths)
         trace.append({"t": time.perf_counter() - started,
                       "objective": objective(context.instance, paths)})
@@ -231,7 +235,7 @@ def spatial_cbs(context, budget):
                 child_constraints, child_paths,
             ))
     status = "budget" if nodes else "exhausted"
-    return {}, trace, {"status": status, "nodes": expanded}
+    return best, trace, {"status": status, "nodes": expanded}
 
 
 def blocker_graph(context, paths, probes):

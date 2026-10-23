@@ -36,6 +36,14 @@ class RevisedSolverTests(unittest.TestCase):
         self.assertEqual(len(paths), 2)
         self.assertTrue(validate_paths(self.instance, paths))
 
+    def test_spatial_cbs_returns_valid_incumbent_on_zero_budget(self):
+        paths, _, info = spatial_cbs(
+            self.context, SearchBudget(seconds=1, nodes=0)
+        )
+        self.assertEqual(info["status"], "budget")
+        self.assertGreaterEqual(len(paths), 1)
+        self.assertTrue(validate_paths(self.instance, paths))
+
     def test_priority_closure_and_cycle_rejection(self):
         ancestors, order = closure({(0, 1), (1, 2)}, 3)
         self.assertEqual(ancestors[2], {0, 1})

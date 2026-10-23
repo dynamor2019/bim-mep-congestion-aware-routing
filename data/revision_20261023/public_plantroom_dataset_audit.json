@@ -1,0 +1,784 @@
+{
+  "dataset": "MEP Plant Room Pipe Routing Dataset",
+  "source": "https://huggingface.co/datasets/IHNF/mep-plant-room-pipe-routing",
+  "paper_doi": "10.1016/j.autcon.2026.107201",
+  "license": "CC BY 4.0",
+  "case_count": 7,
+  "pipe_network_count": 48,
+  "terminal_point_count": 216,
+  "multi_terminal_network_count": 48,
+  "all_case_ids_match": true,
+  "coordinate_systems": [
+    "2D_plan_view"
+  ],
+  "coordinate_units_declared_in_case_metadata": false,
+  "header_diameter_value_counts": {
+    "3": 48,
+    "4": 48
+  },
+  "main_layer_height_value_counts": {
+    "3": 24,
+    "4": 24
+  },
+  "direct_point_to_point_benchmark_eligible": false,
+  "eligibility_reason": "Every pipe entry is a multi-terminal network with shared header/riser geometry; the current solver assumes independent point-to-point commodities and exclusive inter-commodity vertex occupancy. The case metadata describes an internal 2D plan coordinate system without a declared length unit. Converting these trees into independent pairs would change intended within-system sharing.",
+  "cases": [
+    {
+      "case_id": "Chiller_Room_complex_standard",
+      "coordinate_system": {
+        "origin_note": "Same as the internal 2D coordinate system used by the routing algorithm.",
+        "type": "2D_plan_view",
+        "x_axis": "plan horizontal axis",
+        "y_axis": "plan vertical axis"
+      },
+      "pipe_network_count": 8,
+      "terminal_point_count": 40,
+      "multi_terminal_network_count": 8,
+      "obstacle_count": 0,
+      "equipment_count": 5,
+      "maintenance_area_count": 5,
+      "room_boundary_vertex_count": 4,
+      "network_details": [
+        {
+          "pipe_id": "CHWR-AP1",
+          "upstream_terminal_count": 3,
+          "downstream_terminal_count": 2,
+          "terminal_count": 5,
+          "header_diameters": [
+            4,
+            4
+          ],
+          "main_layer_height": 4,
+          "upstream_riser_paths": 3,
+          "downstream_riser_paths": 2
+        },
+        {
+          "pipe_id": "CHWR-AP2",
+          "upstream_terminal_count": 2,
+          "downstream_terminal_count": 2,
+          "terminal_count": 4,
+          "header_diameters": [
+            4,
+            4
+          ],
+          "main_layer_height": 4,
+          "upstream_riser_paths": 2,
+          "downstream_riser_paths": 2
+        },
+        {
+          "pipe_id": "CHWR-PP",
+          "upstream_terminal_count": 1,
+          "downstream_terminal_count": 5,
+          "terminal_count": 6,
+          "header_diameters": [
+            4,
+            4
+          ],
+          "main_layer_height": 4,
+          "upstream_riser_paths": 1,
+          "downstream_riser_paths": 5
+        },
+        {
+          "pipe_id": "CHWS",
+          "upstream_terminal_count": 4,
+          "downstream_terminal_count": 1,
+          "terminal_count": 5,
+          "header_diameters": [
+            4,
+            4
+          ],
+          "main_layer_height": 4,
+          "upstream_riser_paths": 4,
+          "downstream_riser_paths": 1
+        },
+        {
+          "pipe_id": "CWR-AP1",
+          "upstream_terminal_count": 3,
+          "downstream_terminal_count": 2,
+          "terminal_count": 5,
+          "header_diameters": [
+            4,
+            4
+          ],
+          "main_layer_height": 4,
+          "upstream_riser_paths": 3,
+          "downstream_riser_paths": 2
+        },
+        {
+          "pipe_id": "CWR-AP2",
+          "upstream_terminal_count": 2,
+          "downstream_terminal_count": 2,
+          "terminal_count": 4,
+          "header_diameters": [
+            4,
+            4
+          ],
+          "main_layer_height": 4,
+          "upstream_riser_paths": 2,
+          "downstream_riser_paths": 2
+        },
+        {
+          "pipe_id": "CWR-PP",
+          "upstream_terminal_count": 1,
+          "downstream_terminal_count": 5,
+          "terminal_count": 6,
+          "header_diameters": [
+            4,
+            4
+          ],
+          "main_layer_height": 4,
+          "upstream_riser_paths": 0,
+          "downstream_riser_paths": 5
+        },
+        {
+          "pipe_id": "CWS",
+          "upstream_terminal_count": 4,
+          "downstream_terminal_count": 1,
+          "terminal_count": 5,
+          "header_diameters": [
+            4,
+            4
+          ],
+          "main_layer_height": 4,
+          "upstream_riser_paths": 4,
+          "downstream_riser_paths": 0
+        }
+      ],
+      "cost_case_id": "Chiller_Room_complex_standard"
+    },
+    {
+      "case_id": "Chiller_Room_complex_under_tee_prohibition",
+      "coordinate_system": {
+        "origin_note": "Same as the internal 2D coordinate system used by the routing algorithm.",
+        "type": "2D_plan_view",
+        "x_axis": "plan horizontal axis",
+        "y_axis": "plan vertical axis"
+      },
+      "pipe_network_count": 8,
+      "terminal_point_count": 40,
+      "multi_terminal_network_count": 8,
+      "obstacle_count": 4,
+      "equipment_count": 5,
+      "maintenance_area_count": 5,
+      "room_boundary_vertex_count": 4,
+      "network_details": [
+        {
+          "pipe_id": "CHWR-AP1",
+          "upstream_terminal_count": 3,
+          "downstream_terminal_count": 2,
+          "terminal_count": 5,
+          "header_diameters": [
+            4,
+            4
+          ],
+          "main_layer_height": 4,
+          "upstream_riser_paths": 3,
+          "downstream_riser_paths": 2
+        },
+        {
+          "pipe_id": "CHWR-AP2",
+          "upstream_terminal_count": 2,
+          "downstream_terminal_count": 2,
+          "terminal_count": 4,
+          "header_diameters": [
+            4,
+            4
+          ],
+          "main_layer_height": 4,
+          "upstream_riser_paths": 2,
+          "downstream_riser_paths": 2
+        },
+        {
+          "pipe_id": "CHWR-PP",
+          "upstream_terminal_count": 1,
+          "downstream_terminal_count": 5,
+          "terminal_count": 6,
+          "header_diameters": [
+            4,
+            4
+          ],
+          "main_layer_height": 4,
+          "upstream_riser_paths": 1,
+          "downstream_riser_paths": 5
+        },
+        {
+          "pipe_id": "CHWS",
+          "upstream_terminal_count": 4,
+          "downstream_terminal_count": 1,
+          "terminal_count": 5,
+          "header_diameters": [
+            4,
+            4
+          ],
+          "main_layer_height": 4,
+          "upstream_riser_paths": 4,
+          "downstream_riser_paths": 1
+        },
+        {
+          "pipe_id": "CWR-AP1",
+          "upstream_terminal_count": 3,
+          "downstream_terminal_count": 2,
+          "terminal_count": 5,
+          "header_diameters": [
+            4,
+            4
+          ],
+          "main_layer_height": 4,
+          "upstream_riser_paths": 3,
+          "downstream_riser_paths": 2
+        },
+        {
+          "pipe_id": "CWR-AP2",
+          "upstream_terminal_count": 2,
+          "downstream_terminal_count": 2,
+          "terminal_count": 4,
+          "header_diameters": [
+            4,
+            4
+          ],
+          "main_layer_height": 4,
+          "upstream_riser_paths": 2,
+          "downstream_riser_paths": 2
+        },
+        {
+          "pipe_id": "CWR-PP",
+          "upstream_terminal_count": 1,
+          "downstream_terminal_count": 5,
+          "terminal_count": 6,
+          "header_diameters": [
+            4,
+            4
+          ],
+          "main_layer_height": 4,
+          "upstream_riser_paths": 0,
+          "downstream_riser_paths": 5
+        },
+        {
+          "pipe_id": "CWS",
+          "upstream_terminal_count": 4,
+          "downstream_terminal_count": 1,
+          "terminal_count": 5,
+          "header_diameters": [
+            4,
+            4
+          ],
+          "main_layer_height": 4,
+          "upstream_riser_paths": 4,
+          "downstream_riser_paths": 0
+        }
+      ],
+      "cost_case_id": "Chiller_Room_complex_under_tee_prohibition"
+    },
+    {
+      "case_id": "Chiller_Room_complex_with_columns",
+      "coordinate_system": {
+        "origin_note": "Same as the internal 2D coordinate system used by the routing algorithm.",
+        "type": "2D_plan_view",
+        "x_axis": "plan horizontal axis",
+        "y_axis": "plan vertical axis"
+      },
+      "pipe_network_count": 8,
+      "terminal_point_count": 40,
+      "multi_terminal_network_count": 8,
+      "obstacle_count": 4,
+      "equipment_count": 5,
+      "maintenance_area_count": 5,
+      "room_boundary_vertex_count": 4,
+      "network_details": [
+        {
+          "pipe_id": "CHWR-AP1",
+          "upstream_terminal_count": 3,
+          "downstream_terminal_count": 2,
+          "terminal_count": 5,
+          "header_diameters": [
+            4,
+            4
+          ],
+          "main_layer_height": 4,
+          "upstream_riser_paths": 3,
+          "downstream_riser_paths": 2
+        },
+        {
+          "pipe_id": "CHWR-AP2",
+          "upstream_terminal_count": 2,
+          "downstream_terminal_count": 2,
+          "terminal_count": 4,
+          "header_diameters": [
+            4,
+            4
+          ],
+          "main_layer_height": 4,
+          "upstream_riser_paths": 2,
+          "downstream_riser_paths": 2
+        },
+        {
+          "pipe_id": "CHWR-PP",
+          "upstream_terminal_count": 1,
+          "downstream_terminal_count": 5,
+          "terminal_count": 6,
+          "header_diameters": [
+            4,
+            4
+          ],
+          "main_layer_height": 4,
+          "upstream_riser_paths": 1,
+          "downstream_riser_paths": 5
+        },
+        {
+          "pipe_id": "CHWS",
+          "upstream_terminal_count": 4,
+          "downstream_terminal_count": 1,
+          "terminal_count": 5,
+          "header_diameters": [
+            4,
+            4
+          ],
+          "main_layer_height": 4,
+          "upstream_riser_paths": 4,
+          "downstream_riser_paths": 1
+        },
+        {
+          "pipe_id": "CWR-AP1",
+          "upstream_terminal_count": 3,
+          "downstream_terminal_count": 2,
+          "terminal_count": 5,
+          "header_diameters": [
+            4,
+            4
+          ],
+          "main_layer_height": 4,
+          "upstream_riser_paths": 3,
+          "downstream_riser_paths": 2
+        },
+        {
+          "pipe_id": "CWR-AP2",
+          "upstream_terminal_count": 2,
+          "downstream_terminal_count": 2,
+          "terminal_count": 4,
+          "header_diameters": [
+            4,
+            4
+          ],
+          "main_layer_height": 4,
+          "upstream_riser_paths": 2,
+          "downstream_riser_paths": 2
+        },
+        {
+          "pipe_id": "CWR-PP",
+          "upstream_terminal_count": 1,
+          "downstream_terminal_count": 5,
+          "terminal_count": 6,
+          "header_diameters": [
+            4,
+            4
+          ],
+          "main_layer_height": 4,
+          "upstream_riser_paths": 0,
+          "downstream_riser_paths": 5
+        },
+        {
+          "pipe_id": "CWS",
+          "upstream_terminal_count": 4,
+          "downstream_terminal_count": 1,
+          "terminal_count": 5,
+          "header_diameters": [
+            4,
+            4
+          ],
+          "main_layer_height": 4,
+          "upstream_riser_paths": 4,
+          "downstream_riser_paths": 0
+        }
+      ],
+      "cost_case_id": "Chiller_Room_complex_with_columns"
+    },
+    {
+      "case_id": "Chiller_Room_simple_reconfiguration",
+      "coordinate_system": {
+        "origin_note": "Same as the internal 2D coordinate system used by the routing algorithm.",
+        "type": "2D_plan_view",
+        "x_axis": "plan horizontal axis",
+        "y_axis": "plan vertical axis"
+      },
+      "pipe_network_count": 6,
+      "terminal_point_count": 24,
+      "multi_terminal_network_count": 6,
+      "obstacle_count": 0,
+      "equipment_count": 5,
+      "maintenance_area_count": 5,
+      "room_boundary_vertex_count": 7,
+      "network_details": [
+        {
+          "pipe_id": "CHWR-AP",
+          "upstream_terminal_count": 3,
+          "downstream_terminal_count": 2,
+          "terminal_count": 5,
+          "header_diameters": [
+            3,
+            3
+          ],
+          "main_layer_height": 3,
+          "upstream_riser_paths": 3,
+          "downstream_riser_paths": 2
+        },
+        {
+          "pipe_id": "CHWR-PP",
+          "upstream_terminal_count": 1,
+          "downstream_terminal_count": 3,
+          "terminal_count": 4,
+          "header_diameters": [
+            3,
+            3
+          ],
+          "main_layer_height": 3,
+          "upstream_riser_paths": 1,
+          "downstream_riser_paths": 3
+        },
+        {
+          "pipe_id": "CHWS",
+          "upstream_terminal_count": 2,
+          "downstream_terminal_count": 1,
+          "terminal_count": 3,
+          "header_diameters": [
+            3,
+            3
+          ],
+          "main_layer_height": 3,
+          "upstream_riser_paths": 2,
+          "downstream_riser_paths": 1
+        },
+        {
+          "pipe_id": "CWR-AP",
+          "upstream_terminal_count": 3,
+          "downstream_terminal_count": 2,
+          "terminal_count": 5,
+          "header_diameters": [
+            3,
+            3
+          ],
+          "main_layer_height": 3,
+          "upstream_riser_paths": 3,
+          "downstream_riser_paths": 2
+        },
+        {
+          "pipe_id": "CWR-PP",
+          "upstream_terminal_count": 1,
+          "downstream_terminal_count": 3,
+          "terminal_count": 4,
+          "header_diameters": [
+            3,
+            3
+          ],
+          "main_layer_height": 3,
+          "upstream_riser_paths": 0,
+          "downstream_riser_paths": 3
+        },
+        {
+          "pipe_id": "CWS",
+          "upstream_terminal_count": 2,
+          "downstream_terminal_count": 1,
+          "terminal_count": 3,
+          "header_diameters": [
+            3,
+            3
+          ],
+          "main_layer_height": 3,
+          "upstream_riser_paths": 2,
+          "downstream_riser_paths": 0
+        }
+      ],
+      "cost_case_id": "Chiller_Room_simple_reconfiguration"
+    },
+    {
+      "case_id": "Chiller_Room_simple_w_average",
+      "coordinate_system": {
+        "origin_note": "Same as the internal 2D coordinate system used by the routing algorithm.",
+        "type": "2D_plan_view",
+        "x_axis": "plan horizontal axis",
+        "y_axis": "plan vertical axis"
+      },
+      "pipe_network_count": 6,
+      "terminal_point_count": 24,
+      "multi_terminal_network_count": 6,
+      "obstacle_count": 0,
+      "equipment_count": 5,
+      "maintenance_area_count": 5,
+      "room_boundary_vertex_count": 7,
+      "network_details": [
+        {
+          "pipe_id": "CHWR-AP",
+          "upstream_terminal_count": 3,
+          "downstream_terminal_count": 2,
+          "terminal_count": 5,
+          "header_diameters": [
+            3,
+            3
+          ],
+          "main_layer_height": 3,
+          "upstream_riser_paths": 3,
+          "downstream_riser_paths": 2
+        },
+        {
+          "pipe_id": "CHWR-PP",
+          "upstream_terminal_count": 1,
+          "downstream_terminal_count": 3,
+          "terminal_count": 4,
+          "header_diameters": [
+            3,
+            3
+          ],
+          "main_layer_height": 3,
+          "upstream_riser_paths": 1,
+          "downstream_riser_paths": 3
+        },
+        {
+          "pipe_id": "CHWS",
+          "upstream_terminal_count": 2,
+          "downstream_terminal_count": 1,
+          "terminal_count": 3,
+          "header_diameters": [
+            3,
+            3
+          ],
+          "main_layer_height": 3,
+          "upstream_riser_paths": 2,
+          "downstream_riser_paths": 1
+        },
+        {
+          "pipe_id": "CWR-AP",
+          "upstream_terminal_count": 3,
+          "downstream_terminal_count": 2,
+          "terminal_count": 5,
+          "header_diameters": [
+            3,
+            3
+          ],
+          "main_layer_height": 3,
+          "upstream_riser_paths": 3,
+          "downstream_riser_paths": 2
+        },
+        {
+          "pipe_id": "CWR-PP",
+          "upstream_terminal_count": 1,
+          "downstream_terminal_count": 3,
+          "terminal_count": 4,
+          "header_diameters": [
+            3,
+            3
+          ],
+          "main_layer_height": 3,
+          "upstream_riser_paths": 0,
+          "downstream_riser_paths": 3
+        },
+        {
+          "pipe_id": "CWS",
+          "upstream_terminal_count": 2,
+          "downstream_terminal_count": 1,
+          "terminal_count": 3,
+          "header_diameters": [
+            3,
+            3
+          ],
+          "main_layer_height": 3,
+          "upstream_riser_paths": 2,
+          "downstream_riser_paths": 0
+        }
+      ],
+      "cost_case_id": "Chiller_Room_simple_w_average"
+    },
+    {
+      "case_id": "Chiller_Room_simple_w_construction",
+      "coordinate_system": {
+        "origin_note": "Same as the internal 2D coordinate system used by the routing algorithm.",
+        "type": "2D_plan_view",
+        "x_axis": "plan horizontal axis",
+        "y_axis": "plan vertical axis"
+      },
+      "pipe_network_count": 6,
+      "terminal_point_count": 24,
+      "multi_terminal_network_count": 6,
+      "obstacle_count": 0,
+      "equipment_count": 5,
+      "maintenance_area_count": 5,
+      "room_boundary_vertex_count": 7,
+      "network_details": [
+        {
+          "pipe_id": "CHWR-AP",
+          "upstream_terminal_count": 3,
+          "downstream_terminal_count": 2,
+          "terminal_count": 5,
+          "header_diameters": [
+            3,
+            3
+          ],
+          "main_layer_height": 3,
+          "upstream_riser_paths": 3,
+          "downstream_riser_paths": 2
+        },
+        {
+          "pipe_id": "CHWR-PP",
+          "upstream_terminal_count": 1,
+          "downstream_terminal_count": 3,
+          "terminal_count": 4,
+          "header_diameters": [
+            3,
+            3
+          ],
+          "main_layer_height": 3,
+          "upstream_riser_paths": 1,
+          "downstream_riser_paths": 3
+        },
+        {
+          "pipe_id": "CHWS",
+          "upstream_terminal_count": 2,
+          "downstream_terminal_count": 1,
+          "terminal_count": 3,
+          "header_diameters": [
+            3,
+            3
+          ],
+          "main_layer_height": 3,
+          "upstream_riser_paths": 2,
+          "downstream_riser_paths": 1
+        },
+        {
+          "pipe_id": "CWR-AP",
+          "upstream_terminal_count": 3,
+          "downstream_terminal_count": 2,
+          "terminal_count": 5,
+          "header_diameters": [
+            3,
+            3
+          ],
+          "main_layer_height": 3,
+          "upstream_riser_paths": 3,
+          "downstream_riser_paths": 2
+        },
+        {
+          "pipe_id": "CWR-PP",
+          "upstream_terminal_count": 1,
+          "downstream_terminal_count": 3,
+          "terminal_count": 4,
+          "header_diameters": [
+            3,
+            3
+          ],
+          "main_layer_height": 3,
+          "upstream_riser_paths": 0,
+          "downstream_riser_paths": 3
+        },
+        {
+          "pipe_id": "CWS",
+          "upstream_terminal_count": 2,
+          "downstream_terminal_count": 1,
+          "terminal_count": 3,
+          "header_diameters": [
+            3,
+            3
+          ],
+          "main_layer_height": 3,
+          "upstream_riser_paths": 2,
+          "downstream_riser_paths": 0
+        }
+      ],
+      "cost_case_id": "Chiller_Room_simple_w_construction"
+    },
+    {
+      "case_id": "Chiller_Room_simple_w_maintenance",
+      "coordinate_system": {
+        "origin_note": "Same as the internal 2D coordinate system used by the routing algorithm.",
+        "type": "2D_plan_view",
+        "x_axis": "plan horizontal axis",
+        "y_axis": "plan vertical axis"
+      },
+      "pipe_network_count": 6,
+      "terminal_point_count": 24,
+      "multi_terminal_network_count": 6,
+      "obstacle_count": 0,
+      "equipment_count": 5,
+      "maintenance_area_count": 5,
+      "room_boundary_vertex_count": 7,
+      "network_details": [
+        {
+          "pipe_id": "CHWR-AP",
+          "upstream_terminal_count": 3,
+          "downstream_terminal_count": 2,
+          "terminal_count": 5,
+          "header_diameters": [
+            3,
+            3
+          ],
+          "main_layer_height": 3,
+          "upstream_riser_paths": 3,
+          "downstream_riser_paths": 2
+        },
+        {
+          "pipe_id": "CHWR-PP",
+          "upstream_terminal_count": 1,
+          "downstream_terminal_count": 3,
+          "terminal_count": 4,
+          "header_diameters": [
+            3,
+            3
+          ],
+          "main_layer_height": 3,
+          "upstream_riser_paths": 1,
+          "downstream_riser_paths": 3
+        },
+        {
+          "pipe_id": "CHWS",
+          "upstream_terminal_count": 2,
+          "downstream_terminal_count": 1,
+          "terminal_count": 3,
+          "header_diameters": [
+            3,
+            3
+          ],
+          "main_layer_height": 3,
+          "upstream_riser_paths": 2,
+          "downstream_riser_paths": 1
+        },
+        {
+          "pipe_id": "CWR-AP",
+          "upstream_terminal_count": 3,
+          "downstream_terminal_count": 2,
+          "terminal_count": 5,
+          "header_diameters": [
+            3,
+            3
+          ],
+          "main_layer_height": 3,
+          "upstream_riser_paths": 3,
+          "downstream_riser_paths": 2
+        },
+        {
+          "pipe_id": "CWR-PP",
+          "upstream_terminal_count": 1,
+          "downstream_terminal_count": 3,
+          "terminal_count": 4,
+          "header_diameters": [
+            3,
+            3
+          ],
+          "main_layer_height": 3,
+          "upstream_riser_paths": 0,
+          "downstream_riser_paths": 3
+        },
+        {
+          "pipe_id": "CWS",
+          "upstream_terminal_count": 2,
+          "downstream_terminal_count": 1,
+          "terminal_count": 3,
+          "header_diameters": [
+            3,
+            3
+          ],
+          "main_layer_height": 3,
+          "upstream_riser_paths": 2,
+          "downstream_riser_paths": 0
+        }
+      ],
+      "cost_case_id": "Chiller_Room_simple_w_maintenance"
+    }
+  ]
+}

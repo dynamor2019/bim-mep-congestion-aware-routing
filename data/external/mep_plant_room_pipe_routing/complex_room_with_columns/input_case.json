@@ -1,0 +1,542 @@
+{
+    "case_info": {
+        "case_id": "Chiller_Room_complex_with_columns",
+        "coordinate_system": {
+            "origin_note": "Same as the internal 2D coordinate system used by the routing algorithm.",
+            "type": "2D_plan_view",
+            "x_axis": "plan horizontal axis",
+            "y_axis": "plan vertical axis"
+        },
+        "paper_reference": {
+            "figure": "fig 18 (b) with obstacles"
+        }
+    },
+    "equipment": [
+        {
+            "count": 5,
+            "eq_id": "Pumps set 1",
+            "maintenance_area_rect": {
+                "height": 11,
+                "width": 3.5,
+                "x": 102,
+                "y": 241.75
+            },
+            "type": "3_pump45KW, 2_pump85KW"
+        },
+        {
+            "count": 5,
+            "eq_id": "Pumps set 2",
+            "maintenance_area_rect": {
+                "height": 11,
+                "width": 3.5,
+                "x": 102,
+                "y": 254.25
+            },
+            "type": "3_pump45KW, 2_pump85KW"
+        },
+        {
+            "count": 4,
+            "eq_id": "Chiiler set",
+            "maintenance_area_rect": {
+                "height": 22,
+                "width": 5,
+                "x": 111.5,
+                "y": 242.25
+            },
+            "type": "3_chiller450KW, 1_heatExchanger"
+        },
+        {
+            "count": 1,
+            "eq_id": "Divider",
+            "maintenance_area_rect": {
+                "height": 1.5,
+                "width": 4,
+                "x": 111.5,
+                "y": 267.25
+            },
+            "type": "divider"
+        },
+        {
+            "count": 1,
+            "eq_id": "Collector",
+            "maintenance_area_rect": {
+                "height": 1.5,
+                "width": 4,
+                "x": 105,
+                "y": 267.25
+            },
+            "type": "collector"
+        }
+    ],
+    "obstacles": [
+        {
+            "area_rect": {
+                "height": 1.2,
+                "width": 1.2,
+                "x": 109.5,
+                "y": 244.25
+            },
+            "ob_id": "Obstacle-1",
+            "type": ""
+        },
+        {
+            "area_rect": {
+                "height": 1.2,
+                "width": 1.2,
+                "x": 109.5,
+                "y": 249.25
+            },
+            "ob_id": "Obstacle-2",
+            "type": ""
+        },
+        {
+            "area_rect": {
+                "height": 1.2,
+                "width": 1.2,
+                "x": 109.5,
+                "y": 255
+            },
+            "ob_id": "Obstacle-3",
+            "type": ""
+        },
+        {
+            "area_rect": {
+                "height": 1.2,
+                "width": 1.2,
+                "x": 109.5,
+                "y": 260
+            },
+            "ob_id": "Obstacle-4",
+            "type": ""
+        }
+    ],
+    "pipes": [
+        {
+            "input_definition": {
+                "downstream": {
+                    "connects_to_equipment": true,
+                    "header_diameter": 4,
+                    "header_material": "Galvanized Steel",
+                    "riser_diameter": 1,
+                    "riser_material": "Galvanized Steel",
+                    "terminal_points": [
+                        {
+                            "x": 105.5,
+                            "y": 244
+                        },
+                        {
+                            "x": 105.5,
+                            "y": 245.5
+                        },
+                        {
+                            "x": 105.5,
+                            "y": 247
+                        },
+                        {
+                            "x": 105.5,
+                            "y": 249.25
+                        },
+                        {
+                            "x": 105.5,
+                            "y": 250.75
+                        }
+                    ]
+                },
+                "transition": {
+                    "diameter": 4,
+                    "material": "Galvanized Steel"
+                },
+                "upstream": {
+                    "connects_to_equipment": false,
+                    "header_diameter": 4,
+                    "header_material": "Galvanized Steel",
+                    "riser_diameter": null,
+                    "riser_material": "Galvanized Steel",
+                    "terminal_points": [
+                        {
+                            "x": 118,
+                            "y": 266.75
+                        }
+                    ]
+                }
+            },
+            "main_layer_height": 4,
+            "name": "CWR-PP",
+            "pipe_id": "CWR-PP"
+        },
+        {
+            "input_definition": {
+                "downstream": {
+                    "connects_to_equipment": true,
+                    "header_diameter": 4,
+                    "header_material": "Galvanized Steel",
+                    "riser_diameter": 1,
+                    "riser_material": "Galvanized Steel",
+                    "terminal_points": [
+                        {
+                            "x": 105.5,
+                            "y": 256.5
+                        },
+                        {
+                            "x": 105.5,
+                            "y": 258
+                        },
+                        {
+                            "x": 105.5,
+                            "y": 259.5
+                        },
+                        {
+                            "x": 105.5,
+                            "y": 261.75
+                        },
+                        {
+                            "x": 105.5,
+                            "y": 263.25
+                        }
+                    ]
+                },
+                "transition": {
+                    "diameter": 4,
+                    "material": "Galvanized Steel"
+                },
+                "upstream": {
+                    "connects_to_equipment": true,
+                    "header_diameter": 4,
+                    "header_material": "Galvanized Steel",
+                    "riser_diameter": 1,
+                    "riser_material": "Galvanized Steel",
+                    "terminal_points": [
+                        {
+                            "x": 106.75,
+                            "y": 268
+                        }
+                    ]
+                }
+            },
+            "main_layer_height": 4,
+            "name": "CHWR-PP",
+            "pipe_id": "CHWR-PP"
+        },
+        {
+            "input_definition": {
+                "downstream": {
+                    "connects_to_equipment": false,
+                    "header_diameter": 4,
+                    "header_material": "Galvanized Steel",
+                    "riser_diameter": null,
+                    "riser_material": "",
+                    "terminal_points": [
+                        {
+                            "x": 118,
+                            "y": 265.5
+                        }
+                    ]
+                },
+                "transition": {
+                    "diameter": 4,
+                    "material": "Galvanized Steel"
+                },
+                "upstream": {
+                    "connects_to_equipment": true,
+                    "header_diameter":4,
+                    "header_material": "Galvanized Steel",
+                    "riser_diameter": 1.5,
+                    "riser_material": "",
+                    "terminal_points": [
+                        {
+                            "x": 111.5,
+                            "y": 244.7
+                        },
+                        {
+                            "x": 111.5,
+                            "y": 249.75
+                        },
+                        {
+                            "x": 111.5,
+                            "y": 255.5
+                        },
+                        {
+                            "x": 111.5,
+                            "y": 260.75
+                        }
+                    ]
+                }
+            },
+            "main_layer_height": 4,
+            "name": "CWS",
+            "pipe_id": "CWS"
+        },
+        {
+            "input_definition": {
+                "downstream": {
+                    "connects_to_equipment": true,
+                    "header_diameter": 4,
+                    "header_material": "Galvanized Steel",
+                    "riser_diameter": 1,
+                    "riser_material": "Galvanized Steel",
+                    "terminal_points": [
+                        {
+                            "x": 112.75,
+                            "y": 268
+                        }
+                    ]
+                },
+                "transition": {
+                    "diameter": 4,
+                    "material": "Galvanized Steel"
+                },
+                "upstream": {
+                    "connects_to_equipment": true,
+                    "header_diameter":4,
+                    "header_material": "Galvanized Steel",
+                    "riser_diameter": 1,
+                    "riser_material": "Galvanized Steel",
+                    "terminal_points": [
+                        {
+                            "x": 111.5,
+                            "y": 246.75
+                        },
+                        {
+                            "x": 111.5,
+                            "y": 251.75
+                        },
+                        {
+                            "x": 111.5,
+                            "y": 257.75
+                        },
+                        {
+                            "x": 111.5,
+                            "y": 262.75
+                        }
+                    ]
+                }
+            },
+            "main_layer_height": 4,
+            "name": "CHWS",
+            "pipe_id": "CHWS"
+        },
+        {
+            "input_definition": {
+                "downstream": {
+                    "connects_to_equipment": true,
+                    "header_diameter": 4,
+                    "header_material": "Galvanized Steel",
+                    "riser_diameter": 1.5,
+                    "riser_material": "Galvanized Steel",
+                    "terminal_points": [
+                        {
+                            "x": 111.5,
+                            "y": 243.75
+                        },
+                        {
+                            "x": 111.5,
+                            "y": 248.75
+                        }
+                    ]
+                },
+                "transition": {
+                    "diameter": 4,
+                    "material": "Galvanized Steel"
+                },
+                "upstream": {
+                    "connects_to_equipment": true,
+                    "header_diameter": 4,
+                    "header_material": "Galvanized Steel",
+                    "riser_diameter": 1,
+                    "riser_material": "Galvanized Steel",
+                    "terminal_points": [
+                        {
+                            "x": 104.8,
+                            "y": 244
+                        },
+                        {
+                            "x": 104.8,
+                            "y": 245.5
+                        },
+                        {
+                            "x": 104.8,
+                            "y": 247
+                        }
+                    ]
+                }
+            },
+            "main_layer_height": 4,
+            "name": "CWR-AP1",
+            "pipe_id": "CWR-AP1"
+        },
+        {
+            "input_definition": {
+                "downstream": {
+                    "connects_to_equipment": true,
+                    "header_diameter": 4,
+                    "header_material": "Galvanized Steel",
+                    "riser_diameter": 1.5,
+                    "riser_material": "Galvanized Steel",
+                    "terminal_points": [
+                        {
+                            "x": 111.5,
+                            "y": 254.35
+                        },
+                        {
+                            "x": 111.5,
+                            "y": 259.6
+                        }
+                    ]
+                },
+                "transition": {
+                    "diameter": 4,
+                    "material": "Galvanized Steel"
+                },
+                "upstream": {
+                    "connects_to_equipment": true,
+                    "header_diameter": 4,
+                    "header_material": "Galvanized Steel",
+                    "riser_diameter": 1,
+                    "riser_material": "Galvanized Steel",
+                    "terminal_points": [
+                        {
+                            "x": 104.8,
+                            "y": 249.25
+                        },
+                        {
+                            "x": 104.8,
+                            "y": 250.75
+                        }
+                    ]
+                }
+            },
+            "main_layer_height": 4,
+            "name": "CWR-AP2",
+            "pipe_id": "CWR-AP2"
+        },
+        {
+            "input_definition": {
+                "downstream": {
+                    "connects_to_equipment": true,
+                    "header_diameter": 4,
+                    "header_material": "Galvanized Steel",
+                    "riser_diameter": 1.5,
+                    "riser_material": "Galvanized Steel",
+                    "terminal_points": [
+                        {
+                            "x": 111.5,
+                            "y": 245.75
+                        },
+                        {
+                            "x": 111.5,
+                            "y": 250.75
+                        }
+                    ]
+                },
+                "transition": {
+                    "diameter": 4,
+                    "material": "Galvanized Steel"
+                },
+                "upstream": {
+                    "connects_to_equipment": true,
+                    "header_diameter": 4,
+                    "header_material": "Galvanized Steel",
+                    "riser_diameter": 1,
+                    "riser_material": "Galvanized Steel",
+                    "terminal_points": [
+                        {
+                            "x": 104.8,
+                            "y": 256.5
+                        },
+                        {
+                            "x": 104.8,
+                            "y": 258
+                        },
+                        {
+                            "x": 104.8,
+                            "y": 259.5
+                        }
+                    ]
+                }
+            },
+            "main_layer_height": 4,
+            "name": "CHWR-AP1",
+            "pipe_id": "CHWR-AP1"
+        },
+        {
+            "input_definition": {
+                "downstream": {
+                    "connects_to_equipment": true,
+                    "header_diameter": 4,
+                    "header_material": "Galvanized Steel",
+                    "riser_diameter": 1.5,
+                    "riser_material": "Galvanized Steel",
+                    "terminal_points": [
+                        {
+                            "x": 111.5,
+                            "y": 256.65
+                        },
+                        {
+                            "x": 111.5,
+                            "y": 261.75
+                        }
+                    ]
+                },
+                "transition": {
+                    "diameter": 4,
+                    "material": "Galvanized Steel"
+                },
+                "upstream": {
+                    "connects_to_equipment": true,
+                    "header_diameter": 4,
+                    "header_material": "Galvanized Steel",
+                    "riser_diameter": 1,
+                    "riser_material": "Galvanized Steel",
+                    "terminal_points": [
+                        {
+                            "x": 104.8,
+                            "y": 261.75
+                        },
+                        {
+                            "x": 104.8,
+                            "y": 263.25
+                        }
+                    ]
+                }
+            },
+            "main_layer_height": 4,
+            "name": "CHWR-AP2",
+            "pipe_id": "CHWR-AP2"
+        }
+    ],
+    "room": {
+        "boundary": [
+            {
+                "x": 101,
+                "y": 240.75
+            },
+            {
+                "x": 119,
+                "y": 240.75
+            },
+            {
+                "x": 119,
+                "y": 269.25
+            },
+            {
+                "x": 101,
+                "y": 269.25
+            }
+        ],
+        "name": "Chiller Room"
+    },
+    "schema_version": "1.0",
+    "solver_config": {
+        "maintenance_subweights": {
+            "regularity": 0.5,
+            "serviceability": 0.5
+        },
+        "preference_weights": {
+            "construction_weight": 0.8,
+            "maintenance_weight": 0.2
+        },
+        "search_parameters": {
+            "search_intensity_lambda": 1.5
+        }
+    }
+}

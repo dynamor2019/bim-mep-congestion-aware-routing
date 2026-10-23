@@ -91,6 +91,55 @@ def validate_clinic_ifc_audit(data: Path) -> None:
     ).hexdigest(), "clinic IFC audit script checksum mismatch")
 
 
+def validate_new_revision_evidence(data: Path) -> None:
+    """Check the new paired adaptive, CBS-incumbent, and plant-room audits."""
+    adaptive = rows(data / "matched_adaptive_scale_90.csv")
+    manifest = json.loads((data / "matched_adaptive_scale_90.csv.manifest.json").read_text(encoding="utf-8"))
+    require(len(adaptive) == 180 and all(row["validated"] == "1" for row in adaptive),
+            "matched adaptive archive must contain 180 validated outputs")
+    require(manifest["outputs"] == 180 and manifest["all_validated"] is True
+            and manifest["scene_hash_count"] == 90,
+            "matched adaptive manifest counts mismatch")
+    require(manifest["source_sha256"] == hashlib.sha256(
+        (data.parent.parent / "code" / "run_matched_adaptive_scale.py").read_bytes()
+    ).hexdigest(), "matched adaptive source checksum mismatch")
+    pairs = defaultdict(dict)
+    for row in adaptive:
+        pairs[(row["scale"], row["seed"])][row["method"]] = row
+    require(len(pairs) == 90 and all(set(pair) == {
+        "mspp_random_repair", "adaptive_multi_operator"} for pair in pairs.values()),
+        "matched adaptive archive must contain 90 complete pairs")
+    require(all(len({row["scene_hash"] for row in pair.values()}) == 1
+                for pair in pairs.values()), "adaptive methods must use identical scenes")
+    expected = {"base": (3, 3), "large": (13, 15), "xlarge": (25, 26)}
+    for scale, counts in expected.items():
+        selected = [pair for (name, _), pair in pairs.items() if name == scale]
+        actual = tuple(sum(int(pair[method]["success"]) for pair in selected)
+                       for method in ("mspp_random_repair", "adaptive_multi_operator"))
+        require(len(selected) == 30 and actual == counts,
+                f"matched adaptive completion counts mismatch: {scale}")
+    cbs = rows(data / "cbs_incumbent_5s_holdout_10.csv")
+    require(len(cbs) == 20 and all(row["validated"] == "1" for row in cbs),
+            "CBS incumbent diagnostic must contain 20 validated method outputs")
+    cbs_groups = defaultdict(dict)
+    for row in cbs:
+        cbs_groups[row["seed"]][row["method"]] = row
+    require(len(cbs_groups) == 10 and all(set(group) == {"random", "spatial_cbs"}
+                                          for group in cbs_groups.values()),
+            "CBS incumbent diagnostic must have ten paired scenes")
+    require(sum(int(row["success"]) for row in cbs
+                if row["method"] == "spatial_cbs") == 0
+            and round(sum(int(row["routed"]) for row in cbs
+                          if row["method"] == "spatial_cbs") / 10, 1) == 4.3,
+            "CBS incumbent completion or routed-demand summary mismatch")
+    plantroom = json.loads((data / "public_plantroom_dataset_audit.json").read_text(encoding="utf-8"))
+    require((plantroom["case_count"], plantroom["pipe_network_count"],
+             plantroom["terminal_point_count"], plantroom["multi_terminal_network_count"])
+            == (7, 48, 216, 48), "plant-room dataset audit counts mismatch")
+    require(plantroom["direct_point_to_point_benchmark_eligible"] is False,
+            "plant-room compatibility boundary must remain explicit")
+
+
 def validate(data: Path) -> None:
     """Validate row totals, method balance, and source-audit counts."""
     main = rows(data / "main_150_raw.csv")
@@ -353,7 +402,8 @@ def validate(data: Path) -> None:
             "extended CBS budget outcomes mismatch")
     validate_advanced_pilot(data)
     validate_clinic_ifc_audit(data)
-    print("PASS: primary archives, IFC readiness screens, extended-budget diagnostics, and pilot hashes/route validation")
+    validate_new_revision_evidence(data)
+    print("PASS: primary archives, IFC readiness screens, extended-budget diagnostics, new paired studies, and route validation")
 
 
 def main() -> None:
