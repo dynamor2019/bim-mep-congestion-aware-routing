@@ -182,3 +182,11 @@ python code/run_revision_benchmark.py --seeds 100 --start-seed 100000 --cohort s
 python code/merge_matched_baselines.py --cbs data/revision_20261023/spatial_cbs_shared_incumbent_100_5s --pbs data/revision_20261023/pbs_matched_5s_100 --lns results/spatial_mapf_lns2_matched_5s_100 --output results/matched_permanent_baselines_100_5s
 python code/summarize_revision_benchmark.py results/matched_permanent_baselines_100_5s/raw.csv results/matched_permanent_baselines_100_5s/summary.json
 ```
+
+## Repair convergence figure
+
+`code/plot_repair_convergence.py` validates the matched traces in `data/revision_20261023/high_stress_holdout_1000.csv` and rebuilds Figure 6 as iteration- and elapsed-time complete-scene success curves with pointwise paired-scene bootstrap intervals. Both policies share the same best-of-two initial routes. The nominal 1-s cap is checked between A* calls; maximum observed runtime was 1.09 s. The single-cohort result (17/100 random vs 11/100 guided; exact McNemar `p=0.0313`, Holm-adjusted `p=0.25` across nine selectors) is exploratory, not confirmatory.
+
+```powershell
+python code/plot_repair_convergence.py --data data/revision_20261023/high_stress_holdout_1000.csv --output figures/revision_20261024_convergence
+```
