@@ -93,6 +93,35 @@ def validate_clinic_ifc_audit(data: Path) -> None:
     ).hexdigest(), "clinic IFC audit script checksum mismatch")
 
 
+def validate_ifc4x3_pcert_audit(data: Path) -> None:
+    """Check source hashes and readiness counts for the IFC4X3 PCERT audit."""
+    audit = json.loads((data / "ifc4x3_pcert_audit.json").read_text(encoding="utf-8"))
+    require(audit["license"] == "CC BY 4.0" and len(audit["models"]) == 2,
+            "IFC4X3 audit source or model count mismatch")
+    expected = {
+        "Building-Hvac.ifc": (1, 1, 2),
+        "Infra-Plumbing.ifc": (1, 24, 0),
+    }
+    for model in audit["models"]:
+        counts = model["counts"]
+        systems, segments, terminals = expected[model["file"]]
+        require(model["schema"] == "IFC4X3"
+                and (counts["systems"], counts["flow_segments"],
+                     counts["flow_terminals"]) == (systems, segments, terminals),
+                f"IFC4X3 model counts mismatch: {model['file']}")
+        require(counts["distribution_ports"] == 0
+                and counts["port_connections"] == 0
+                and counts["flow_fittings"] == 0
+                and counts["segments_with_dimensions_pset"] == 0
+                and counts["segments_with_geometry_representation"] == segments,
+                f"IFC4X3 route-readiness boundary mismatch: {model['file']}")
+        require(model["owner_graph"]["components_with_exact_source_sink_terminal_pair"] == 0,
+                f"IFC4X3 endpoint graph unexpectedly eligible: {model['file']}")
+    require(audit["audit_script_sha256"] == hashlib.sha256(
+        (data.parent.parent / "code" / "audit_ifc_route_readiness.py").read_bytes()
+    ).hexdigest(), "IFC4X3 audit script checksum mismatch")
+
+
 def validate_expanded_adaptive_archive(data: Path) -> None:
     """Check the 270-pair adaptive archive, checksums, pairing, and outcomes."""
     archive = data / "matched_adaptive_scale_270.csv"
@@ -562,6 +591,7 @@ def validate(data: Path) -> None:
             "extended CBS budget outcomes mismatch")
     validate_advanced_pilot(data)
     validate_clinic_ifc_audit(data)
+    validate_ifc4x3_pcert_audit(data)
     validate_new_revision_evidence(data)
     validate_matched_cbs_diagnostic(data)
     validate_extended_cbs_diagnostic(data)

@@ -110,3 +110,13 @@ Legacy scripts and files outside `revision_20261023/` are retained for provenanc
 The matched adaptive comparison, corrected CBS incumbent logic, 10- and 60-scene CBS diagnostics, and plant-room dataset audit are included in the current source tree. No DOI is currently claimed; check the release page before citing the repository version.
 
 The additional 100-scene, 5-s-per-method PBS-adaptation comparison is archived under `data/revision_20261023/pbs_matched_5s_100/`. It found 20/100 complete scenes for spatial PBS versus 19/100 for random repair, with one PBS-only and no random-only completion (exact two-sided McNemar p=1.00); mean routed demands were 7.05/9 and 7.10/9. All 200 route sets passed independent validation. This is a bounded permanent-occupancy priority-tree adaptation, not a faithful temporal MAPF PBS implementation, and does not establish a performance advantage.
+
+## IFC4X3 PCERT readiness audit
+
+The CC BY 4.0 buildingSMART IFC4X3_ADD2 PCERT samples were screened with `code/audit_ifc_route_readiness.py`; the archived result and model SHA-256 values are in `data/revision_20261023/ifc4x3_pcert_audit.json`. HVAC contains one system, one represented duct segment, and two terminals; plumbing contains one system and 24 represented pipe segments. Neither file provides explicit ports, port connections, fittings, or native segment-dimension property sets. Reproduce the audit after downloading the two IFC files from the [buildingSMART Community Sample-Test-Files](https://github.com/buildingsmart-community/Community-Sample-Test-Files) repository:
+
+```powershell
+python code/audit_ifc_route_readiness.py --ifc path/to/Building-Hvac.ifc path/to/Infra-Plumbing.ifc --output data/revision_20261023/ifc4x3_pcert_audit.json
+```
+
+This is a data-readiness screen only. Tessellated geometry does not supply a connected graph or approved rerouting request, so it is not routing-performance or construction-validity evidence.

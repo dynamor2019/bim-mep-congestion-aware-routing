@@ -1,0 +1,66 @@
+{
+  "dataset": "buildingSMART Community Sample Test Files, IFC4X3 PCERT Sample Scene",
+  "license": "CC BY 4.0",
+  "source": "https://github.com/buildingsmart-community/Community-Sample-Test-Files",
+  "models": [
+    {
+      "file": "Building-Hvac.ifc",
+      "bytes": 179555,
+      "sha256": "f92502823e1b47ccdd165e7da1f8c13089d862bb1dec9d1cfe7d73265d8111f8",
+      "schema": "IFC4X3",
+      "counts": {
+        "distribution_systems": 1,
+        "systems": 1,
+        "distribution_ports": 0,
+        "ports_with_owner_relation": 0,
+        "port_connections": 0,
+        "flow_terminals": 2,
+        "flow_segments": 1,
+        "flow_fittings": 0,
+        "segments_with_geometry_representation": 1,
+        "segments_with_dimensions_pset": 0,
+        "dimension_field_occurrences": {},
+        "terminal_owners_with_ports": 0,
+        "port_flow_directions": {}
+      },
+      "owner_graph": {
+        "owner_component_count": 0,
+        "largest_owner_component": 0,
+        "components_by_terminal_owner_count": {},
+        "components_with_exact_source_sink_terminal_pair": 0
+      },
+      "scope": "Owner-level connectivity joins ports belonging to the same IFC element and follows explicit IfcRelConnectsPorts relations. It is a readiness screen, not an accepted rerouting task, exact clash test, or route validation."
+    },
+    {
+      "file": "Infra-Plumbing.ifc",
+      "bytes": 525272,
+      "sha256": "6e87fe153e51b80a7bc31fcdf947fceba258c10363ac072c76dbbc00049cd16b",
+      "schema": "IFC4X3",
+      "counts": {
+        "distribution_systems": 1,
+        "systems": 1,
+        "distribution_ports": 0,
+        "ports_with_owner_relation": 0,
+        "port_connections": 0,
+        "flow_terminals": 0,
+        "flow_segments": 24,
+        "flow_fittings": 0,
+        "segments_with_geometry_representation": 24,
+        "segments_with_dimensions_pset": 0,
+        "dimension_field_occurrences": {},
+        "terminal_owners_with_ports": 0,
+        "port_flow_directions": {}
+      },
+      "owner_graph": {
+        "owner_component_count": 0,
+        "largest_owner_component": 0,
+        "components_by_terminal_owner_count": {},
+        "components_with_exact_source_sink_terminal_pair": 0
+      },
+      "scope": "Owner-level connectivity joins ports belonging to the same IFC element and follows explicit IfcRelConnectsPorts relations. It is a readiness screen, not an accepted rerouting task, exact clash test, or route validation."
+    }
+  ],
+  "interpretation": "Readiness audit only; the presence of native ports or dimensions does not establish accepted rerouting requests or coordinator-validated alternatives.",
+  "repository_commit": "cecf656112a54a0d8cdd8b06b9398bfea5163886",
+  "audit_script_sha256": "3a9d4ffdec993b0fdf8f80fc6c29063cef55629682bd48c4e2dfd9fe10de6646"
+}
