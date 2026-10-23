@@ -120,3 +120,15 @@ python code/audit_ifc_route_readiness.py --ifc path/to/Building-Hvac.ifc path/to
 ```
 
 This is a data-readiness screen only. Tessellated geometry does not supply a connected graph or approved rerouting request, so it is not routing-performance or construction-validity evidence.
+
+## Wall-clock-capped adaptive repair comparison
+
+`data/revision_20261023/matched_adaptive_wallclock_90.csv` contains 90 paired synthetic scenes (30 at each of 9, 12, and 15 systems; 180 independently validated outputs). Both repair methods start from the same scene and incumbent and receive a 1-s repair-time cap. The cap is checked only between complete iterations; observed runtimes may exceed it by one iteration, so this is not exact CPU-time matching. Random versus adaptive completion was 4/30 versus 3/30, 14/30 versus 7/30, and 20/30 versus 15/30. The 12-system stratum favored random repair (7 random-only, zero adaptive-only; exact McNemar p=0.0156, Holm-adjusted across three strata p=0.0469); the other strata were inconclusive. This single exploratory cohort does not establish a general random-repair advantage, especially because one-iteration overshoot varies with runtime and differs by operator. The 270-scene equal-iteration cohort remains separately archived; its result is not pooled with this budget-capped comparison.
+
+Reproduce the budget-capped experiment and summarize the archived raw results with:
+
+```powershell
+python code/run_matched_adaptive_wallclock.py --seeds 30 --start-seed 110000 --budget-seconds 1.0 --output results/matched_adaptive_wallclock_90.csv
+python code/summarize_adaptive_wallclock.py results/matched_adaptive_wallclock_90.csv results/matched_adaptive_wallclock_90_summary.json --run-source code/run_matched_adaptive_wallclock.py --implementation-source code/run_routing_experiments.py code/run_advanced_validation.py
+python code/validate_revision_evidence.py --data data/revision_20261023
+```

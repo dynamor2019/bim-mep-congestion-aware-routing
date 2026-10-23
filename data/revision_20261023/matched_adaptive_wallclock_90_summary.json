@@ -1,0 +1,84 @@
+{
+  "protocol": "same scene and initial routes; 1-s repair budget cap per method",
+  "paired_scenes": 90,
+  "validated_outputs": 180,
+  "budget_seconds_per_method": 1.0,
+  "scale_results": [
+    {
+      "scale": "base",
+      "paired_scenes": 30,
+      "random_only_successes": 1,
+      "adaptive_only_successes": 0,
+      "exact_two_sided_mcnemar_p": 1.0,
+      "methods": {
+        "mspp_random_repair": {
+          "complete_scenes": 4,
+          "scenes": 30,
+          "median_runtime_s": 1.0121343000064371,
+          "median_iterations": 36.5
+        },
+        "adaptive_multi_operator": {
+          "complete_scenes": 3,
+          "scenes": 30,
+          "median_runtime_s": 1.0229081000143196,
+          "median_iterations": 16.0
+        }
+      },
+      "holm_adjusted_p_across_three_scales": 1.0
+    },
+    {
+      "scale": "large",
+      "paired_scenes": 30,
+      "random_only_successes": 7,
+      "adaptive_only_successes": 0,
+      "exact_two_sided_mcnemar_p": 0.015625,
+      "methods": {
+        "mspp_random_repair": {
+          "complete_scenes": 14,
+          "scenes": 30,
+          "median_runtime_s": 1.0455872000020463,
+          "median_iterations": 9.0
+        },
+        "adaptive_multi_operator": {
+          "complete_scenes": 7,
+          "scenes": 30,
+          "median_runtime_s": 1.138465299984091,
+          "median_iterations": 4.0
+        }
+      },
+      "holm_adjusted_p_across_three_scales": 0.046875
+    },
+    {
+      "scale": "xlarge",
+      "paired_scenes": 30,
+      "random_only_successes": 6,
+      "adaptive_only_successes": 1,
+      "exact_two_sided_mcnemar_p": 0.125,
+      "methods": {
+        "mspp_random_repair": {
+          "complete_scenes": 20,
+          "scenes": 30,
+          "median_runtime_s": 1.1789067999925464,
+          "median_iterations": 3.0
+        },
+        "adaptive_multi_operator": {
+          "complete_scenes": 15,
+          "scenes": 30,
+          "median_runtime_s": 1.2069918000051985,
+          "median_iterations": 2.0
+        }
+      },
+      "holm_adjusted_p_across_three_scales": 0.25
+    }
+  ],
+  "wallclock_note": "The cap is checked between full repair iterations; observed runtime can overshoot by one iteration, so this is not exact equal-CPU-time matching.",
+  "scope_note": "Exploratory synthetic evidence; scale and systems count co-vary.",
+  "seeds_per_scale": 30,
+  "start_seed": 110000,
+  "source_sha256": "3ca2bbb74ee334506724e3f3b5e11e3ca8a7e704ca99a78820bdf97618d5d06b",
+  "implementation_sha256": {
+    "run_routing_experiments.py": "f74d25b5db8579d84f3b853ca43256df5e26f41575b5d9e5906cf41449dcc03d",
+    "run_advanced_validation.py": "96b5dd3269c0c248222e660d61b05f99945faf049b6b586fee30f7897c830ef0"
+  },
+  "summary_script_sha256": "b4572a3eedd3daa3c05c707f4c0f3f0a6e34197be47fb1b1aa683f8a4a8da2f7"
+}

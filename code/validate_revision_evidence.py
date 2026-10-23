@@ -158,6 +158,55 @@ def validate_expanded_adaptive_archive(data: Path) -> None:
                 f"expanded adaptive completion counts mismatch: {scale}")
 
 
+def validate_wallclock_adaptive_archive(data: Path) -> None:
+    """Check the equal-wall-clock adaptive repair archive and provenance."""
+    archive = data / "matched_adaptive_wallclock_90.csv"
+    summary_path = data / "matched_adaptive_wallclock_90_summary.json"
+    manifest_path = data / "matched_adaptive_wallclock_90.csv.manifest.json"
+    observations = rows(archive)
+    summary = json.loads(summary_path.read_text(encoding="utf-8"))
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    require(len(observations) == 180 and all(row["validated"] == "1" for row in observations),
+            "wall-clock adaptive archive must contain 180 validated outputs")
+    require(manifest["outputs"] == 180 and manifest["all_validated"] is True
+            and manifest["raw_sha256"] == hashlib.sha256(archive.read_bytes()).hexdigest()
+            and manifest["summary_sha256"] == hashlib.sha256(summary_path.read_bytes()).hexdigest(),
+            "wall-clock adaptive archive checksum or manifest mismatch")
+    runner = data.parent.parent / "code" / "run_matched_adaptive_wallclock.py"
+    summarizer = data.parent.parent / "code" / "summarize_adaptive_wallclock.py"
+    require(summary["source_sha256"] == hashlib.sha256(runner.read_bytes()).hexdigest(),
+            "wall-clock adaptive runner checksum mismatch")
+    require(summary["summary_script_sha256"] == hashlib.sha256(summarizer.read_bytes()).hexdigest()
+            and manifest["summary_script_sha256"] == summary["summary_script_sha256"],
+            "wall-clock adaptive summarizer checksum mismatch")
+    implementation = {
+        name: hashlib.sha256((data.parent.parent / "code" / name).read_bytes()).hexdigest()
+        for name in ("run_routing_experiments.py", "run_advanced_validation.py")
+    }
+    require(summary["implementation_sha256"] == implementation
+            and manifest["implementation_sha256"] == implementation
+            and manifest["run_source_sha256"] == summary["source_sha256"],
+            "wall-clock adaptive implementation checksum mismatch")
+    pairs = defaultdict(dict)
+    for row in observations:
+        pairs[(row["scale"], row["seed"])][row["method"]] = row
+    require(len(pairs) == 90 and all(set(pair) == {
+        "mspp_random_repair", "adaptive_multi_operator"} for pair in pairs.values()),
+        "wall-clock adaptive archive must contain 90 complete pairs")
+    require(all(len({row["scene_hash"] for row in pair.values()}) == 1
+                for pair in pairs.values()), "wall-clock repair methods must share scenes")
+    expected = {"base": (4, 3), "large": (14, 7), "xlarge": (20, 15)}
+    for scale, counts in expected.items():
+        selected = [pair for (name, _), pair in pairs.items() if name == scale]
+        actual = tuple(sum(int(pair[method]["success"]) for pair in selected)
+                       for method in ("mspp_random_repair", "adaptive_multi_operator"))
+        require(len(selected) == 30 and actual == counts,
+                f"wall-clock adaptive outcome mismatch: {scale}")
+    require(summary["budget_seconds_per_method"] == 1.0
+            and "between full repair iterations" in summary["wallclock_note"],
+            "wall-clock budget and overrun boundary must be explicit")
+
+
 def validate_new_revision_evidence(data: Path) -> None:
     """Check the new paired adaptive, CBS-incumbent, and plant-room audits."""
     adaptive = rows(data / "matched_adaptive_scale_90.csv")
@@ -186,6 +235,7 @@ def validate_new_revision_evidence(data: Path) -> None:
         require(len(selected) == 30 and actual == counts,
                 f"matched adaptive completion counts mismatch: {scale}")
     validate_expanded_adaptive_archive(data)
+    validate_wallclock_adaptive_archive(data)
     cbs = rows(data / "cbs_incumbent_5s_holdout_10.csv")
     require(len(cbs) == 20 and all(row["validated"] == "1" for row in cbs),
             "CBS incumbent diagnostic must contain 20 validated method outputs")
