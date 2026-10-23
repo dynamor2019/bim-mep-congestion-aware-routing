@@ -44,6 +44,19 @@ class RevisedSolverTests(unittest.TestCase):
         self.assertGreaterEqual(len(paths), 1)
         self.assertTrue(validate_paths(self.instance, paths))
 
+    def test_spatial_cbs_keeps_feasible_routes_if_one_demand_is_blocked(self):
+        instance = Instance((3, 3, 1), {(1, 0, 0), (0, 1, 0)}, [
+            Commodity((0, 0, 0), (2, 0, 0), "pressure", 0, 0),
+            Commodity((0, 2, 0), (2, 2, 0), "pressure", 0, 0),
+        ])
+        context = RoutingContext(instance, estimate_demand(instance))
+
+        paths, _, info = spatial_cbs(context, SearchBudget(seconds=1, nodes=10))
+
+        self.assertEqual(info["status"], "solved")
+        self.assertEqual(set(paths), {1})
+        self.assertTrue(validate_paths(instance, paths))
+
     def test_priority_closure_and_cycle_rejection(self):
         ancestors, order = closure({(0, 1), (1, 2)}, 3)
         self.assertEqual(ancestors[2], {0, 1})

@@ -1,0 +1,43 @@
+{
+  "description": "Paired permanent-occupancy random repair versus optional-demand spatial CBS diagnostic.",
+  "scene_count": 60,
+  "method_output_count": 120,
+  "seeds": [
+    101000,
+    101059
+  ],
+  "methods": [
+    "random",
+    "spatial_cbs"
+  ],
+  "method_budget_seconds": 4.8,
+  "iterations_cap": 10000,
+  "node_cap": 10000,
+  "shared_initialization": true,
+  "shared_initialization_mean_seconds": 0.195936,
+  "timing_note": "Same initial routes were computed once per scene and shared. Each method then received the same 4.8-s repair-phase cap; total elapsed includes shared initialization. All observations were independently route-validated. This permanent-space CBS adaptation is not temporal MAPF CBS.",
+  "outcomes": {
+    "random": {
+      "complete_scenes": 9,
+      "mean_routed_systems": 7.133333,
+      "mean_total_elapsed_s": 5.0114,
+      "mean_shared_initialization_s": 0.195936,
+      "all_routes_validated": true
+    },
+    "spatial_cbs": {
+      "complete_scenes": 0,
+      "mean_routed_systems": 4.916667,
+      "mean_total_elapsed_s": 5.012795,
+      "mean_shared_initialization_s": 0.195936,
+      "all_routes_validated": true
+    }
+  },
+  "discordant_pairs": {
+    "random_only": 9,
+    "spatial_cbs_only": 0
+  },
+  "mcnemar_exact_two_sided_p": 0.00390625,
+  "source_sha256": "bee3be91f0f65e1762fbf0e44785701a16deca39475652a7e2abf8ff39968667",
+  "raw_sha256": "ac1829a61e9ecc9c4d29ec0ba38a3bc94c5cd5fb246e649f845a0a86c458d61e",
+  "raw_bytes": 1184289
+}

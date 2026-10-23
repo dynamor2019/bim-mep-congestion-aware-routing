@@ -1,0 +1,62 @@
+{
+  "summary": [
+    {
+      "method": "random",
+      "n": 10,
+      "successes": 2,
+      "success_rate": 0.2,
+      "wilson_ci95": [
+        0.056680947980693314,
+        0.5098431532792765
+      ],
+      "routed_mean": 7.0,
+      "runtime_mean_s": 5.014517800003523,
+      "runtime_max_s": 5.021238199988147,
+      "status_counts": {
+        "budget": 10
+      }
+    },
+    {
+      "method": "spatial_cbs",
+      "n": 10,
+      "successes": 0,
+      "success_rate": 0.0,
+      "wilson_ci95": [
+        -2.7755575615628914e-17,
+        0.2775401687666166
+      ],
+      "routed_mean": 4.7,
+      "runtime_mean_s": 5.016961959999753,
+      "runtime_max_s": 5.036325799999759,
+      "status_counts": {
+        "budget": 10
+      }
+    }
+  ],
+  "paired_against_random": {
+    "spatial_cbs": {
+      "n": 10,
+      "both_success": 0,
+      "both_failure": 8,
+      "gain": 0,
+      "loss": 2,
+      "success_difference": -0.2,
+      "paired_bootstrap_ci95": [
+        -0.5,
+        0.0
+      ],
+      "conservative_difference_ci95": [
+        -0.5990390134542629,
+        0.3373433865556187
+      ],
+      "exact_mcnemar_two_sided": 0.5,
+      "cost_ties": 0,
+      "cost_wilcoxon_two_sided": 0.00390625,
+      "cost_rank_biserial": -0.9636363636363636,
+      "joint_feasible_n": 0,
+      "joint_feasible_cost_delta_mean": null,
+      "mcnemar_holm_adjusted": 0.5
+    }
+  },
+  "inference": "two-sided exact paired feasibility; Holm correction across 1 comparisons; difference CI uses Bonferroni-combined 97.5% Clopper-Pearson intervals for paired gain/loss probabilities; bootstrap also archived, but zero discordances do not prove equivalence; exploratory on same synthetic generator"
+}

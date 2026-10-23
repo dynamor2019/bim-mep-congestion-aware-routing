@@ -45,12 +45,16 @@ python code/summarize_matched_adaptive_scale.py `
   data/revision_20261023/matched_adaptive_scale_90.csv `
   results/matched_adaptive_scale_summary.json
 python code/run_revision_benchmark.py --seeds 10 --start-seed 100000 --cohort cbs_incumbent_5s --seconds 5 --iterations 100 --nodes 10000 --methods random spatial_cbs --output results/cbs_incumbent_5s
+python code/run_revision_benchmark.py --seeds 10 --start-seed 100000 --cohort cbs_optional_matched_5s --seconds 5 --iterations 10000 --nodes 10000 --methods random spatial_cbs --output results/cbs_optional_matched_5s
+python code/run_revision_benchmark.py --seeds 60 --start-seed 101000 --cohort cbs_total_matched_5s --seconds 4.8 --iterations 10000 --nodes 10000 --methods random spatial_cbs --output results/cbs_total_matched_60
 python code/audit_public_plantroom_dataset.py `
   data/external/mep_plant_room_pipe_routing `
   results/public_plantroom_dataset_audit.json
 ```
 
 The holdout runner includes spatial PBS/CBS, conflict-graph neighborhoods, and an LNS2-style spatial destroy/repair adaptation. These use permanent occupancy and are not faithful temporal MAPF baselines. Spatial LNS2-style repair tied random completion at 17/100, with one paired gain and one loss (Holm-adjusted p=1.00); the conflict selector completed 13/100, equal to blocker repair and below random repair (17/100). CBS found no complete set under either one- or five-second caps on the same seeds (94 budget terminations; six individually infeasible at each cap); the five-second run is a budget diagnostic, not a matched-compute comparison or evidence against mature CBS. Run regression tests with `python -m unittest discover -s code -p 'test_*.py' -v`.
+
+The optional-demand spatial CBS retains feasible paths when another demand is infeasible. An extended 60-scene matched run gave each method a 4.8-s repair cap after shared initialization; total mean elapsed time, including that shared initialization, was 5.011 s for random repair and 5.013 s for spatial CBS. Random repair completed 9/60 and routed 7.13/9 systems on average; CBS completed 0/60 and routed 4.92/9. All 120 outputs passed the independent validator. The nine discordant complete-scene outcomes favored random (exact two-sided McNemar p=0.0039). This is evidence about this particular bounded permanent-space CBS adaptation under the tested budget, not about unrestricted or mature CBS, and not a faithful temporal MAPF comparison. Raw observations, run manifests, and checksums are archived as `spatial_cbs_total_matched_60.*`.
 
 The exact MILP diagnostic found 1/100 complete sets at a 1s cap and 24/100 at a 30s cap (16 optimal under its weighted objective, eight feasible incumbents returned at the time limit). The 30s run has a larger compute budget than the heuristic holdout and is descriptive only. The MILP minimizes a 10,000-unit penalty per unrouted commodity plus unit-edge and vertical-step proxy cost; bend penalties are omitted. This weighted objective does not guarantee strict lexicographic maximization of routed count, and optimality statements apply only to this proxy. Time-limit results do not prove infeasibility. Checksums and per-scene pairing are in `data/revision_20261023/exact_mcf/manifest.json`.
 
@@ -100,4 +104,4 @@ python code/audit_public_plantroom_dataset.py `
 
 Legacy scripts and files outside `revision_20261023/` are retained for provenance. The current scale table was regenerated from the published `run_scaling_matched_density.py` generator after the earlier table's source was found missing; the withdrawn earlier file remains only in the local revision audit history. Replay commands write new outputs, and time-limited runtimes or outcomes can vary across machines. The archived tables remain the authoritative evidence for the current manuscript.
 
-The matched adaptive comparison, corrected CBS incumbent logic, 10-scene CBS diagnostic, and plant-room dataset audit are included in release `v2.9.0`. No DOI is currently claimed.
+The matched adaptive comparison, corrected CBS incumbent logic, 10- and 60-scene CBS diagnostics, and plant-room dataset audit are included in the current source tree. No DOI is currently claimed; check the release page before citing the repository version.

@@ -140,6 +140,63 @@ def validate_new_revision_evidence(data: Path) -> None:
             "plant-room compatibility boundary must remain explicit")
 
 
+def validate_matched_cbs_diagnostic(data: Path) -> None:
+    """Verify the same-scene, equal-wall-clock spatial CBS diagnostic."""
+    archive = data / "spatial_cbs_matched_5s_10.csv"
+    manifest = json.loads((data / "spatial_cbs_matched_5s_10.manifest.json").read_text(encoding="utf-8"))
+    observations = rows(archive)
+    require(len(observations) == 20 and all(row["validated"] == "1" for row in observations),
+            "matched CBS archive must have 20 validated route outputs")
+    require(manifest["budget"]["seconds"] == 5.0
+            and manifest["arguments"]["iterations"] == 10000,
+            "matched CBS runtime budget metadata mismatch")
+    require(manifest["source_sha256"] == hashlib.sha256(
+        (data.parent.parent / "code" / "routing_revision_solvers.py").read_bytes()
+    ).hexdigest(), "matched CBS source checksum mismatch")
+    require(manifest["raw_sha256"] == hashlib.sha256(archive.read_bytes()).hexdigest(),
+            "matched CBS archive checksum mismatch")
+    pairs = defaultdict(dict)
+    for row in observations:
+        pairs[row["seed"]][row["method"]] = row
+    require(len(pairs) == 10 and all(set(pair) == {"random", "spatial_cbs"}
+                                     for pair in pairs.values()),
+            "matched CBS archive must contain ten complete pairs")
+    require(all(pair["random"]["scene_hash"] == pair["spatial_cbs"]["scene_hash"]
+                for pair in pairs.values()), "CBS and random must use identical scenes")
+    require(sum(int(row["success"]) for row in observations if row["method"] == "random") == 2
+            and sum(int(row["success"]) for row in observations if row["method"] == "spatial_cbs") == 0,
+            "matched CBS completion counts mismatch")
+
+
+def validate_extended_cbs_diagnostic(data: Path) -> None:
+    """Check the 60-scene, paired wall-clock spatial CBS extension."""
+    archive = data / "spatial_cbs_total_matched_60.csv"
+    manifest = json.loads((data / "spatial_cbs_total_matched_60.manifest.json").read_text(encoding="utf-8"))
+    observations = rows(archive)
+    require(len(observations) == 120 and all(row["validated"] == "1" for row in observations),
+            "extended CBS archive must contain 120 validated method outputs")
+    require(manifest["scene_count"] == 60 and manifest["method_output_count"] == 120
+            and manifest["method_budget_seconds"] == 4.8
+            and manifest["shared_initialization"] is True,
+            "extended CBS manifest metadata mismatch")
+    require(manifest["source_sha256"] == hashlib.sha256(
+        (data.parent.parent / "code" / "routing_revision_solvers.py").read_bytes()
+    ).hexdigest(), "extended CBS solver checksum mismatch")
+    require(manifest["raw_sha256"] == hashlib.sha256(archive.read_bytes()).hexdigest(),
+            "extended CBS raw checksum mismatch")
+    pairs = defaultdict(dict)
+    for row in observations:
+        pairs[row["seed"]][row["method"]] = row
+    require(len(pairs) == 60 and all(set(pair) == {"random", "spatial_cbs"}
+                                     for pair in pairs.values()),
+            "extended CBS archive must contain 60 complete pairs")
+    require(all(pair["random"]["scene_hash"] == pair["spatial_cbs"]["scene_hash"]
+                for pair in pairs.values()), "extended CBS methods must use identical scenes")
+    require(sum(int(row["success"]) for row in observations if row["method"] == "random") == 9
+            and sum(int(row["success"]) for row in observations if row["method"] == "spatial_cbs") == 0,
+            "extended CBS completion counts mismatch")
+
+
 def validate(data: Path) -> None:
     """Validate row totals, method balance, and source-audit counts."""
     main = rows(data / "main_150_raw.csv")
@@ -403,7 +460,9 @@ def validate(data: Path) -> None:
     validate_advanced_pilot(data)
     validate_clinic_ifc_audit(data)
     validate_new_revision_evidence(data)
-    print("PASS: primary archives, IFC readiness screens, extended-budget diagnostics, new paired studies, and route validation")
+    validate_matched_cbs_diagnostic(data)
+    validate_extended_cbs_diagnostic(data)
+    print("PASS: primary archives, IFC readiness screens, budget diagnostics, paired studies, and route validation")
 
 
 def main() -> None:

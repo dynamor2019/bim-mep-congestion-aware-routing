@@ -179,61 +179,65 @@ def pbs(context, initial, budget):
     return best, trace, {"status": status, "nodes": expanded}
 
 
+def _cbs_signature(constraints, dropped):
+    return (tuple((i, tuple(sorted(nodes)))
+                  for i, nodes in sorted(constraints.items())),
+            tuple(sorted(dropped)))
+
+
+def _cbs_child(context, constraints, dropped, paths, agent, vertex):
+    child_constraints = {i: set(nodes) for i, nodes in constraints.items()}
+    child_constraints.setdefault(agent, set()).add(vertex)
+    child_dropped = set(dropped)
+    child_paths = dict(paths)
+    route = context.plan(agent, child_constraints[agent])
+    if route is None:
+        child_dropped.add(agent)
+        child_paths.pop(agent, None)
+    else:
+        child_paths[agent] = route
+    return child_constraints, child_dropped, child_paths
+
+
 def spatial_cbs(context, budget):
-    """Run CBS over permanent shared-voxel conflicts, not temporal conflicts."""
+    """Search permanent vertex conflicts, allowing infeasible demands to drop."""
     started = time.perf_counter()
     deadline = started + budget.seconds
-    terminals = context.terminals
-    root_constraints = {}
-    root_paths = {}
+    constraints, dropped, paths = {}, set(), {}
     for index in range(len(context.instance.commodities)):
         if time.perf_counter() >= deadline:
             return {}, [], {"status": "budget", "nodes": 0}
-        path = context.plan(index, terminals - {
-            context.instance.commodities[index].start,
-            context.instance.commodities[index].goal,
-        })
-        if path is None:
-            return {}, [], {"status": "individual_infeasible", "nodes": 0}
-        root_paths[index] = path
-
-    nodes = [(objective(context.instance, root_paths), 0, root_constraints, root_paths)]
-    seen = {()}
-    expanded = 0
-    trace = []
-    best = feasible_subset(root_paths)
+        route = context.plan(index)
+        if route is None:
+            dropped.add(index)
+        else:
+            paths[index] = route
+    priority = objective(context.instance, paths)
+    nodes = [(priority, 0, constraints, dropped, paths)]
+    seen = {_cbs_signature(constraints, dropped)}
+    best = feasible_subset(paths)
+    best_cost = objective(context.instance, best)
+    expanded, trace = 0, []
     while nodes and expanded < budget.nodes and time.perf_counter() < deadline:
-        _, _, constraints, paths = heapq.heappop(nodes)
+        _, _, constraints, dropped, paths = heapq.heappop(nodes)
         expanded += 1
         candidate = feasible_subset(paths)
-        if objective(context.instance, candidate) < objective(context.instance, best):
-            best = candidate
+        if objective(context.instance, candidate) < best_cost:
+            best, best_cost = candidate, objective(context.instance, candidate)
         conflict = first_conflict(paths)
         trace.append({"t": time.perf_counter() - started,
                       "objective": objective(context.instance, paths)})
         if conflict is None:
             return paths, trace, {"status": "solved", "nodes": expanded}
+        vertex = next(v for v in paths[conflict[0]] if v in paths[conflict[1]])
         for agent in conflict:
-            vertex = next(v for v in paths[conflict[0]] if v in paths[conflict[1]])
-            child_constraints = {key: set(value) for key, value in constraints.items()}
-            child_constraints.setdefault(agent, set()).add(vertex)
-            signature = tuple((key, tuple(sorted(value)))
-                              for key, value in sorted(child_constraints.items()))
+            child = _cbs_child(context, constraints, dropped, paths, agent, vertex)
+            signature = _cbs_signature(child[0], child[1])
             if signature in seen:
                 continue
             seen.add(signature)
-            item = context.instance.commodities[agent]
-            forbidden = terminals - {item.start, item.goal}
-            forbidden |= child_constraints[agent]
-            route = context.plan(agent, forbidden)
-            if route is None:
-                continue
-            child_paths = dict(paths)
-            child_paths[agent] = route
-            heapq.heappush(nodes, (
-                objective(context.instance, child_paths), len(seen),
-                child_constraints, child_paths,
-            ))
+            heapq.heappush(nodes, (objective(context.instance, child[2]),
+                                   len(seen), *child))
     status = "budget" if nodes else "exhausted"
     return best, trace, {"status": status, "nodes": expanded}
 
