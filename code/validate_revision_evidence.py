@@ -12,6 +12,7 @@ from pathlib import Path
 
 def rows(path: Path) -> list[dict[str, str]]:
     """Load a UTF-8 CSV while tolerating a BOM."""
+    csv.field_size_limit(10_000_000)
     with path.open(encoding="utf-8-sig", newline="") as stream:
         return list(csv.DictReader(stream))
 
@@ -20,6 +21,41 @@ def require(condition: bool, message: str) -> None:
     """Raise an actionable error for a failed archive invariant."""
     if not condition:
         raise ValueError(message)
+
+
+def validate_advanced_pilot(data: Path) -> None:
+    """Check the exploratory multi-operator pilot archive and route flags."""
+    pilot_dir = data / "advanced_validation_5seed"
+    manifest = json.loads((pilot_dir / "manifest.json").read_text(encoding="utf-8"))
+    pilot = rows(pilot_dir / "advanced_validation_raw.csv")
+    require(len(pilot) == 45 and manifest["rows"] == 45,
+            "advanced pilot must contain 45 observations")
+    require(all(row["validated"] == "1" for row in pilot),
+            "all advanced pilot routes must pass independent validation")
+    require(all(int(row["success"]) == int(int(row["routed"]) == int(row["total"]))
+                for row in pilot), "advanced pilot success flags must match routed counts")
+    source_path = data.parent.parent / "code" / "run_advanced_validation.py"
+    source_digest = hashlib.sha256(source_path.read_bytes()).hexdigest()
+    require(manifest["source_sha256"] == source_digest,
+            "advanced pilot source checksum mismatch")
+    for filename, expected in manifest["files"].items():
+        path = pilot_dir / filename
+        require(path.stat().st_size == expected["bytes"],
+                f"advanced pilot file size mismatch: {filename}")
+        require(hashlib.sha256(path.read_bytes()).hexdigest() == expected["sha256"],
+                f"advanced pilot checksum mismatch: {filename}")
+    groups = Counter((row["size"], row["method"]) for row in pilot)
+    require(all(groups[(size, method)] == 5
+                for size in ("base", "large", "xlarge")
+                for method in ("mspp_random_repair", "adaptive_multi_operator", "conflict_guided")),
+            "advanced pilot must contain five paired seeds per size and method")
+    expected = manifest["key_outcomes"]
+    for size in ("large", "xlarge"):
+        for method in ("mspp_random_repair", "adaptive_multi_operator", "conflict_guided"):
+            complete = sum(int(row["success"]) for row in pilot
+                            if row["size"] == size and row["method"] == method)
+            require(complete == expected[size][f"{method}_complete"],
+                    f"advanced pilot completion count mismatch: {size}/{method}")
 
 
 def validate(data: Path) -> None:
@@ -188,7 +224,46 @@ def validate(data: Path) -> None:
     }
     require(pair_counts == {"heating": 0, "plumbing": 0, "ventilation": 0},
             "Digital Hub terminal-pair readiness mismatch")
-    print("PASS: main/sensitivity/holdout, spatial CBS and exact-MCF diagnostics, factorial/scale stress, and IFC audit counts/readiness")
+
+    budget_dir = data / "extended_budget_diagnostics"
+    budget_manifest = json.loads((budget_dir / "manifest.json").read_text(encoding="utf-8"))
+    budget_rows = {}
+    for filename, expected in budget_manifest["files"].items():
+        path = budget_dir / filename
+        require(hashlib.sha256(path.read_bytes()).hexdigest() == expected["sha256"],
+                f"extended budget diagnostic checksum mismatch: {filename}")
+        budget_rows[filename] = rows(path)
+        require(len(budget_rows[filename]) == expected["rows"],
+                f"extended budget diagnostic row count mismatch: {filename}")
+        require(all(row["validated"] == "1" for row in budget_rows[filename]),
+                f"extended budget diagnostic has unvalidated rows: {filename}")
+    pbs = {row["seed"]: row for row in budget_rows["pbs_30s_nodes_10.csv"]}
+    random_runs = {row["seed"]: row for row in budget_rows["random_30s_10.csv"]}
+    require(set(pbs) == set(random_runs) == {str(seed) for seed in budget_manifest["seeds"]},
+            "extended PBS/random seed pairing mismatch")
+    require(all(pbs[seed]["scene_hash"] == random_runs[seed]["scene_hash"] for seed in pbs),
+            "extended PBS/random scenes are not matched")
+    reference_hashes = {
+        row["seed"]: row["scene_hash"]
+        for row in tables["high_stress_holdout_1000.csv"]
+        if row["seed"] in pbs
+    }
+    require(reference_hashes.keys() == pbs.keys()
+            and all(pbs[seed]["scene_hash"] == reference_hashes[seed] for seed in pbs),
+            "extended budget scenes do not match the archived 100-scene holdout")
+    require(sum(int(row["success"]) for row in pbs.values()) == 3
+            and sum(int(row["success"]) for row in random_runs.values()) == 2,
+            "extended PBS/random success counts mismatch")
+    pair_counts = Counter((int(pbs[seed]["success"]), int(random_runs[seed]["success"]))
+                          for seed in pbs)
+    require(pair_counts == Counter({(0, 0): 7, (1, 1): 2, (1, 0): 1}),
+            "extended PBS/random paired outcomes mismatch")
+    require(sum(int(row["success"]) for row in budget_rows["cbs_30s_nodes_10.csv"]) == 0
+            and len(budget_rows["cbs_120s_nodes_1.csv"]) == 1
+            and budget_rows["cbs_120s_nodes_1.csv"][0]["status"] == "budget",
+            "extended CBS budget outcomes mismatch")
+    validate_advanced_pilot(data)
+    print("PASS: primary archives, IFC audit/readiness, extended-budget diagnostics, and advanced-pilot hashes and route validation")
 
 
 def main() -> None:

@@ -1,0 +1,34 @@
+{
+  "scope": "Exploratory adaptive-operator and larger-grid diagnostic; not primary inference",
+  "rows": 45,
+  "seeds_per_scale": 5,
+  "scales": {
+    "base": {"shape": [16, 12, 3], "systems": 9},
+    "large": {"shape": [24, 18, 4], "systems": 12},
+    "xlarge": {"shape": [32, 24, 5], "systems": 15}
+  },
+  "methods": ["mspp_random_repair", "adaptive_multi_operator", "conflict_guided"],
+  "protocol": "Same generated instances and initial priority ordering per scale/seed; 5-iteration random-repair baseline versus 8-iteration adaptive or conflict-only repair. This is not a compute-matched comparison.",
+  "key_outcomes": {
+    "large": {"mspp_random_repair_complete": 4, "adaptive_multi_operator_complete": 4, "conflict_guided_complete": 3},
+    "xlarge": {"mspp_random_repair_complete": 4, "adaptive_multi_operator_complete": 4, "conflict_guided_complete": 3},
+  "xlarge_median_runtime_seconds": {"mspp_random_repair": 2.855, "adaptive_multi_operator": 4.942, "conflict_guided": 5.912}
+  },
+  "interpretation": "The pilot found no complete-routing advantage for the adaptive multi-operator method over the random-repair baseline at either larger scale. The xlarge run cost more time. Five seeds per scale are too few for confirmatory inference; the separate 15-seed matched-density scale study remains the stronger scaling evidence.",
+  "reproduction": "python code/run_advanced_validation.py --seeds 5 --output results/advanced_validation_5seed",
+  "python": "3.11.0 (main, Oct 24 2022, 18:26:48)",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "source_sha256": "96b5dd3269c0c248222e660d61b05f99945faf049b6b586fee30f7897c830ef0",
+  "router_sha256": "f74d25b5db8579d84f3b853ca43256df5e26f41575b5d9e5906cf41449dcc03d",
+  "all_45_routes_pass_independent_validator": true,
+  "files": {
+    "advanced_validation_raw.csv": {
+      "bytes": 8451,
+      "sha256": "5d666785d9b78b40dc1e8e68b8f822e31cb646abc7ee8f5b311df451a735c3fd"
+    },
+    "advanced_validation_summary.json": {
+      "bytes": 199,
+      "sha256": "8979cc1de6788aa973379b7b9d7093e808ef9be7835df85336a1fef547582819"
+    }
+  }
+}

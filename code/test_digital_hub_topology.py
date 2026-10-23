@@ -31,9 +31,9 @@ class DigitalHubTopologyTests(unittest.TestCase):
         graph = {
             "systems": [{"id": 7, "name": "rainwater"}],
             "vertices": [
-                {"id": 0, "ifc_id": 10, "owner_type": "IfcWasteTerminal", "systems": [7], "flow_direction": "SOURCE"},
-                {"id": 1, "ifc_id": 11, "owner_type": "IfcPipeSegment", "systems": [7]},
-                {"id": 2, "ifc_id": 12, "owner_type": "IfcWasteTerminal", "systems": [7], "flow_direction": "SINK"},
+                {"id": 0, "ifc_id": 10, "owner_ifc_id": 100, "owner_type": "IfcWasteTerminal", "systems": [7], "flow_direction": "SOURCE"},
+                {"id": 1, "ifc_id": 11, "owner_ifc_id": 101, "owner_type": "IfcPipeSegment", "systems": [7]},
+                {"id": 2, "ifc_id": 12, "owner_ifc_id": 102, "owner_type": "IfcWasteTerminal", "systems": [7], "flow_direction": "SINK"},
             ],
             "edges": [{"from": 0, "to": 1}, {"from": 1, "to": 2}],
         }
@@ -45,6 +45,11 @@ class DigitalHubTopologyTests(unittest.TestCase):
         ambiguous = directed_terminal_pair_summary(graph)
         self.assertEqual(ambiguous["two_terminal_components"], 1)
         self.assertEqual(ambiguous["directed_source_sink_pairs"], 0)
+
+        graph["vertices"][2]["owner_ifc_id"] = 100
+        same_owner = directed_terminal_pair_summary(graph)
+        self.assertEqual(same_owner["two_terminal_components"], 0)
+        self.assertEqual(same_owner["directed_source_sink_pairs"], 0)
 
 
 if __name__ == "__main__":

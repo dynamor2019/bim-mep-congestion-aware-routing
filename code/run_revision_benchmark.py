@@ -76,10 +76,13 @@ def main():
     parser.add_argument("--cohort", default="holdout")
     parser.add_argument("--seconds", type=float, default=1.0)
     parser.add_argument("--iterations", type=int, default=20)
+    parser.add_argument("--nodes", type=int, default=256)
     parser.add_argument("--methods", nargs="+", default=["random", "static_random", "guided", "guided_select_only", "length", "blocker", "conflict", "adaptive", "spatial_mapf_lns2", "pbs_static"])
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    budget = SearchBudget(seconds=args.seconds, iterations=args.iterations)
+    if args.nodes < 1:
+        parser.error("--nodes must be positive")
+    budget = SearchBudget(seconds=args.seconds, iterations=args.iterations, nodes=args.nodes)
     args.output.mkdir(parents=True, exist_ok=True)
     metadata = {"arguments": vars(args) | {"output": str(args.output)},
                 "budget": vars(budget), "python": sys.version, "platform": platform.platform(),

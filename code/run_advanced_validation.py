@@ -24,6 +24,7 @@ from run_routing_experiments import (
     generate_instance,
     improve,
 )
+from routing_revision_solvers import validate_paths
 
 
 def scaled_instance(size: str, seed: int) -> Instance:
@@ -80,6 +81,7 @@ def adaptive_repair(instance: Instance, initial: dict, predicted: dict, seed: in
     """Use hotspot, longest-path, and random operators with simple reward adaptation."""
     rng = random.Random(seed)
     paths = dict(initial)
+    terminals = {point for item in instance.commodities for point in (item.start, item.goal)}
     trace = [objective(instance, paths)]
     operators = ["conflict", "longest", "random"]
     rewards = {name: 1.0 for name in operators}
@@ -101,7 +103,9 @@ def adaptive_repair(instance: Instance, initial: dict, predicted: dict, seed: in
         occupied = {node for path in kept.values() for node in path[1:-1]}
         candidate = dict(kept)
         for index in sorted(selected, key=lambda i: scores.get(i, 1000.0), reverse=True):
-            path = astar(instance, instance.commodities[index], occupied, predicted, 2.0)
+            item = instance.commodities[index]
+            forbidden = occupied | (terminals - {item.start, item.goal})
+            path = astar(instance, item, forbidden, predicted, 2.0)
             if path:
                 candidate[index] = path
                 occupied.update(path[1:-1])
@@ -131,7 +135,8 @@ def run_case(instance: Instance, method: str, seed: int) -> dict:
         paths, trace = adaptive_repair(instance, base, predicted, seed, conflict_only=True)
     else:
         paths, trace = adaptive_repair(instance, base, predicted, seed, conflict_only=False)
-    return {"method": method, "seed": seed, "routed": len(paths), "total": len(instance.commodities), "success": int(len(paths) == len(instance.commodities)), "objective": objective(instance, paths), "cost": solution_cost(instance, paths), "runtime_s": time.perf_counter() - started, "trace": json.dumps(trace)}
+    validate_paths(instance, paths)
+    return {"method": method, "seed": seed, "routed": len(paths), "total": len(instance.commodities), "success": int(len(paths) == len(instance.commodities)), "objective": objective(instance, paths), "cost": solution_cost(instance, paths), "runtime_s": time.perf_counter() - started, "validated": 1, "trace": json.dumps(trace)}
 
 
 def main() -> None:

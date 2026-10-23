@@ -1,0 +1,54 @@
+{
+  "scope": "Exploratory matched-seed budget diagnostics; not part of the primary inference or public v2.5.0 release",
+  "cohort": "first 10 fixed high-stress holdout seeds",
+  "seeds": [100000, 100001, 100002, 100003, 100004, 100005, 100006, 100007, 100008, 100009],
+  "shared_initialization": "Deterministic best-of-two prioritized initialization, regenerated identically from each seed",
+  "paired_30s": {
+    "time_limit_seconds": 30,
+    "pbs_node_limit": 10000,
+    "random_iteration_limit": 5000,
+    "spatial_cbs_node_limit": 10000,
+    "successes": {"pbs_static": 3, "random": 2, "spatial_cbs": 0},
+    "pbs_random_pair_counts": {"both_failed": 7, "both_succeeded": 2, "pbs_only": 1, "random_only": 0},
+    "pbs_random_exact_two_sided_mcnemar_p": 1.0,
+    "interpretation": "Exploratory n=10; one discordant pair provides no evidence of a PBS advantage. A common wall-clock cap was used, but methods did not consume equal actual runtime. CBS returned no complete conflict-free set; this is not an infeasibility proof."
+  },
+  "spatial_cbs_120s": {
+    "seed": 100000,
+    "time_limit_seconds": 120,
+    "node_limit": 20000,
+    "expanded_nodes": 3939,
+    "success": 0,
+    "status": "budget",
+    "interpretation": "Single-instance budget diagnostic only; not evidence against mature or faithful CBS implementations."
+  },
+  "all_output_rows_independently_validated": true,
+  "files": {
+    "pbs_30s_nodes_10.csv": {
+      "rows": 10,
+      "bytes": 164503,
+      "sha256": "e2c0c04ceff6752d87efcd551b80e17de836c2acae5ee6dca4c32d49c05cc12c"
+    },
+    "random_30s_10.csv": {
+      "rows": 10,
+      "bytes": 585094,
+      "sha256": "6a9f6f9b69e84a69e16a928315b33b2e61875077def8003681ed7111582baf80"
+    },
+    "cbs_30s_nodes_10.csv": {
+      "rows": 10,
+      "bytes": 508862,
+      "sha256": "1f02acb56302b510c47bd9e4070ee3403caadad1cb10929832eec859aaeba19f"
+    },
+    "cbs_120s_nodes_1.csv": {
+      "rows": 1,
+      "bytes": 218011,
+      "sha256": "c3e883fc37d41e7d3f9befbeeaf6fd1f3042f126dcb1e9b107e0efab2e9e5666"
+    }
+  },
+  "reproduction_commands": [
+    "python code/run_revision_benchmark.py --seeds 10 --start-seed 100000 --seconds 30 --nodes 10000 --methods pbs_static --output results/spatial_pbs_30s_nodes_10",
+    "python code/run_revision_benchmark.py --seeds 10 --start-seed 100000 --seconds 30 --iterations 5000 --nodes 10000 --methods random --output results/random_30s_10",
+    "python code/run_revision_benchmark.py --seeds 10 --start-seed 100000 --seconds 30 --nodes 10000 --methods spatial_cbs --output results/spatial_cbs_30s_nodes_10",
+    "python code/run_revision_benchmark.py --seeds 1 --start-seed 100000 --seconds 120 --nodes 20000 --methods spatial_cbs --output results/spatial_cbs_120s_1"
+  ]
+}

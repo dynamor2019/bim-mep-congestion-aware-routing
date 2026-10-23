@@ -17,7 +17,7 @@ TERMINAL_TYPES = {"IfcSpaceHeater", "IfcSanitaryTerminal", "IfcWasteTerminal", "
 
 
 def directed_terminal_pair_summary(graph: dict) -> dict:
-    """Count components with exactly one recognized source and one sink."""
+    """Count components with two distinct terminal owners and opposite roles."""
     vertices = {vertex["id"]: vertex for vertex in graph["vertices"]}
     adjacency = collections.defaultdict(set)
     for edge in graph["edges"]:
@@ -43,16 +43,31 @@ def directed_terminal_pair_summary(graph: dict) -> dict:
                     if neighbor not in visited:
                         visited.add(neighbor)
                         stack.append(neighbor)
-            terminals = [vertices[node] for node in component
-                         if vertices[node].get("owner_type") in TERMINAL_TYPES]
-            if len(terminals) != 2:
+            terminal_owners = {}
+            for node in component:
+                vertex = vertices[node]
+                if vertex.get("owner_type") not in TERMINAL_TYPES:
+                    continue
+                owner_id = vertex.get("owner_ifc_id")
+                if owner_id is None:
+                    owner_id = vertex["id"]
+                owner = terminal_owners.setdefault(owner_id, {
+                    "owner_type": vertex["owner_type"], "directions": set(),
+                })
+                if vertex.get("flow_direction"):
+                    owner["directions"].add(vertex["flow_direction"])
+            if len(terminal_owners) != 2:
                 continue
             two_terminal_components += 1
-            directions = collections.Counter(terminal.get("flow_direction") for terminal in terminals)
-            if directions == {"SOURCE": 1, "SINK": 1}:
+            source_owners = [owner_id for owner_id, owner in terminal_owners.items()
+                             if owner["directions"] == {"SOURCE"}]
+            sink_owners = [owner_id for owner_id, owner in terminal_owners.items()
+                           if owner["directions"] == {"SINK"}]
+            if len(source_owners) == 1 and len(sink_owners) == 1:
                 pairs.append({
                     "system_name": system["name"],
-                    "terminal_port_ids": sorted(terminal["ifc_id"] for terminal in terminals),
+                    "source_owner_ifc_id": source_owners[0],
+                    "sink_owner_ifc_id": sink_owners[0],
                 })
     return {
         "recognized_terminal_types": sorted(TERMINAL_TYPES),

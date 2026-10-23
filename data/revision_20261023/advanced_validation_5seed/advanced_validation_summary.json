@@ -1,0 +1,9 @@
+{
+  "methods": [
+    "mspp_random_repair",
+    "adaptive_multi_operator",
+    "conflict_guided"
+  ],
+  "note": "Exploratory prototype extension; not faithful PBS or MAPF-LNS.",
+  "rows": 45
+}
