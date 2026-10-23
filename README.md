@@ -71,4 +71,4 @@ The reported component counts describe the extracted graph under explicit port r
 
 Legacy scripts and files outside `revision_20261023/` are retained for provenance. The current scale table was regenerated from the published `run_scaling_matched_density.py` generator after the earlier table's source was found missing; the withdrawn earlier file remains only in the local revision audit history. Replay commands write new outputs, and time-limited runtimes or outcomes can vary across machines. The archived tables remain the authoritative evidence for the current manuscript.
 
-The old `v1.0.0` tag predates these corrections. The `v2.4.0` archive contains the spatial LNS2-style comparison and extended CBS diagnostic. The exact-MILP diagnostic is an additional revision archive extension; no DOI is currently claimed.
+The old `v1.0.0` tag predates these corrections. The `v2.5.0` archive adds matched-scene weighted-objective MCF MILP diagnostics at 1s and 30s caps to the spatial LNS2-style and CBS evidence. No DOI is currently claimed.
