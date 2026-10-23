@@ -39,3 +39,6 @@ The synthetic benchmark is unit-resolution evidence. The envelope and IFC runs a
 ## Version and DOI
 
 The local source is tagged `v1.0.0`. Create a public GitHub repository, push this tag, then connect the repository to Zenodo and archive the `v1.0.0` release to mint the DOI recorded by Zenodo.
+
+### Exploratory adaptive repair and scale stress
+Run python code/run_advanced_validation.py --seeds 5 to reproduce the exploratory adaptive-operator and scale-stress results. This is not a faithful PBS, CBS, or MAPF-LNS implementation; use it as a disclosed boundary experiment only.
