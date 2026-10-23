@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+title: "Reproducibility bundle for congestion-aware routing in BIM-MEP coordination"
+message: "If you use this software or data, please cite the associated Automation in Construction manuscript."
+type: software
+authors:
+  - family-names: Xiaoliang
+    given-names: Li
+    email: lixiaol@nciae.edu.cn
+    affiliation: North China Institute of Aerospace Engineering
+  - family-names: Xin
+    given-names: Zou
+    affiliation: North China Institute of Aerospace Engineering
+version: 1.0.0
+date-released: 2026-10-23
+license: MIT
+keywords:
+  - BIM
+  - MEP coordination
+  - route planning
+  - congestion-aware repair
+  - IFC

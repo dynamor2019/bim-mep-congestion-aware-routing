@@ -1,0 +1,13 @@
+{
+  "title": "Reproducibility bundle for congestion-aware routing in BIM-MEP coordination",
+  "upload_type": "software",
+  "description": "Code, data, IFC adapter artifacts, and revision experiments for the associated Automation in Construction manuscript AUTCON-D-26-05125.",
+  "creators": [
+    {"name": "Li, Xiaoliang", "affiliation": "North China Institute of Aerospace Engineering"},
+    {"name": "Zou, Xin", "affiliation": "North China Institute of Aerospace Engineering"}
+  ],
+  "keywords": ["BIM", "MEP coordination", "routing", "IFC", "large-neighborhood repair"],
+  "license": "MIT",
+  "version": "1.0.0",
+  "publication_date": "2026-10-23"
+}
