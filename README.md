@@ -133,6 +133,18 @@ python code/summarize_adaptive_wallclock.py results/matched_adaptive_wallclock_9
 python code/validate_revision_evidence.py --data data/revision_20261023
 ```
 
+## Independent adaptive-repair cohort
+
+`data/revision_20261024/adaptive_wallclock_independent_300.csv` contains 300 new paired scenes, using seeds 120000-120099 at each of 9, 12, and 15 systems (600 independently validated outputs). It is an independent seed cohort, not another repeat of the earlier 90-scene sample. Both methods use the same initial routes and a nominal 1-s repair cap; because the cap is checked between complete iterations, observed runtimes can exceed 1 s. Random versus adaptive completion was 21/100 versus 12/100 at 9 systems (11 random-only, 2 adaptive-only; exact McNemar `p=0.0225`, Holm-adjusted `p=0.0225`), 45/100 versus 31/100 at 12 systems (17 versus 3 discordant; `p=0.00258`, Holm-adjusted `p=0.00586`), and 73/100 versus 63/100 at 15 systems (10 versus 0 discordant; `p=0.00195`, Holm-adjusted `p=0.00586`). The adaptive portfolio had a longer median observed runtime at every scale (1.031 vs 1.014 s; 1.153 vs 1.050 s; 1.284 vs 1.142 s). Within this generator and nominal budget, this independent cohort favors random repair; it does not establish universal superiority because the iteration-boundary timer can overshoot and scale is confounded with grid size and system count.
+
+Reproduce the new cohort and its Holm-adjusted summary with:
+
+```powershell
+python code/run_matched_adaptive_wallclock.py --seeds 100 --start-seed 120000 --budget-seconds 1.0 --output data/revision_20261024/adaptive_wallclock_independent_300.csv
+python code/summarize_adaptive_wallclock.py data/revision_20261024/adaptive_wallclock_independent_300.csv data/revision_20261024/adaptive_wallclock_independent_300_summary.json --run-source code/run_matched_adaptive_wallclock.py --implementation-source code/run_routing_experiments.py code/run_advanced_validation.py
+python code/validate_revision_evidence.py --data data/revision_20261023
+```
+
 ## Shared-incumbent permanent-space CBS diagnostic
 
 `data/revision_20261023/spatial_cbs_shared_incumbent_100_5s/` contains a new 100-scene paired comparison. The CBS root contains the same best-of-two partial incumbent passed to random repair; it adds independently shortest paths for unserved demands and branches on permanent-vertex conflicts. With the same 5-s cap, 100-iteration limit, 256-node limit, scene seeds, and independent validator, random repair completed 19/100 scenes and routed 7.10/9 demands on average; spatial CBS completed 9/100 and routed 6.71/9. Ten discordant pairs favored random repair and none favored CBS (exact two-sided McNemar $p=0.001953$). Mean observed runtimes were 3.00 s and 4.56 s. All 200 route sets passed validation. This is an equal-scene, common-incumbent permanent-space diagnostic, not a faithful temporal MAPF CBS implementation and not evidence about unrestricted CBS.

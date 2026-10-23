@@ -49,6 +49,8 @@ def summarize(rows: list[dict[str, str]]) -> dict:
     results = []
     for scale in SCALES:
         selected = [pair for (name, _), pair in pairs.items() if name == scale]
+        if not selected:
+            continue
         random_only = sum(int(pair[METHODS[0]]["success"]) == 1
                           and int(pair[METHODS[1]]["success"]) == 0 for pair in selected)
         adaptive_only = sum(int(pair[METHODS[0]]["success"]) == 0
@@ -100,14 +102,22 @@ def main() -> None:
     with args.input.open(encoding="utf-8", newline="") as handle:
         rows = list(csv.DictReader(handle))
     summary = summarize(rows)
-    summary["seeds_per_scale"] = 30
-    summary["start_seed"] = 110000
+    seeds_by_scale = {
+        scale: sorted({int(row["seed"]) for row in rows if row["scale"] == scale})
+        for scale in SCALES
+    }
+    nonempty = [seeds for seeds in seeds_by_scale.values() if seeds]
+    if not nonempty or any(len(seeds) != len(nonempty[0]) for seeds in nonempty):
+        raise ValueError("Each represented scale must contain the same number of paired seeds")
+    summary["seeds_per_scale"] = len(nonempty[0])
+    summary["start_seed"] = min(seed for seeds in nonempty for seed in seeds)
     summary["source_sha256"] = hashlib.sha256(args.run_source.read_bytes()).hexdigest()
     summary["implementation_sha256"] = {
         path.name: hashlib.sha256(path.read_bytes()).hexdigest()
         for path in args.implementation_source
     }
     summary["summary_script_sha256"] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+    summary["raw_sha256"] = hashlib.sha256(args.input.read_bytes()).hexdigest()
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(summary, indent=2), encoding="utf-8")
     manifest = {

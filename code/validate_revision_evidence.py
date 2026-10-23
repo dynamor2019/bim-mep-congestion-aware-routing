@@ -6,6 +6,7 @@ import argparse
 import csv
 import hashlib
 import json
+import math
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -206,6 +207,73 @@ def validate_wallclock_adaptive_archive(data: Path) -> None:
     require(summary["budget_seconds_per_method"] == 1.0
             and "between full repair iterations" in summary["wallclock_note"],
             "wall-clock budget and overrun boundary must be explicit")
+
+
+def validate_independent_adaptive_archive(data: Path) -> None:
+    """Check the independent 300-scene adaptive comparison and provenance."""
+    archive_dir = data.parent / "revision_20261024"
+    archive = archive_dir / "adaptive_wallclock_independent_300.csv"
+    summary_path = archive_dir / "adaptive_wallclock_independent_300_summary.json"
+    manifest_path = archive.with_suffix(archive.suffix + ".manifest.json")
+    observations = rows(archive)
+    summary = json.loads(summary_path.read_text(encoding="utf-8"))
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    require(len(observations) == 600 and all(row["validated"] == "1" for row in observations),
+            "independent adaptive archive must contain 600 validated outputs")
+    require(manifest["outputs"] == 600 and manifest["all_validated"] is True
+            and manifest["raw_sha256"] == hashlib.sha256(archive.read_bytes()).hexdigest()
+            and manifest["summary_sha256"] == hashlib.sha256(summary_path.read_bytes()).hexdigest(),
+            "independent adaptive checksum manifest mismatch")
+    runner = data.parent.parent / "code" / "run_matched_adaptive_wallclock.py"
+    summarizer = data.parent.parent / "code" / "summarize_adaptive_wallclock.py"
+    require(summary["source_sha256"] == hashlib.sha256(runner.read_bytes()).hexdigest()
+            and summary["summary_script_sha256"] == hashlib.sha256(summarizer.read_bytes()).hexdigest(),
+            "independent adaptive source checksum mismatch")
+    implementation = {
+        name: hashlib.sha256((data.parent.parent / "code" / name).read_bytes()).hexdigest()
+        for name in ("run_routing_experiments.py", "run_advanced_validation.py")
+    }
+    require(summary["implementation_sha256"] == implementation
+            and manifest["implementation_sha256"] == implementation,
+            "independent adaptive implementation checksum mismatch")
+    pairs = defaultdict(dict)
+    for row in observations:
+        pairs[(row["scale"], row["seed"])][row["method"]] = row
+    expected = {
+        "base": (21, 12, 11, 2, 0.0224609375),
+        "large": (45, 31, 17, 3, 0.005859375),
+        "xlarge": (73, 63, 10, 0, 0.005859375),
+    }
+    require(len(pairs) == 300 and all(set(pair) == {
+        "mspp_random_repair", "adaptive_multi_operator"} for pair in pairs.values()),
+        "independent adaptive archive must contain 300 complete pairs")
+    for scale, values in expected.items():
+        selected = [pair for (name, _), pair in pairs.items() if name == scale]
+        require(len(selected) == 100
+                and all(pair["mspp_random_repair"]["scene_hash"]
+                        == pair["adaptive_multi_operator"]["scene_hash"]
+                        for pair in selected),
+                f"independent adaptive scene pairing mismatch: {scale}")
+        random_success = sum(int(pair["mspp_random_repair"]["success"]) for pair in selected)
+        adaptive_success = sum(int(pair["adaptive_multi_operator"]["success"]) for pair in selected)
+        random_only = sum(int(pair["mspp_random_repair"]["success"])
+                          > int(pair["adaptive_multi_operator"]["success"]) for pair in selected)
+        adaptive_only = sum(int(pair["mspp_random_repair"]["success"])
+                            < int(pair["adaptive_multi_operator"]["success"]) for pair in selected)
+        discordant = random_only + adaptive_only
+        exact_p = min(1.0, 2 * sum(math.comb(discordant, k)
+                                   for k in range(min(random_only, adaptive_only) + 1))
+                      / (2 ** discordant)) if discordant else 1.0
+        result = next(item for item in summary["scale_results"] if item["scale"] == scale)
+        require((random_success, adaptive_success, random_only, adaptive_only)
+                == values[:4] and result["exact_two_sided_mcnemar_p"] == exact_p
+                and result["holm_adjusted_p_across_three_scales"] == values[4],
+                f"independent adaptive outcome summary mismatch: {scale}")
+    require(summary["paired_scenes"] == 300 and summary["validated_outputs"] == 600
+            and summary["seeds_per_scale"] == 100 and summary["start_seed"] == 120000
+            and summary["budget_seconds_per_method"] == 1.0
+            and "between full repair iterations" in summary["wallclock_note"],
+            "independent adaptive protocol metadata mismatch")
 
 
 def validate_new_revision_evidence(data: Path) -> None:
@@ -684,6 +752,7 @@ def validate(data: Path) -> None:
     validate_clinic_ifc_audit(data)
     validate_ifc4x3_pcert_audit(data)
     validate_new_revision_evidence(data)
+    validate_independent_adaptive_archive(data)
     validate_matched_cbs_diagnostic(data)
     validate_extended_cbs_diagnostic(data)
     validate_current_cbs_incumbent_diagnostic(data)
