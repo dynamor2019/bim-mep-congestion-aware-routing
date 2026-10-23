@@ -42,3 +42,6 @@ The local source is tagged `v1.0.0`. Create a public GitHub repository, push thi
 
 ### Exploratory adaptive repair and scale stress
 Run python code/run_advanced_validation.py --seeds 5 to reproduce the exploratory adaptive-operator and scale-stress results. This is not a faithful PBS, CBS, or MAPF-LNS implementation; use it as a disclosed boundary experiment only.
+
+### Bounded priority-tree baseline pilot
+Run python code/run_strong_baselines.py --seeds 3 --max-nodes 4 for the bounded PBS-like pilot. This is an implementation check, not a full PBS or MAPF-LNS baseline.

@@ -1,0 +1,9 @@
+{
+  "rows": 27,
+  "methods": [
+    "bounded_pbs_like",
+    "conflict_only",
+    "mspp_random_repair"
+  ],
+  "note": "Bounded PBS-like priority tree; not a full PBS/MAPF-LNS implementation."
+}
