@@ -383,6 +383,43 @@ def validate_matched_pbs_diagnostic(data: Path) -> None:
             "matched PBS completion counts mismatch")
 
 
+def validate_matched_permanent_baselines(data: Path) -> None:
+    """Verify the four-method common-scene, common-budget baseline archive."""
+    folder = data / "matched_permanent_baselines_100_5s"
+    archive = folder / "raw.csv"
+    manifest = json.loads((folder / "manifest.json").read_text(encoding="utf-8"))
+    observations = rows(archive)
+    require(len(observations) == 400 and manifest["scene_count"] == 100
+            and manifest["outputs"] == 400,
+            "matched permanent baseline archive must contain 400 outputs")
+    require(manifest["raw_sha256"] == hashlib.sha256(archive.read_bytes()).hexdigest(),
+            "matched permanent baseline raw checksum mismatch")
+    root = data.parent.parent
+    for source in manifest["sources"].values():
+        source_path = root / source["path"] / "raw.csv"
+        require(hashlib.sha256(source_path.read_bytes()).hexdigest() == source["raw_sha256"],
+                f"matched baseline source checksum mismatch: {source_path}")
+    grouped = defaultdict(dict)
+    for row in observations:
+        require(row["validated"] == "1", "matched baseline contains unvalidated route output")
+        grouped[row["method"]][row["seed"]] = row
+    expected = {"random", "spatial_cbs", "pbs_static", "spatial_mapf_lns2"}
+    require(set(grouped) == expected and all(len(grouped[name]) == 100 for name in expected),
+            "matched baseline methods or paired scene counts mismatch")
+    reference = grouped["random"]
+    require(all(grouped[name][seed]["scene_hash"] == reference[seed]["scene_hash"]
+                and grouped[name][seed]["initial_objective"] == reference[seed]["initial_objective"]
+                for name in expected for seed in reference),
+            "matched baseline scene or incumbent mismatch")
+    outcomes = {
+        method: sum(int(row["success"]) for row in grouped[method].values())
+        for method in expected
+    }
+    require(outcomes == {"random": 19, "spatial_cbs": 9,
+                         "pbs_static": 20, "spatial_mapf_lns2": 20},
+            "matched baseline completion counts mismatch")
+
+
 def validate(data: Path) -> None:
     """Validate row totals, method balance, and source-audit counts."""
     main = rows(data / "main_150_raw.csv")
@@ -651,6 +688,7 @@ def validate(data: Path) -> None:
     validate_extended_cbs_diagnostic(data)
     validate_current_cbs_incumbent_diagnostic(data)
     validate_matched_pbs_diagnostic(data)
+    validate_matched_permanent_baselines(data)
     print("PASS: primary archives, IFC readiness screens, budget diagnostics, paired studies, and route validation")
 
 

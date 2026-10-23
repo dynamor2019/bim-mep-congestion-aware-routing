@@ -1,0 +1,32 @@
+{
+  "arguments": {
+    "seeds": 100,
+    "start_seed": 100000,
+    "cohort": "spatial_mapf_lns2_matched_5s",
+    "seconds": 5.0,
+    "iterations": 100,
+    "nodes": 256,
+    "methods": [
+      "spatial_mapf_lns2"
+    ],
+    "output": "results\\spatial_mapf_lns2_matched_5s_100"
+  },
+  "budget": {
+    "seconds": 5.0,
+    "iterations": 100,
+    "nodes": 256,
+    "fraction": 0.25
+  },
+  "python": "3.11.0 (main, Oct 24 2022, 18:26:48) [MSC v.1933 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "timing": "Improvement phase including probes; shared initial planning reported separately. Deadline checked between A* calls; actual elapsed and overshoot recorded.",
+  "scope": "Permanent-occupancy PBS/CBS adaptations and LNS selector controls; no temporal MAPF claim.",
+  "scene_count": 100,
+  "method_outputs": 100,
+  "raw_sha256": "8315911c17c3f898a580dc92809428cd81d17c709cce5026cf2343f2ef2bf471",
+  "source_sha256": {
+    "run_revision_benchmark.py": "e6c3624c2010b842b545e61bb5e337284933e7a0fb99605536eebeb20ab93a86",
+    "routing_revision_solvers.py": "9f111372f515044740d193e54b64afaf9625cfab43288b1305a799b8d3c76a34",
+    "run_routing_experiments.py": "f74d25b5db8579d84f3b853ca43256df5e26f41575b5d9e5906cf41449dcc03d"
+  }
+}

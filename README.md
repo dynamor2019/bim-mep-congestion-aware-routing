@@ -143,3 +143,15 @@ Reproduce and summarize it with:
 python code/run_revision_benchmark.py --seeds 100 --start-seed 100000 --cohort shared_incumbent_cbs_100_5s --seconds 5 --iterations 100 --nodes 256 --methods random spatial_cbs --output results/shared_incumbent_cbs_100_5s
 python code/summarize_revision_benchmark.py results/shared_incumbent_cbs_100_5s/raw.csv results/shared_incumbent_cbs_100_5s/summary.json
 ```
+
+## Matched four-way permanent-space baseline comparison
+
+`data/revision_20261023/matched_permanent_baselines_100_5s/` combines random repair, spatial PBS, spatial CBS, and spatial MAPF-LNS2-style repair on the same 100 high-stress scenes, the same best-of-two initial objectives, and a 5-s/100-iteration/256-node budget. Completion was 19/100, 20/100, 9/100, and 20/100, respectively. Relative to random repair, exact McNemar tests were inconclusive for PBS (one gain, no loss; `p=1.00`) and LNS2-style repair (two gains, one loss; `p=1.00`); CBS had ten losses and no gains (`p=0.00195`, Holm-adjusted `p=0.00586`). Mean routed demands were 7.10, 7.05, 6.71, and 6.82 of nine, and mean observed runtimes were 3.00, 3.66, 4.56, and 4.48 s. All 400 outputs passed independent route validation. These are permanent-occupancy adaptations sharing the same low-level planner, not faithful temporal MAPF implementations or independent solver implementations.
+
+Reproduce the LNS2-style cohort and rebuild the merged archive from the archived CBS/PBS runs with:
+
+```powershell
+python code/run_revision_benchmark.py --seeds 100 --start-seed 100000 --cohort spatial_mapf_lns2_matched_5s --seconds 5 --iterations 100 --nodes 256 --methods spatial_mapf_lns2 --output results/spatial_mapf_lns2_matched_5s_100
+python code/merge_matched_baselines.py --cbs data/revision_20261023/spatial_cbs_shared_incumbent_100_5s --pbs data/revision_20261023/pbs_matched_5s_100 --lns results/spatial_mapf_lns2_matched_5s_100 --output results/matched_permanent_baselines_100_5s
+python code/summarize_revision_benchmark.py results/matched_permanent_baselines_100_5s/raw.csv results/matched_permanent_baselines_100_5s/summary.json
+```

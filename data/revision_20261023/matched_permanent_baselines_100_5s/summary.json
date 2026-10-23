@@ -1,0 +1,145 @@
+{
+  "summary": [
+    {
+      "method": "pbs_static",
+      "n": 100,
+      "successes": 20,
+      "success_rate": 0.2,
+      "wilson_ci95": [
+        0.1333659225590988,
+        0.28883096192650237
+      ],
+      "routed_mean": 7.05,
+      "runtime_mean_s": 3.6602636129994064,
+      "runtime_max_s": 5.124633900006302,
+      "status_counts": {
+        "budget": 65,
+        "exhausted": 9,
+        "individual_infeasible": 6,
+        "solved": 20
+      }
+    },
+    {
+      "method": "random",
+      "n": 100,
+      "successes": 19,
+      "success_rate": 0.19,
+      "wilson_ci95": [
+        0.1251465399270426,
+        0.27779024070807856
+      ],
+      "routed_mean": 7.1,
+      "runtime_mean_s": 2.9983633230024136,
+      "runtime_max_s": 5.025587900017854,
+      "status_counts": {
+        "budget": 1,
+        "iterations": 99
+      }
+    },
+    {
+      "method": "spatial_cbs",
+      "n": 100,
+      "successes": 9,
+      "success_rate": 0.09,
+      "wilson_ci95": [
+        0.04807199516388488,
+        0.16226374696643667
+      ],
+      "routed_mean": 6.71,
+      "runtime_mean_s": 4.558168324998987,
+      "runtime_max_s": 5.057357100013178,
+      "status_counts": {
+        "budget": 91,
+        "solved": 9
+      }
+    },
+    {
+      "method": "spatial_mapf_lns2",
+      "n": 100,
+      "successes": 20,
+      "success_rate": 0.2,
+      "wilson_ci95": [
+        0.1333659225590988,
+        0.28883096192650237
+      ],
+      "routed_mean": 6.82,
+      "runtime_mean_s": 4.482059301996778,
+      "runtime_max_s": 5.083009500027401,
+      "status_counts": {
+        "budget": 100
+      }
+    }
+  ],
+  "paired_against_random": {
+    "spatial_cbs": {
+      "n": 100,
+      "both_success": 9,
+      "both_failure": 81,
+      "gain": 0,
+      "loss": 10,
+      "success_difference": -0.1,
+      "paired_bootstrap_ci95": [
+        -0.16,
+        -0.04
+      ],
+      "conservative_difference_ci95": [
+        -0.18777454057310292,
+        -0.0009616927198602548
+      ],
+      "exact_mcnemar_two_sided": 0.001953125,
+      "cost_ties": 3,
+      "cost_wilcoxon_two_sided": 2.130475282918255e-17,
+      "cost_rank_biserial": -0.992425836313907,
+      "joint_feasible_n": 9,
+      "joint_feasible_cost_delta_mean": 18.288888888888906,
+      "mcnemar_holm_adjusted": 0.005859375
+    },
+    "pbs_static": {
+      "n": 100,
+      "both_success": 19,
+      "both_failure": 80,
+      "gain": 1,
+      "loss": 0,
+      "success_difference": 0.01,
+      "paired_bootstrap_ci95": [
+        0.0,
+        0.03
+      ],
+      "conservative_difference_ci95": [
+        -0.04274825032732565,
+        0.06211922021093343
+      ],
+      "exact_mcnemar_two_sided": 1.0,
+      "cost_ties": 7,
+      "cost_wilcoxon_two_sided": 4.116345619230288e-07,
+      "cost_rank_biserial": -0.6046671242278655,
+      "joint_feasible_n": 19,
+      "joint_feasible_cost_delta_mean": 17.052631578947373,
+      "mcnemar_holm_adjusted": 1.0
+    },
+    "spatial_mapf_lns2": {
+      "n": 100,
+      "both_success": 18,
+      "both_failure": 79,
+      "gain": 2,
+      "loss": 1,
+      "success_difference": 0.01,
+      "paired_bootstrap_ci95": [
+        -0.02,
+        0.04
+      ],
+      "conservative_difference_ci95": [
+        -0.060441152697400836,
+        0.07864969363464443
+      ],
+      "exact_mcnemar_two_sided": 1.0,
+      "cost_ties": 3,
+      "cost_wilcoxon_two_sided": 9.542299051972573e-15,
+      "cost_rank_biserial": -0.9057437407952872,
+      "joint_feasible_n": 18,
+      "joint_feasible_cost_delta_mean": 0.9500000000000076,
+      "mcnemar_holm_adjusted": 1.0
+    }
+  },
+  "inference": "two-sided exact paired feasibility; Holm correction across 3 comparisons; difference CI uses Bonferroni-combined 97.5% Clopper-Pearson intervals for paired gain/loss probabilities; bootstrap also archived, but zero discordances do not prove equivalence; exploratory on same synthetic generator"
+}

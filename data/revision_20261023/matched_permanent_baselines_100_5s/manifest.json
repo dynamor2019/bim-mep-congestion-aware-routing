@@ -1,0 +1,36 @@
+{
+  "scene_count": 100,
+  "methods": [
+    "random",
+    "spatial_cbs",
+    "pbs_static",
+    "spatial_mapf_lns2"
+  ],
+  "outputs": 400,
+  "common_budget": {
+    "seconds": 5.0,
+    "iterations": 100,
+    "nodes": 256,
+    "fraction": 0.25
+  },
+  "same_scenes_and_initial_objectives": true,
+  "sources": {
+    "cbs": {
+      "path": "data/revision_20261023/spatial_cbs_shared_incumbent_100_5s",
+      "raw_sha256": "214a50fdf9ca0f8ed7745fc3425cea0734567ab3d9789fc9721bd4add8f88032",
+      "manifest_sha256": "9f5c0b331ee027e99c35f69bcec719ee5a60a6d653f1b15a04d37d32c3f481d5"
+    },
+    "pbs": {
+      "path": "data/revision_20261023/pbs_matched_5s_100",
+      "raw_sha256": "ec97b3c48e6c4aa75d73f11ecab19d8265ce16133ac6e5f514857b31842652de",
+      "manifest_sha256": "6dd67167dea17b1f9578e91bf91659f95412e4d6f80ef51c7a7828986e8074bb"
+    },
+    "lns": {
+      "path": "data/revision_20261023/spatial_mapf_lns2_matched_5s_100",
+      "raw_sha256": "8315911c17c3f898a580dc92809428cd81d17c709cce5026cf2343f2ef2bf471",
+      "manifest_sha256": "78289a28f9d090caaa06895a726a07ec6bc9ada9f228ffa91f3d68941a10a058"
+    }
+  },
+  "scope": "Permanent-occupancy adaptations; not faithful temporal MAPF baselines.",
+  "raw_sha256": "372a2a1ab8f24e2a732509aa9be8ebfb1653a166e5f7ff07813c36cead076e3d"
+}
