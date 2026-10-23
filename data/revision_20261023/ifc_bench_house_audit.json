@@ -1,0 +1,42 @@
+{
+  "dataset": "samuel_macalister_sample_house",
+  "source_url": "https://github.com/opensourceBIM/TestFiles",
+  "model_license": "GNU GPL v3",
+  "file_sha256": "de8835f2852a7be4cabceeba1bed3027a3bcc3f3c3cc69ae2b16e58ac4158ecb",
+  "models": [
+    {
+      "file": "mep.ifc",
+      "bytes": 29610955,
+      "sha256": "de8835f2852a7be4cabceeba1bed3027a3bcc3f3c3cc69ae2b16e58ac4158ecb",
+      "schema": "IFC4",
+      "counts": {
+        "distribution_systems": 37,
+        "systems": 37,
+        "distribution_ports": 4232,
+        "ports_with_owner_relation": 92,
+        "port_connections": 2024,
+        "flow_terminals": 220,
+        "flow_segments": 1075,
+        "flow_fittings": 820,
+        "segments_with_geometry_representation": 1065,
+        "segments_with_dimensions_pset": 0,
+        "dimension_field_occurrences": {},
+        "terminal_owners_with_ports": 0,
+        "port_flow_directions": {
+          "SINK": 46,
+          "SOURCE": 46
+        }
+      },
+      "owner_graph": {
+        "owner_component_count": 6,
+        "largest_owner_component": 13,
+        "components_by_terminal_owner_count": {
+          "0": 6
+        },
+        "components_with_exact_source_sink_terminal_pair": 0
+      },
+      "scope": "Owner-level connectivity joins ports belonging to the same IFC element and follows explicit IfcRelConnectsPorts relations. It is a readiness screen, not an accepted rerouting task, exact clash test, or route validation."
+    }
+  ],
+  "interpretation": "Readiness screen only; it does not create accepted rerouting tasks, perform exact clash checks, or validate routing performance."
+}

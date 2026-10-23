@@ -4,7 +4,7 @@ Code and observation-level evidence for manuscript AUTCON-D-26-05125. This revis
 
 ## Corrected revision evidence
 
-`data/revision_20261023/` contains the corrected 150-scene benchmark (750 method outputs), 990-observation sensitivity study, 100-scene/ten-method high-stress holdout (1,000 outputs), permanent-space CBS/PBS/LNS diagnostics, two matched binary multi-commodity-flow MILP diagnostics, a 2x2 system-count/obstacle-rate factorial (400 scenes; 800 method outputs), matched-density scale stress, a new 90-scene/180-output adaptive-repair comparison, public IFC audits, and a seven-case plant-room dataset compatibility audit. The factorial cells use 100 seeds each; with 5/9 systems crossed with 4.5%/8.5% random obstacles, MSPP-random completion was 97%, 93%, 34%, and 9%, while guided repair completed 96%, 91%, 31%, and 12%. The spatial LNS2-style run is an explicit permanent-space adaptation, not a reproduction of temporal MAPF-LNS2. It completed 17/100 scenes, tied random repair, and had one paired gain and one loss (Holm-adjusted exact McNemar p=1.00). All heuristic and MILP route outputs passed independent validation.
+`data/revision_20261023/` contains the corrected 150-scene benchmark (750 method outputs), 990-observation sensitivity study, 100-scene/ten-method high-stress holdout (1,000 outputs), permanent-space CBS/PBS/LNS diagnostics, two matched binary multi-commodity-flow MILP diagnostics, a 2x2 system-count/obstacle-rate factorial (400 scenes; 800 method outputs), matched-density scale stress, a 90-scene/180-output adaptive-repair comparison, public IFC audits, and compatibility audits of the seven-case plant-room dataset and Samuel Macalister sample-house MEP IFC. The factorial cells use 100 seeds each; with 5/9 systems crossed with 4.5%/8.5% random obstacles, MSPP-random completion was 97%, 93%, 34%, and 9%, while guided repair completed 96%, 91%, 31%, and 12%. The spatial LNS2-style run is an explicit permanent-space adaptation, not a reproduction of temporal MAPF-LNS2. It completed 17/100 scenes, tied random repair, and had one paired gain and one paired loss (Holm-adjusted exact McNemar p=1.00). All heuristic and MILP route outputs passed independent validation.
 
 Recheck the archived tables and regenerate figures:
 
@@ -22,7 +22,7 @@ python code/plot_corrected_revision.py `
   --output figures/revision_20261023
 ```
 
-The validator checks row counts, per-scene/method balance, factorial cell pairing and checksums, validation flags, both IFC audits, Digital Hub identity/semantic/sample/topology invariants, and the paired adaptive, CBS-incumbent, and plant-room compatibility archives. The plotting script regenerates Figures 1–4, 6–8, and Supplementary Figure S1 from the archived observations. TIFF, PNG, and PDF outputs are generated.
+The validator checks row counts, per-scene/method balance, factorial cell pairing and checksums, validation flags, IFC audits, Digital Hub identity/semantic/sample/topology invariants, and the paired adaptive, CBS-incumbent, and plant-room compatibility archives. The additional sample-house audit is reproduced with `python code/audit_public_ifc_model.py --ifc data/ifc_bench/samuel_macalister_sample_house/mep.ifc --source-url https://github.com/opensourceBIM/TestFiles --license "GNU GPL v3" --output data/revision_20261023/ifc_bench_house_audit.json`. The plotting script regenerates Figures 1–4, 6–8, and Supplementary Figure S1 from the archived observations. TIFF, PNG, and PDF outputs are generated.
 
 ## Re-run protocols
 
