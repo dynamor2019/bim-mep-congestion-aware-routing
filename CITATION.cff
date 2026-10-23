@@ -12,6 +12,7 @@ authors:
     affiliation: North China Institute of Aerospace Engineering
 version: 1.0.0
 date-released: 2026-10-23
+repository-code: "https://github.com/dynamor2019/bim-mep-congestion-aware-routing"
 license: MIT
 keywords:
   - BIM
