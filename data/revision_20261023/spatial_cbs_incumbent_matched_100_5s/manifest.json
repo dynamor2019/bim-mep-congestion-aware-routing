@@ -1,0 +1,53 @@
+{
+  "description": "Same-scene 100-pair comparison between MSPP random repair and a bounded permanent-space CBS adaptation. Both receive the same best-of-two incumbent; CBS retains it as a feasible fallback while constructing its own conflict-search root.",
+  "scene_count": 100,
+  "method_output_count": 200,
+  "seeds": [
+    100000,
+    100099
+  ],
+  "methods": [
+    "random",
+    "spatial_cbs"
+  ],
+  "time_cap_seconds": 5.0,
+  "iteration_cap": 100,
+  "node_cap": 256,
+  "shared_scene_hashes": true,
+  "shared_logged_incumbent": true,
+  "incumbent_passed_to_cbs_as_fallback": true,
+  "same_search_root": false,
+  "timing_note": "The random repair starts from the shared best-of-two incumbent. CBS preserves that incumbent as fallback but independently constructs individual shortest-path roots for conflict search. Both receive a 5-s repair cap and identical scene/seed; actual elapsed times differ and are reported.",
+  "outputs_all_independently_validated": true,
+  "outcomes": {
+    "random": {
+      "successes": 19,
+      "mean_routed": 7.1,
+      "mean_repair_runtime_s": 2.9479749180015644
+    },
+    "spatial_cbs": {
+      "successes": 9,
+      "mean_routed": 6.71,
+      "mean_repair_runtime_s": 5.016939417998073
+    }
+  },
+  "discordant_pairs": {
+    "random_only": 10,
+    "cbs_only": 0,
+    "exact_mcnemar_two_sided_p": 0.001953125
+  },
+  "provenance": {
+    "random_run_source_commit": "2c2e498d3c96d095e8e08b3944e4992206980d4f",
+    "random_runner_sha256": "a0485d52572003293dfd85da641ba7739c75f6b948572c3ac3a634403f7ddd07",
+    "random_solver_sha256": "bee3be91f0f65e1762fbf0e44785701a16deca39475652a7e2abf8ff39968667",
+    "cbs_runner_sha256": "e6c3624c2010b842b545e61bb5e337284933e7a0fb99605536eebeb20ab93a86",
+    "cbs_solver_sha256": "df9b81f21f64e0f8982454a975f64208f229f0edd15007d7e14817dd9ff05643",
+    "python": "3.11.0 (main, Oct 24 2022, 18:26:48) [MSC v.1933 64 bit (AMD64)]"
+  },
+  "raw_sha256": "49b89bbc33b84907040616597d32cc3bfcc298be20ea1c76d10136b07ed504a5",
+  "raw_bytes": 1533641,
+  "reproduction_commands": [
+    "python code/run_revision_benchmark.py --seeds 100 --start-seed 100000 --cohort holdout_random_5s --seconds 5 --iterations 100 --nodes 256 --methods random --output results/spatial_cbs_random_matched_100_5s",
+    "python code/run_revision_benchmark.py --seeds 100 --start-seed 100000 --cohort holdout_spatial_cbs_incumbent_5s --seconds 5 --iterations 100 --nodes 256 --methods spatial_cbs --output results/spatial_cbs_incumbent_matched_100_5s"
+  ]
+}

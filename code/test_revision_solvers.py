@@ -44,6 +44,15 @@ class RevisedSolverTests(unittest.TestCase):
         self.assertGreaterEqual(len(paths), 1)
         self.assertTrue(validate_paths(self.instance, paths))
 
+    def test_spatial_cbs_preserves_shared_incumbent_on_expired_budget(self):
+        initial = {0: self.context.plan(0)}
+        paths, _, info = spatial_cbs(
+            self.context, SearchBudget(seconds=0, nodes=0), initial
+        )
+        self.assertEqual(info["status"], "budget")
+        self.assertEqual(paths, initial)
+        self.assertTrue(validate_paths(self.instance, paths))
+
     def test_spatial_cbs_keeps_feasible_routes_if_one_demand_is_blocked(self):
         instance = Instance((3, 3, 1), {(1, 0, 0), (0, 1, 0)}, [
             Commodity((0, 0, 0), (2, 0, 0), "pressure", 0, 0),

@@ -49,7 +49,7 @@ def run_scene(scene_seed, cohort, budget, methods):
         if method == "pbs_static":
             paths, trace, info = pbs(context, initial, budget)
         elif method == "spatial_cbs":
-            paths, trace, info = spatial_cbs(context, budget)
+            paths, trace, info = spatial_cbs(context, budget, initial)
         else:
             paths, trace, info = lns(context, initial, method, scene_seed, budget)
         elapsed = time.perf_counter() - started

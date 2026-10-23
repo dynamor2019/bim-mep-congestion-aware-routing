@@ -199,14 +199,16 @@ def _cbs_child(context, constraints, dropped, paths, agent, vertex):
     return child_constraints, child_dropped, child_paths
 
 
-def spatial_cbs(context, budget):
+def spatial_cbs(context, budget, initial=None):
     """Search permanent vertex conflicts, allowing infeasible demands to drop."""
     started = time.perf_counter()
     deadline = started + budget.seconds
+    best = dict(initial or {})
+    best_cost = objective(context.instance, best)
     constraints, dropped, paths = {}, set(), {}
     for index in range(len(context.instance.commodities)):
         if time.perf_counter() >= deadline:
-            return {}, [], {"status": "budget", "nodes": 0}
+            return best, [], {"status": "budget", "nodes": 0}
         route = context.plan(index)
         if route is None:
             dropped.add(index)
@@ -215,8 +217,9 @@ def spatial_cbs(context, budget):
     priority = objective(context.instance, paths)
     nodes = [(priority, 0, constraints, dropped, paths)]
     seen = {_cbs_signature(constraints, dropped)}
-    best = feasible_subset(paths)
-    best_cost = objective(context.instance, best)
+    candidate = feasible_subset(paths)
+    if objective(context.instance, candidate) < best_cost:
+        best, best_cost = candidate, objective(context.instance, candidate)
     expanded, trace = 0, []
     while nodes and expanded < budget.nodes and time.perf_counter() < deadline:
         _, _, constraints, dropped, paths = heapq.heappop(nodes)

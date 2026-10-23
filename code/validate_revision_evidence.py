@@ -9,6 +9,8 @@ import json
 from collections import Counter, defaultdict
 from pathlib import Path
 
+LEGACY_CBS_SOURCE_SHA256 = "bee3be91f0f65e1762fbf0e44785701a16deca39475652a7e2abf8ff39968667"
+
 
 def rows(path: Path) -> list[dict[str, str]]:
     """Load a UTF-8 CSV while tolerating a BOM."""
@@ -150,9 +152,8 @@ def validate_matched_cbs_diagnostic(data: Path) -> None:
     require(manifest["budget"]["seconds"] == 5.0
             and manifest["arguments"]["iterations"] == 10000,
             "matched CBS runtime budget metadata mismatch")
-    require(manifest["source_sha256"] == hashlib.sha256(
-        (data.parent.parent / "code" / "routing_revision_solvers.py").read_bytes()
-    ).hexdigest(), "matched CBS source checksum mismatch")
+    require(manifest["source_sha256"] == LEGACY_CBS_SOURCE_SHA256,
+            "matched CBS archive is not tied to the v2.11.0 solver source")
     require(manifest["raw_sha256"] == hashlib.sha256(archive.read_bytes()).hexdigest(),
             "matched CBS archive checksum mismatch")
     pairs = defaultdict(dict)
@@ -177,11 +178,11 @@ def validate_extended_cbs_diagnostic(data: Path) -> None:
             "extended CBS archive must contain 120 validated method outputs")
     require(manifest["scene_count"] == 60 and manifest["method_output_count"] == 120
             and manifest["method_budget_seconds"] == 4.8
-            and manifest["shared_initialization"] is True,
+            and manifest["shared_initialization_computed"] is True
+            and manifest["common_incumbent_passed_to_cbs"] is False,
             "extended CBS manifest metadata mismatch")
-    require(manifest["source_sha256"] == hashlib.sha256(
-        (data.parent.parent / "code" / "routing_revision_solvers.py").read_bytes()
-    ).hexdigest(), "extended CBS solver checksum mismatch")
+    require(manifest["source_sha256"] == LEGACY_CBS_SOURCE_SHA256,
+            "extended CBS archive is not tied to the v2.11.0 solver source")
     require(manifest["raw_sha256"] == hashlib.sha256(archive.read_bytes()).hexdigest(),
             "extended CBS raw checksum mismatch")
     pairs = defaultdict(dict)
@@ -195,6 +196,44 @@ def validate_extended_cbs_diagnostic(data: Path) -> None:
     require(sum(int(row["success"]) for row in observations if row["method"] == "random") == 9
             and sum(int(row["success"]) for row in observations if row["method"] == "spatial_cbs") == 0,
             "extended CBS completion counts mismatch")
+
+
+def validate_current_cbs_incumbent_diagnostic(data: Path) -> None:
+    """Verify the corrected same-cohort CBS comparison and provenance hashes."""
+    archive = data / "spatial_cbs_incumbent_matched_100_5s" / "raw.csv"
+    manifest_path = archive.with_name("manifest.json")
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    observations = rows(archive)
+    require(len(observations) == 200 and manifest["scene_count"] == 100,
+            "corrected CBS archive must contain 100 paired scenes")
+    require(all(row["validated"] == "1" for row in observations),
+            "all corrected CBS route outputs must be independently validated")
+    require(manifest["raw_sha256"] == hashlib.sha256(archive.read_bytes()).hexdigest(),
+            "corrected CBS archive checksum mismatch")
+    require(manifest["provenance"]["cbs_solver_sha256"] == hashlib.sha256(
+        (data.parent.parent / "code" / "routing_revision_solvers.py").read_bytes()
+    ).hexdigest(), "corrected CBS solver checksum mismatch")
+    pairs = defaultdict(dict)
+    for row in observations:
+        pairs[row["seed"]][row["method"]] = row
+    require(len(pairs) == 100 and all(set(pair) == {"random", "spatial_cbs"}
+                                     for pair in pairs.values()),
+            "corrected CBS archive must contain complete method pairs")
+    require(all(pair["random"]["scene_hash"] == pair["spatial_cbs"]["scene_hash"]
+                and pair["random"]["initial_objective"]
+                == pair["spatial_cbs"]["initial_objective"]
+                for pair in pairs.values()),
+            "corrected CBS pairs must match scene and logged incumbent")
+    require(sum(int(pair["random"]["success"]) for pair in pairs.values()) == 19
+            and sum(int(pair["spatial_cbs"]["success"]) for pair in pairs.values()) == 9,
+            "corrected CBS paired success counts mismatch")
+    require(sum(int(pair["random"]["success"]) == 1
+                and int(pair["spatial_cbs"]["success"]) == 0
+                for pair in pairs.values()) == 10
+            and sum(int(pair["random"]["success"]) == 0
+                    and int(pair["spatial_cbs"]["success"]) == 1
+                    for pair in pairs.values()) == 0,
+            "corrected CBS discordant outcomes mismatch")
 
 
 def validate(data: Path) -> None:
@@ -462,6 +501,7 @@ def validate(data: Path) -> None:
     validate_new_revision_evidence(data)
     validate_matched_cbs_diagnostic(data)
     validate_extended_cbs_diagnostic(data)
+    validate_current_cbs_incumbent_diagnostic(data)
     print("PASS: primary archives, IFC readiness screens, budget diagnostics, paired studies, and route validation")
 
 
