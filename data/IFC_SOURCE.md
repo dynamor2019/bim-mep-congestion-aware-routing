@@ -25,3 +25,18 @@ The public `digital_hub` project contains separate `arc.ifc`, `heating.ifc`, `pl
 - The IFC files are not mirrored in this repository. Download them from the dataset source and verify the hashes above.
 - Audit scope: native systems, port connectivity, segment dimensions/slope fields, and bounded geometry sampling. It contains no accepted reroutes or coordinator-reviewed validation; do not cite it as routing-performance evidence.
 - Corrected evidence archive: tag `v2.1.0`.
+
+## buildingSMART Medical-Dental Clinic
+
+The IFC2X3 clinic models were screened as a second candidate for a building-derived routing case. The source model card describes a real two-story clinic with identifying information redacted. The MEP and architectural files were obtained from the original buildingSMART Community Sample Test Files source; the model files are not mirrored in this repository.
+
+| File | Size (bytes) | SHA-256 |
+|---|---:|---|
+| `Clinic_Architectural.ifc` | 13,003,205 | `2ac970ce065ecac4e0c9e5f453a257169e90d0067f419b7e33533a64ef837880` |
+| `Clinic_HVAC.ifc` | 26,914,597 | `39c88a79f48fbe56da86afb0fb3ebd188f8930df3df7dbfbd9ecaa535aaeab9b` |
+| `Clinic_Plumbing.ifc` | 55,834,520 | `e662a8d0273694b745a313fc18ee8d4916db03453caa8f9d00d4d80b62bb6e23` |
+
+- Original source: [Medical-Dental Clinic, buildingSMART Community Sample-Test-Files](https://github.com/buildingsmart-community/Community-Sample-Test-Files/tree/main/IFC%202.3.0.1%20%28IFC%202x3%29/Medical-Dental%20Clinic).
+- License: CC BY 4.0, as stated in the source project and its IFC-Bench model card. Cite the original source when redistributing or presenting model-derived results.
+- Reproduce the connectivity screen with `python code/audit_ifc_route_readiness.py --ifc Clinic_HVAC.ifc Clinic_Plumbing.ifc --output results/ifc_bench_dental_clinic_audit.json` after placing the two MEP files locally.
+- Audit-only boundary: both MEP files contain thousands of ports, explicit connections, represented flow segments, fittings, and segment dimension properties, but the IFC2X3 export has no `IfcSystem` assignments. The owner-level connectivity graph is branched and supplies no project-approved independent point-to-point rerouting requests or accepted alternative routes. These data therefore support a readiness audit, not performance validation of the current unit-capacity point-to-point solver.

@@ -4,10 +4,15 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import importlib.util
+import json
+import platform
 import random
 import sys
 from pathlib import Path
+
+from routing_revision_solvers import validate_paths
 
 
 def load_router(path: Path):
@@ -41,19 +46,86 @@ def generate(router, seed: int, n_systems: int, obstacle_rate: float):
     return router.Instance(shape, blocked, commodities)
 
 
+def digest_payload(payload: dict) -> str:
+    """Hash a canonical scene or terminal description."""
+    serialized = json.dumps(payload, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(serialized.encode("utf-8")).hexdigest()
+
+
+def file_digest(path: Path) -> str:
+    """Hash a source file for the run manifest."""
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def scene_fingerprints(instance) -> tuple[str, str]:
+    """Return independent hashes for geometry and endpoint/discipline inputs."""
+    terminals = [vars(item) for item in instance.commodities]
+    scene_hash = digest_payload({
+        "shape": instance.shape,
+        "blocked": sorted(instance.blocked),
+        "commodities": terminals,
+    })
+    terminal_hash = digest_payload(terminals)
+    return scene_hash, terminal_hash
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(); parser.add_argument("router", type=Path); parser.add_argument("output", type=Path); parser.add_argument("--seeds", type=int, default=20); args = parser.parse_args()
-    router = load_router(args.router); rows = []
+    router_path = args.router.resolve()
+    router = load_router(router_path); rows = []
     for n_systems in (5, 9):
         for obstacle_rate in (0.045, 0.085):
             for seed in range(args.seeds):
                 instance = generate(router, seed, n_systems, obstacle_rate)
+                scene_hash, terminal_hash = scene_fingerprints(instance)
                 for method in ("random", "guided"):
                     paths, trace, runtime = router.solve(instance, "pbs_random" if method == "random" else "stage3_only", seed)
-                    rows.append({"seed": seed, "n_systems": n_systems, "obstacle_rate": obstacle_rate, "method": method, "n_generated": len(instance.commodities), "routed": len(paths), "success": int(len(paths) == len(instance.commodities)), "objective": router.objective(instance, paths), "runtime_s": runtime})
+                    validate_paths(instance, paths)
+                    rows.append({"seed": seed, "scene_hash": scene_hash,
+                                 "terminal_hash": terminal_hash,
+                                 "n_systems": n_systems,
+                                 "obstacle_rate": obstacle_rate, "method": method,
+                                 "n_generated": len(instance.commodities),
+                                 "routed": len(paths),
+                                 "success": int(len(paths) == len(instance.commodities)),
+                                 "objective": router.objective(instance, paths),
+                                 "runtime_s": runtime, "validated": 1})
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=rows[0].keys()); writer.writeheader(); writer.writerows(rows)
+    cell_success = {}
+    for n_systems in (5, 9):
+        for obstacle_rate in (0.045, 0.085):
+            cell = [row for row in rows if row["n_systems"] == n_systems
+                    and row["obstacle_rate"] == obstacle_rate]
+            cell_success[f"{n_systems}_{obstacle_rate}"] = {
+                method: sum(row["success"] for row in cell if row["method"] == method)
+                for method in ("random", "guided")
+            }
+    manifest = {
+        "protocol": "2x2 system-count/obstacle-rate factorial, paired methods",
+        "seeds": args.seeds,
+        "rows": len(rows),
+        "scenes": len(rows) // 2,
+        "grid": [16, 12, 3],
+        "systems": [5, 9],
+        "obstacle_rates": [0.045, 0.085],
+        "methods": ["random", "guided"],
+        "cell_successes": cell_success,
+        "all_routes_independently_validated": True,
+        "source_sha256": file_digest(Path(__file__).resolve()),
+        "router_sha256": file_digest(router_path),
+        "output_sha256": file_digest(args.output),
+        "output_bytes": args.output.stat().st_size,
+        "python": sys.version,
+        "platform": platform.platform(),
+        "reproduction": (
+            "python code/run_factorial_density.py code/run_routing_experiments.py "
+            "data/revision_20261023/factorial_nested_800.csv --seeds 100"
+        ),
+    }
+    args.output.with_suffix(".manifest.json").write_text(
+        json.dumps(manifest, indent=2), encoding="utf-8")
     print(f"rows={len(rows)} output={args.output}")
 
 

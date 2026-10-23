@@ -4,7 +4,7 @@ Code and observation-level evidence for manuscript AUTCON-D-26-05125. This revis
 
 ## Corrected revision evidence
 
-`data/revision_20261023/` contains the corrected 150-scene benchmark (750 method outputs), 990-observation sensitivity study, 100-scene/ten-method high-stress holdout (1,000 outputs), permanent-space CBS/PBS/LNS diagnostics, two matched binary multi-commodity-flow MILP diagnostics (1s and 30s per scene), nested factor study (800 method-runs), matched-density scale stress (180 outputs), full native IFC geometry/port audit, and a separate five-seed multi-operator pilot. The spatial LNS2-style run follows destroy/repair with soft penalties for permanent shared-voxel conflicts; it is an explicit spatial adaptation, not a reproduction of temporal MAPF-LNS2. It completed 17/100 scenes, tied random repair, and had one paired gain and one loss (Holm-adjusted exact McNemar p=1.00). All archived heuristic and MILP route outputs were independently validated and matched by scene hash.
+`data/revision_20261023/` contains the corrected 150-scene benchmark (750 method outputs), 990-observation sensitivity study, 100-scene/ten-method high-stress holdout (1,000 outputs), permanent-space CBS/PBS/LNS diagnostics, two matched binary multi-commodity-flow MILP diagnostics (1s and 30s per scene), a 2x2 system-count/obstacle-rate factorial (400 scenes; 800 method outputs), matched-density scale stress (180 outputs), native IFC audits, and a separate five-seed multi-operator pilot. The factorial cells use 100 seeds each; with 5/9 systems crossed with 4.5%/8.5% random obstacles, MSPP-random completion was 97%, 93%, 34%, and 9%, while guided repair completed 96%, 91%, 31%, and 12%. The spatial LNS2-style run follows destroy/repair with soft penalties for permanent shared-voxel conflicts; it is an explicit spatial adaptation, not a reproduction of temporal MAPF-LNS2. It completed 17/100 scenes, tied random repair, and had one paired gain and one loss (Holm-adjusted exact McNemar p=1.00). All archived heuristic and MILP route outputs were independently validated and matched by scene hash.
 
 Recheck the archived tables and regenerate figures:
 
@@ -22,7 +22,7 @@ python code/plot_corrected_revision.py `
   --output figures/revision_20261023
 ```
 
-The validator checks row counts, per-scene/method balance, validation flags, both IFC audits, and Digital Hub identity/semantic/sample/topology invariants. The plotting script regenerates Figures 1–4, 6–8, and Supplementary Figure S1 from the archived observations. TIFF, PNG, and PDF outputs are generated.
+The validator checks row counts, per-scene/method balance, factorial cell pairing and checksums, validation flags, both IFC audits, and Digital Hub identity/semantic/sample/topology invariants. The plotting script regenerates Figures 1–4, 6–8, and Supplementary Figure S1 from the archived observations. TIFF, PNG, and PDF outputs are generated.
 
 ## Re-run protocols
 
@@ -54,6 +54,11 @@ The exact MILP diagnostic found 1/100 complete sets at a 1s cap and 24/100 at a 
 - The separate 5-seed adaptive pilot found no completion advantage over random repair at 12- and 15-system scales (both methods completed 4/5 at each scale); at 15 systems, median runtime was 4.942 s for adaptive repair and 2.855 s for random repair. It is too small for inference and is not compute-matched (8 versus 5 iterations).
 - The earlier IFC boundary audit covers 4,091 selected components, 4,054 extractable geometries, 8,460 placed ports and 4,050 explicit port relations. Those counts are not route evidence.
 - The added RWTH Digital Hub audit covers four co-registered IFC4 files (architecture, heating, plumbing, ventilation), with 65 systems, 8,497 placed ports, 4,208 explicit port relations, native service dimensions, slope properties, and fitting geometry. A schema-level endpoint screen groups ports by owning IFC object and found zero connected components containing exactly two distinct recognized terminal objects with complementary source/sink directions. This does not replace engineering interpretation of IFC terminal semantics, but it confirms the public model does not directly yield a defensible point-to-point rerouting request. The 287-MEP/162-architecture AABB sample is only broad-phase screening. No accepted reroute targets or engineer-reviewed outcomes exist, and the routing solver has not been run on this model.
+- The buildingSMART Medical-Dental Clinic audit adds two redacted IFC2X3 MEP files with 7,390 HVAC and 13,058 plumbing ports, represented segments, fittings, and native segment dimensions. Their graphs are already-connected multi-terminal branches, without `IfcSystem` assignments or project-approved independent rerouting requests; no route performance is claimed. Reproduce the screen after downloading the source files listed in `data/IFC_SOURCE.md`:
+
+```powershell
+python code/audit_ifc_route_readiness.py --ifc path/to/Clinic_HVAC.ifc path/to/Clinic_Plumbing.ifc --output data/revision_20261023/ifc_bench_dental_clinic_audit.json
+```
 
 Reproduce the Digital Hub audit after downloading the four IFC files listed in `data/IFC_SOURCE.md` into a local folder:
 

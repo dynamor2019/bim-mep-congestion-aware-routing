@@ -1,0 +1,49 @@
+{
+  "protocol": "2x2 system-count/obstacle-rate factorial, paired methods",
+  "seeds": 100,
+  "rows": 800,
+  "scenes": 400,
+  "grid": [
+    16,
+    12,
+    3
+  ],
+  "systems": [
+    5,
+    9
+  ],
+  "obstacle_rates": [
+    0.045,
+    0.085
+  ],
+  "methods": [
+    "random",
+    "guided"
+  ],
+  "cell_successes": {
+    "5_0.045": {
+      "random": 97,
+      "guided": 96
+    },
+    "5_0.085": {
+      "random": 93,
+      "guided": 91
+    },
+    "9_0.045": {
+      "random": 34,
+      "guided": 31
+    },
+    "9_0.085": {
+      "random": 9,
+      "guided": 12
+    }
+  },
+  "all_routes_independently_validated": true,
+  "source_sha256": "595ebab2260d4893bb984650218ecbf9144aaf97da4d639ca21bf51c88313857",
+  "router_sha256": "f74d25b5db8579d84f3b853ca43256df5e26f41575b5d9e5906cf41449dcc03d",
+  "output_sha256": "31b7e7b2e2a887823ffa3d645b01d18479dbdfaa44abd42acd4df408bd393c89",
+  "output_bytes": 148604,
+  "python": "3.11.0 (main, Oct 24 2022, 18:26:48) [MSC v.1933 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "reproduction": "python code/run_factorial_density.py code/run_routing_experiments.py data/revision_20261023/factorial_nested_800.csv --seeds 100"
+}

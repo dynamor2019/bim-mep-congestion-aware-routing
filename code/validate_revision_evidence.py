@@ -58,6 +58,39 @@ def validate_advanced_pilot(data: Path) -> None:
                     f"advanced pilot completion count mismatch: {size}/{method}")
 
 
+def validate_clinic_ifc_audit(data: Path) -> None:
+    """Check the archived medical-dental IFC readiness screen."""
+    audit_path = data / "ifc_bench_dental_clinic_audit.json"
+    audit = json.loads(audit_path.read_text(encoding="utf-8"))
+    require(audit["license"] == "CC BY 4.0" and len(audit["models"]) == 2,
+            "clinic IFC audit source or model count mismatch")
+    by_name = {record["file"]: record for record in audit["models"]}
+    expected = {
+        "Clinic_HVAC.ifc": (7390, 3695, 440, 1548, 1590, 417),
+        "Clinic_Plumbing.ifc": (13058, 6529, 119, 2893, 3318, 87),
+    }
+    for name, values in expected.items():
+        record = by_name[name]
+        counts = record["counts"]
+        _, _, _, segments, _, largest_terminals = values
+        require((counts["distribution_ports"], counts["port_connections"],
+                 counts["flow_terminals"], counts["flow_segments"],
+                 counts["flow_fittings"]) == values[:5],
+                f"clinic IFC count mismatch: {name}")
+        require(counts["segments_with_geometry_representation"] == segments
+                and counts["segments_with_dimensions_pset"] == segments,
+                f"clinic IFC dimension/geometry coverage mismatch: {name}")
+        require(counts["systems"] == 0
+                and record["owner_graph"]["components_with_exact_source_sink_terminal_pair"] == 0,
+                f"clinic IFC topology readiness mismatch: {name}")
+        histogram = record["owner_graph"]["components_by_terminal_owner_count"]
+        require(max(int(key) for key in histogram) == largest_terminals,
+                f"clinic IFC largest terminal component mismatch: {name}")
+    require(audit["audit_script_sha256"] == hashlib.sha256(
+        (data.parent.parent / "code" / "audit_ifc_route_readiness.py").read_bytes()
+    ).hexdigest(), "clinic IFC audit script checksum mismatch")
+
+
 def validate(data: Path) -> None:
     """Validate row totals, method balance, and source-audit counts."""
     main = rows(data / "main_150_raw.csv")
@@ -212,6 +245,62 @@ def validate(data: Path) -> None:
     for name in ("factorial_nested_800.csv", "scale_matched_density_180.csv"):
         require(all(row["validated"] == "1" for row in tables[name]), f"all rows in {name} must be validated")
 
+    factorial = tables["factorial_nested_800.csv"]
+    factorial_groups: dict[tuple[int, float], dict[str, list[dict[str, str]]]] = defaultdict(
+        lambda: defaultdict(list)
+    )
+    for row in factorial:
+        key = (int(row["n_systems"]), float(row["obstacle_rate"]))
+        factorial_groups[key][row["method"]].append(row)
+        require(int(row["n_generated"]) == key[0],
+                "factorial generated-system count must match its assigned factor")
+        require(int(row["success"]) == int(int(row["routed"]) == key[0]),
+                "factorial success flag must match routed and generated counts")
+    expected_cells = {(5, 0.045), (5, 0.085), (9, 0.045), (9, 0.085)}
+    require(set(factorial_groups) == expected_cells,
+            "factorial archive must contain all four system-count/obstacle cells")
+    for key, methods in factorial_groups.items():
+        require(set(methods) == {"random", "guided"}
+                and all(len(methods[name]) == 100 for name in methods),
+                f"factorial cell must have 100 paired scenes per method: {key}")
+        paired = {name: {row["seed"]: row for row in rows}
+                  for name, rows in methods.items()}
+        require(set(paired["random"]) == set(paired["guided"]),
+                f"factorial methods must use matched seeds: {key}")
+        require(all(paired["random"][seed]["scene_hash"]
+                    == paired["guided"][seed]["scene_hash"]
+                    and paired["random"][seed]["terminal_hash"]
+                    == paired["guided"][seed]["terminal_hash"]
+                    for seed in paired["random"]),
+                f"factorial methods must use identical scenes and terminals: {key}")
+    factorial_manifest_path = data / "factorial_nested_800.manifest.json"
+    factorial_manifest = json.loads(
+        factorial_manifest_path.read_text(encoding="utf-8")
+    )
+    factorial_path = data / "factorial_nested_800.csv"
+    require(factorial_manifest["rows"] == 800
+            and factorial_manifest["scenes"] == 400
+            and factorial_manifest["all_routes_independently_validated"] is True,
+            "factorial manifest scope or validation status mismatch")
+    require(factorial_manifest["output_bytes"] == factorial_path.stat().st_size
+            and factorial_manifest["output_sha256"] == hashlib.sha256(
+                factorial_path.read_bytes()
+            ).hexdigest(), "factorial output checksum mismatch")
+    require(factorial_manifest["source_sha256"] == hashlib.sha256(
+        (data.parent.parent / "code" / "run_factorial_density.py").read_bytes()
+    ).hexdigest(), "factorial generator checksum mismatch")
+    require(factorial_manifest["router_sha256"] == hashlib.sha256(
+        (data.parent.parent / "code" / "run_routing_experiments.py").read_bytes()
+    ).hexdigest(), "factorial router checksum mismatch")
+    expected_successes = {
+        "5_0.045": {"random": 97, "guided": 96},
+        "5_0.085": {"random": 93, "guided": 91},
+        "9_0.045": {"random": 34, "guided": 31},
+        "9_0.085": {"random": 9, "guided": 12},
+    }
+    require(factorial_manifest["cell_successes"] == expected_successes,
+            "factorial completion counts differ from the verified rerun")
+
     audit = json.loads((data / "ifc_full_geometry_audit.json").read_text(encoding="utf-8"))
     require(audit["selected_components"] == 4091, "IFC selected-component count mismatch")
     require(audit["geometry_components"] == 4054, "IFC geometry count mismatch")
@@ -263,7 +352,8 @@ def validate(data: Path) -> None:
             and budget_rows["cbs_120s_nodes_1.csv"][0]["status"] == "budget",
             "extended CBS budget outcomes mismatch")
     validate_advanced_pilot(data)
-    print("PASS: primary archives, IFC audit/readiness, extended-budget diagnostics, and advanced-pilot hashes and route validation")
+    validate_clinic_ifc_audit(data)
+    print("PASS: primary archives, IFC readiness screens, extended-budget diagnostics, and pilot hashes/route validation")
 
 
 def main() -> None:
