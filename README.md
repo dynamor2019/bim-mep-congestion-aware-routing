@@ -49,6 +49,7 @@ python code/run_revision_benchmark.py --seeds 10 --start-seed 100000 --cohort cb
 python code/run_revision_benchmark.py --seeds 60 --start-seed 101000 --cohort cbs_total_matched_5s --seconds 4.8 --iterations 10000 --nodes 10000 --methods random spatial_cbs --output results/cbs_total_matched_60
 python code/run_revision_benchmark.py --seeds 100 --start-seed 100000 --cohort holdout_random_5s --seconds 5 --iterations 100 --nodes 256 --methods random --output results/spatial_cbs_random_matched_100_5s
 python code/run_revision_benchmark.py --seeds 100 --start-seed 100000 --cohort holdout_spatial_cbs_incumbent_5s --seconds 5 --iterations 100 --nodes 256 --methods spatial_cbs --output results/spatial_cbs_incumbent_matched_100_5s
+python code/run_revision_benchmark.py --seeds 100 --start-seed 100000 --cohort pbs_matched_5s_100 --seconds 5 --iterations 100 --nodes 256 --methods random pbs_static --output results/pbs_matched_5s_100
 python code/audit_public_plantroom_dataset.py `
   data/external/mep_plant_room_pipe_routing `
   results/public_plantroom_dataset_audit.json
@@ -107,3 +108,5 @@ python code/audit_public_plantroom_dataset.py `
 Legacy scripts and files outside `revision_20261023/` are retained for provenance. The current scale table was regenerated from the published `run_scaling_matched_density.py` generator after the earlier table's source was found missing; the withdrawn earlier file remains only in the local revision audit history. Replay commands write new outputs, and time-limited runtimes or outcomes can vary across machines. The archived tables remain the authoritative evidence for the current manuscript.
 
 The matched adaptive comparison, corrected CBS incumbent logic, 10- and 60-scene CBS diagnostics, and plant-room dataset audit are included in the current source tree. No DOI is currently claimed; check the release page before citing the repository version.
+
+The additional 100-scene, 5-s-per-method PBS-adaptation comparison is archived under `data/revision_20261023/pbs_matched_5s_100/`. It found 20/100 complete scenes for spatial PBS versus 19/100 for random repair, with one PBS-only and no random-only completion (exact two-sided McNemar p=1.00); mean routed demands were 7.05/9 and 7.10/9. All 200 route sets passed independent validation. This is a bounded permanent-occupancy priority-tree adaptation, not a faithful temporal MAPF PBS implementation, and does not establish a performance advantage.

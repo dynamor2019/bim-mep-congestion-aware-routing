@@ -236,6 +236,33 @@ def validate_current_cbs_incumbent_diagnostic(data: Path) -> None:
             "corrected CBS discordant outcomes mismatch")
 
 
+def validate_matched_pbs_diagnostic(data: Path) -> None:
+    """Check the paired 100-scene, five-second PBS-adaptation archive."""
+    archive = data / "pbs_matched_5s_100" / "raw.csv"
+    manifest = json.loads(archive.with_name("manifest.json").read_text(encoding="utf-8"))
+    observations = rows(archive)
+    require(len(observations) == 200 and manifest["scene_count"] == 100,
+            "matched PBS archive must contain 100 paired scenes")
+    require(all(row["validated"] == "1" for row in observations),
+            "all matched PBS route outputs must be independently validated")
+    require(manifest["raw_sha256"] == hashlib.sha256(archive.read_bytes()).hexdigest(),
+            "matched PBS raw archive checksum mismatch")
+    require(manifest["solver_source_sha256"] == hashlib.sha256(
+        (data.parent.parent / "code" / "routing_revision_solvers.py").read_bytes()
+    ).hexdigest(), "matched PBS solver source checksum mismatch")
+    pairs = defaultdict(dict)
+    for row in observations:
+        pairs[row["seed"]][row["method"]] = row
+    require(len(pairs) == 100 and all(set(pair) == {"random", "pbs_static"}
+                                      for pair in pairs.values()),
+            "matched PBS archive must have 100 complete pairs")
+    require(all(pair["random"]["scene_hash"] == pair["pbs_static"]["scene_hash"]
+                for pair in pairs.values()), "PBS and random must use identical scenes")
+    require(sum(int(row["success"]) for row in observations if row["method"] == "random") == 19
+            and sum(int(row["success"]) for row in observations if row["method"] == "pbs_static") == 20,
+            "matched PBS completion counts mismatch")
+
+
 def validate(data: Path) -> None:
     """Validate row totals, method balance, and source-audit counts."""
     main = rows(data / "main_150_raw.csv")
@@ -502,6 +529,7 @@ def validate(data: Path) -> None:
     validate_matched_cbs_diagnostic(data)
     validate_extended_cbs_diagnostic(data)
     validate_current_cbs_incumbent_diagnostic(data)
+    validate_matched_pbs_diagnostic(data)
     print("PASS: primary archives, IFC readiness screens, budget diagnostics, paired studies, and route validation")
 
 

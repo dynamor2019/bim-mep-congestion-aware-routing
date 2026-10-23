@@ -1,0 +1,37 @@
+{
+  "description": "Paired random repair versus permanent-occupancy PBS adaptation on the high-stress holdout.",
+  "scene_count": 100,
+  "method_output_count": 200,
+  "seeds": [100000, 100099],
+  "methods": ["random", "pbs_static"],
+  "budget": {
+    "seconds": 5.0,
+    "iterations": 100,
+    "nodes": 256
+  },
+  "initialization": "Same best-of-two MSPP incumbent computed once per scene; each solver uses it as an incumbent/fallback but constructs its own search state.",
+  "scope": "Permanent-occupancy priority-tree adaptation; not a faithful temporal MAPF PBS reproduction.",
+  "outcomes": {
+    "random": {
+      "complete_scenes": 19,
+      "mean_routed_demands": 7.1,
+      "mean_runtime_seconds": 2.9713
+    },
+    "pbs_static": {
+      "complete_scenes": 20,
+      "mean_routed_demands": 7.05,
+      "mean_runtime_seconds": 3.6603,
+      "median_runtime_seconds": 5.0112
+    }
+  },
+  "discordant_pairs": {
+    "pbs_only": 1,
+    "random_only": 0,
+    "exact_two_sided_mcnemar_p": 1.0
+  },
+  "all_outputs_independently_validated": true,
+  "scene_hashes_matched": true,
+  "raw_sha256": "ec97b3c48e6c4aa75d73f11ecab19d8265ce16133ac6e5f514857b31842652de",
+  "solver_source_sha256": "df9b81f21f64e0f8982454a975f64208f229f0edd15007d7e14817dd9ff05643",
+  "runner_source_sha256": "e6c3624c2010b842b545e61bb5e337284933e7a0fb99605536eebeb20ab93a86"
+}
