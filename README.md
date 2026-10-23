@@ -31,4 +31,4 @@ The validator checks row counts, per-scene/method balance, validation flags, and
 
 Legacy scripts and files outside `revision_20261023/` are retained for provenance. Some generate earlier exploratory protocols and do not reproduce the corrected holdout/factor/scale tables; do not cite them as the source of those corrected observations. The exact corrected observation tables and summaries are archived here for audit.
 
-The old `v1.0.0` tag predates these corrections. Cite the revision-specific release linked above only after it is published. No DOI is currently claimed.
+The old `v1.0.0` tag predates these corrections. This corrected archive is versioned as `v2.0.1`. No DOI is currently claimed.
