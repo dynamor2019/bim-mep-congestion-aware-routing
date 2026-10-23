@@ -6,7 +6,7 @@ import argparse
 import csv
 import hashlib
 import json
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 
 
@@ -140,6 +140,39 @@ def validate(data: Path) -> None:
             and cbs_5s_manifest["status_counts"] == {"budget": 94, "individual_infeasible": 6},
             "five-second CBS diagnostic outcome mismatch")
 
+    exact_dir = data / "exact_mcf"
+    exact_manifest = json.loads((exact_dir / "manifest.json").read_text(encoding="utf-8"))
+    exact_hashes = {row["seed"]: row["scene_hash"] for row in holdout}
+    for budget, expected_statuses, expected_complete in ((1, {"optimal": 29, "limit": 71}, 1),
+                                                          (30, {"optimal": 84, "limit": 16}, 24)):
+        filename = f"holdout_100_{budget}s.csv"
+        exact_rows = rows(exact_dir / filename)
+        run_manifest = exact_manifest["runs"][filename]
+        digest = hashlib.sha256((exact_dir / filename).read_bytes()).hexdigest()
+        require(len(exact_rows) == 100 and all(row["validated"] == "1" for row in exact_rows),
+                f"exact MCF {budget}s run must contain 100 validated outputs")
+        require(all(row["seed"] in exact_hashes and row["scene_hash"] == exact_hashes[row["seed"]]
+                    for row in exact_rows), f"exact MCF {budget}s scenes must match the holdout hashes")
+        require({row["seed"] for row in exact_rows} == set(exact_hashes),
+                f"exact MCF {budget}s must contain each holdout seed exactly once")
+        require(all(int(row["routed"]) <= int(row["total"])
+                    and int(row["success"]) == int(int(row["routed"]) == int(row["total"]))
+                    for row in exact_rows), f"exact MCF {budget}s success flags must match routed counts")
+        require(dict(Counter(row["status"] for row in exact_rows)) == expected_statuses,
+                f"exact MCF {budget}s solver status counts mismatch")
+        require(run_manifest["status_counts"] == expected_statuses
+                and run_manifest["time_limit_seconds"] == budget,
+                f"exact MCF {budget}s manifest summary mismatch")
+        require(sum(int(row["success"]) for row in exact_rows) == expected_complete,
+                f"exact MCF {budget}s complete-set count mismatch")
+        require(all(float(row["runtime_s"]) <= budget + 3.0 for row in exact_rows),
+                f"exact MCF {budget}s run exceeded its recorded wall-clock tolerance")
+        require(run_manifest["sha256"] == digest,
+                f"exact MCF {budget}s checksum mismatch")
+    require(exact_manifest["rows_per_budget"] == 100
+            and exact_manifest["paired_scene_hashes_match"] is True,
+            "exact MCF manifest pairing metadata mismatch")
+
     for name in ("factorial_nested_800.csv", "scale_matched_density_180.csv"):
         require(all(row["validated"] == "1" for row in tables[name]), f"all rows in {name} must be validated")
 
@@ -148,7 +181,7 @@ def validate(data: Path) -> None:
     require(audit["geometry_components"] == 4054, "IFC geometry count mismatch")
     require(audit["native_port_count"] == 8460, "IFC port count mismatch")
     require(audit["explicit_port_edges"] == 4050, "IFC explicit port-edge count mismatch")
-    print("PASS: 150/750 main, 990 sensitivity, 100-scene/10-method holdout + 1s/5s spatial CBS diagnostics, 800 factorial, 180 scale, IFC audit counts")
+    print("PASS: main/sensitivity/holdout, spatial CBS and exact-MCF diagnostics, factorial/scale stress, and IFC audit counts")
 
 
 def main() -> None:

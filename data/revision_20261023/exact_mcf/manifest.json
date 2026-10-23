@@ -1,0 +1,32 @@
+{
+  "method": "binary permanent-occupancy multi-commodity flow MILP",
+  "solver": "scipy.optimize.milp (HiGHS backend)",
+  "objective_scope": "minimize a 10000-unit penalty per unrouted commodity plus unit-edge and vertical-step proxy costs; bend penalties are excluded from optimization",
+  "physical_cost_reporting": "recomputed after solving with the full route-cost function; descriptive only",
+  "constraints": [
+    "vertex-disjoint permanent occupancy",
+    "other commodities' terminals are forbidden",
+    "drainage paths cannot increase elevation"
+  ],
+  "seeds": [100000, 100099],
+  "paired_scene_hashes_match": true,
+  "rows_per_budget": 100,
+  "independent_route_validation": "all returned paths passed the shared route validator during generation",
+  "runs": {
+    "holdout_100_1s.csv": {
+      "time_limit_seconds": 1,
+      "status_counts": {"optimal": 29, "limit": 71},
+      "complete_sets": 1,
+      "sha256": "7ecf601ec0bbc05cc66f5807ce5328033f41d12f760a88321b3545aae573d918"
+    },
+    "holdout_100_30s.csv": {
+      "time_limit_seconds": 30,
+      "status_counts": {"optimal": 84, "limit": 16},
+      "complete_sets": 24,
+      "of_which_optimal": 16,
+      "of_which_feasible_incumbent_at_time_limit": 8,
+      "sha256": "565c8d07fee0d7860a168b7e5c59f760da2f1499389e06cfa881a29521409610"
+    }
+  },
+  "interpretation": "The 30-second diagnostic used a longer budget than heuristic holdout methods and cannot establish a runtime-matched advantage. Optimality applies to the 10000-penalty weighted proxy objective, not a guaranteed lexicographic maximum of routed commodities or the paper's full bend-penalized physical objective. A time-limit result is not an infeasibility proof."
+}
