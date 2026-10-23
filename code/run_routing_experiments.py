@@ -127,8 +127,9 @@ def astar(
     occupied: set[Coord],
     predicted: dict[Coord, float],
     congestion_weight: float,
+    soft_occupied_weight: float = 0.0,
 ) -> list[Coord] | None:
-    """Find a discipline-aware route using weighted node congestion."""
+    """Find a discipline-aware route with optional soft occupancy penalties."""
     start_state = item.start, (0, 0, 0)
     queue = [(0.0, 0.0, start_state)]
     parent: dict[tuple[Coord, Coord], tuple[Coord, Coord] | None] = {start_state: None}
@@ -146,7 +147,9 @@ def astar(
                 cursor = parent[cursor]
             return list(reversed(path))
         for nxt in neighbors(node, instance.shape):
-            if nxt in instance.blocked or (nxt in occupied and nxt != item.goal):
+            if nxt in instance.blocked:
+                continue
+            if nxt in occupied and nxt != item.goal and soft_occupied_weight <= 0:
                 continue
             direction = tuple(b - a for a, b in zip(node, nxt))
             if item.discipline == "drainage" and direction[2] > 0:
@@ -155,7 +158,8 @@ def astar(
             vertical = item.vertical_cost if direction[2] else 0.0
             rho = predicted.get(nxt, 0.0)
             congestion = congestion_weight * (rho + 4.0 * max(0.0, rho - 0.65) ** 2)
-            new_cost = cost + 1.0 + bend + vertical + congestion
+            overlap = soft_occupied_weight if nxt in occupied and nxt != item.goal else 0.0
+            new_cost = cost + 1.0 + bend + vertical + congestion + overlap
             new_state = nxt, direction
             if new_cost < best.get(new_state, math.inf):
                 best[new_state] = new_cost

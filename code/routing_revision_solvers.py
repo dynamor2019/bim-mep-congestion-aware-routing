@@ -35,12 +35,13 @@ class RoutingContext:
         self.terminals = {p for c in instance.commodities for p in (c.start, c.goal)}
         self.calls = 0
 
-    def plan(self, index, occupied=(), weight=0.0):
+    def plan(self, index, occupied=(), weight=0.0, soft_occupied_weight=0.0):
         """Apply identical endpoint protection for every baseline and repair."""
         self.calls += 1
         item = self.instance.commodities[index]
         forbidden = set(occupied) | (self.terminals - {item.start, item.goal})
-        return astar(self.instance, item, forbidden, self.predicted, weight)
+        return astar(self.instance, item, forbidden, self.predicted, weight,
+                     soft_occupied_weight)
 
     def sequential(self, order, kept=None, weight=0.0):
         """Replan a selected neighborhood against all retained paths."""
@@ -250,6 +251,101 @@ def blocker_graph(context, paths, probes):
     return scores, neighbors
 
 
+def route_conflict_graph(paths):
+    """Build static conflict adjacency and overlap counts for current routes."""
+    owners = defaultdict(set)
+    for index, path in paths.items():
+        for node in set(path):
+            owners[node].add(index)
+    scores = defaultdict(int)
+    neighbors = defaultdict(set)
+    for indices in owners.values():
+        for index in indices:
+            for other in indices - {index}:
+                scores[index] += 1
+                neighbors[index].add(other)
+    return scores, neighbors
+
+
+def route_conflict_count(paths):
+    """Count pairwise permanent-occupancy conflicts by shared voxel."""
+    scores, _ = route_conflict_graph(paths)
+    return sum(scores.values()) // 2
+
+
+def spatial_lns2(context, initial, seed, budget):
+    """Adapt LNS2 destroy-repair to permanent vertex occupancy."""
+    started = time.perf_counter()
+    deadline = started + budget.seconds
+    rng = random.Random(seed)
+    paths = dict(initial)
+    for index in range(len(context.instance.commodities)):
+        if index in paths:
+            continue
+        occupied = {node for path in paths.values() for node in path}
+        path = context.plan(index, occupied, soft_occupied_weight=1000.0)
+        if path:
+            paths[index] = path
+
+    def quality(candidate):
+        missing = len(context.instance.commodities) - len(candidate)
+        conflicts = route_conflict_count(candidate)
+        cost = sum(path_cost(path, context.instance.commodities[i])
+                   for i, path in candidate.items())
+        return missing, conflicts, cost
+
+    trace = [{"t": time.perf_counter() - started, "objective": objective(context.instance, initial),
+              "conflicts": route_conflict_count(paths)}]
+    best_valid = dict(initial)
+    best_valid_objective = objective(context.instance, best_valid)
+    steps = 0
+    while steps < budget.iterations and time.perf_counter() < deadline:
+        scores, neighbors = route_conflict_graph(paths)
+        conflicted = [index for index in paths if scores.get(index, 0)]
+        if not conflicted:
+            conflicted = [index for index in range(len(context.instance.commodities))
+                          if index not in paths]
+        if not conflicted:
+            conflicted = list(range(len(context.instance.commodities)))
+        count = min(len(context.instance.commodities),
+                    max(2, math.ceil(len(context.instance.commodities) * budget.fraction)))
+        selected = []
+        frontier = list(conflicted)
+        while frontier and len(selected) < count:
+            frontier.sort(key=lambda i: (scores.get(i, 0), rng.random()), reverse=True)
+            current = frontier.pop(0)
+            if current in selected:
+                continue
+            selected.append(current)
+            frontier.extend(neighbors[current] - set(selected))
+        if len(selected) < count:
+            remaining = [i for i in range(len(context.instance.commodities))
+                         if i not in selected]
+            rng.shuffle(remaining)
+            selected.extend(remaining[:count - len(selected)])
+        rng.shuffle(selected)
+        selected.sort(key=lambda i: i in paths)
+        kept = {i: path for i, path in paths.items() if i not in selected}
+        candidate = dict(kept)
+        for index in selected:
+            occupied = {node for path in candidate.values() for node in path}
+            path = context.plan(index, occupied, soft_occupied_weight=1000.0)
+            if path:
+                candidate[index] = path
+        if quality(candidate) < quality(paths):
+            paths = candidate
+        if route_conflict_count(paths) == 0:
+            value = objective(context.instance, paths)
+            if value < best_valid_objective:
+                best_valid, best_valid_objective = dict(paths), value
+        steps += 1
+        trace.append({"t": time.perf_counter() - started,
+                      "objective": objective(context.instance, best_valid),
+                      "conflicts": route_conflict_count(paths)})
+    return best_valid, trace, {"status": "budget", "nodes": steps,
+                               "residual_conflicts": route_conflict_count(paths)}
+
+
 def select_neighborhood(context, paths, probes, config):
     """Select random, ranked, blocker or conflict-graph neighborhoods."""
     method, count, rng = config
@@ -294,6 +390,8 @@ def select_neighborhood(context, paths, probes, config):
 
 def lns(context, initial, method, seed, budget):
     """Compare selectors with matched repair, acceptance and terminal policy."""
+    if method == "spatial_mapf_lns2":
+        return spatial_lns2(context, initial, seed, budget)
     started = time.perf_counter()
     rng = random.Random(seed)
     paths = dict(initial)

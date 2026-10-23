@@ -4,7 +4,7 @@ import unittest
 
 from routing_revision_solvers import (
     RoutingContext, SearchBudget, blocker_graph, closure, first_conflict,
-    lns, pbs, spatial_cbs, validate_paths,
+    lns, pbs, route_conflict_count, spatial_cbs, validate_paths,
 )
 from run_routing_experiments import Commodity, Instance, estimate_demand
 
@@ -55,6 +55,17 @@ class RevisedSolverTests(unittest.TestCase):
             self.assertTrue(validate_paths(self.instance, paths))
             costs = [row["objective"] for row in trace]
             self.assertEqual(costs, sorted(costs, reverse=True))
+
+    def test_spatial_mapf_lns2_returns_only_valid_outputs(self):
+        initial = self.context.sequential([0, 1])
+        paths, trace, info = lns(
+            self.context, initial, "spatial_mapf_lns2", 1,
+            SearchBudget(seconds=2, iterations=3),
+        )
+        self.assertTrue(validate_paths(self.instance, paths))
+        self.assertEqual(route_conflict_count(paths), 0)
+        self.assertGreaterEqual(len(trace), 1)
+        self.assertIn("residual_conflicts", info)
 
 
 if __name__ == "__main__":

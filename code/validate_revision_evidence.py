@@ -40,6 +40,7 @@ def validate(data: Path) -> None:
         "sensitivity_990_raw.csv": 990,
         "high_stress_holdout_800.csv": 800,
         "high_stress_holdout_900.csv": 900,
+        "high_stress_holdout_1000.csv": 1000,
         "factorial_nested_800.csv": 800,
         "scale_matched_density_180.csv": 180,
     }
@@ -68,6 +69,19 @@ def validate(data: Path) -> None:
     require(conflict_manifest["sha256"]["raw_csv"] == conflict_digest,
             "conflict-neighborhood CSV checksum mismatch")
 
+    lns2 = rows(data / "spatial_mapf_lns2_holdout_100.csv")
+    require(len(lns2) == 100 and all(row["method"] == "spatial_mapf_lns2" and row["validated"] == "1"
+                                     for row in lns2),
+            "spatial MAPF-LNS2 adaptation must contain 100 validated outputs")
+    lns2_manifest = json.loads(
+        (data / "spatial_mapf_lns2_holdout_100.manifest.json").read_text(encoding="utf-8-sig")
+    )
+    lns2_digest = hashlib.sha256(
+        (data / "spatial_mapf_lns2_holdout_100.csv").read_bytes()
+    ).hexdigest()
+    require(lns2_manifest["published_csv_sha256"] == lns2_digest,
+            "spatial MAPF-LNS2 CSV checksum mismatch")
+
     expanded_holdout = tables["high_stress_holdout_900.csv"]
     expanded_groups = defaultdict(set)
     for row in expanded_holdout:
@@ -75,6 +89,21 @@ def validate(data: Path) -> None:
         expanded_groups[row["seed"]].add(row["method"])
     require(len(expanded_groups) == 100 and all(len(methods) == 9 for methods in expanded_groups.values()),
             "expanded holdout must contain nine methods for each of 100 scenes")
+
+    full_holdout = tables["high_stress_holdout_1000.csv"]
+    full_groups = defaultdict(set)
+    for row in full_holdout:
+        require(row["validated"] == "1", "all current holdout outputs must be validated")
+        full_groups[row["seed"]].add(row["method"])
+    require(len(full_groups) == 100 and all(len(methods) == 10 for methods in full_groups.values()),
+            "current holdout must contain ten methods for each of 100 scenes")
+    full_keys = {(row["seed"], row["method"]): row for row in full_holdout}
+    source_rows = expanded_holdout + lns2
+    source_keys = {(row["seed"], row["method"]): row for row in source_rows}
+    require(len(full_keys) == len(source_keys) == 1000 and full_keys.keys() == source_keys.keys(),
+            "merged holdout keys must equal the nine-method archive plus the LNS2-style extension")
+    require(all(full_keys[key]["scene_hash"] == source_keys[key]["scene_hash"]
+                for key in full_keys), "merged holdout must preserve source scene hashes")
 
     cbs = rows(data / "spatial_cbs_holdout_100.csv")
     require(len(cbs) == 100 and all(row["method"] == "spatial_cbs" for row in cbs),
@@ -86,6 +115,8 @@ def validate(data: Path) -> None:
                 for row in conflict), "conflict-neighborhood rows must match the original holdout scenes")
     require(all(row["seed"] in holdout_hashes and row["scene_hash"] == holdout_hashes[row["seed"]]
                 for row in expanded_holdout), "expanded holdout rows must match the original holdout scenes")
+    require(all(row["seed"] in holdout_hashes and row["scene_hash"] == holdout_hashes[row["seed"]]
+                for row in lns2), "spatial MAPF-LNS2 rows must match the original holdout scenes")
     require(all(row["validated"] == "1" for row in cbs), "all CBS outputs must pass independent validation")
     require(sum(int(row["success"]) for row in cbs) == 0,
             "archived CBS diagnostic should contain no complete route sets")
@@ -98,7 +129,7 @@ def validate(data: Path) -> None:
     require(audit["geometry_components"] == 4054, "IFC geometry count mismatch")
     require(audit["native_port_count"] == 8460, "IFC port count mismatch")
     require(audit["explicit_port_edges"] == 4050, "IFC explicit port-edge count mismatch")
-    print("PASS: 150/750 main, 990 sensitivity, 100-scene/9-method holdout + 100 spatial CBS, 800 factorial, 180 scale, IFC audit counts")
+    print("PASS: 150/750 main, 990 sensitivity, 100-scene/10-method holdout + spatial CBS, 800 factorial, 180 scale, IFC audit counts")
 
 
 def main() -> None:

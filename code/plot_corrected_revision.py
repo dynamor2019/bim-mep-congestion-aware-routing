@@ -18,7 +18,7 @@ COLORS = {
     "stage3_only": "#07877C", "proposed": "#B43767", "random": "#687480",
     "guided": "#07877C", "length": "#2876B8", "blocker": "#D97706",
     "adaptive": "#775DA6", "pbs_static": "#253B53", "spatial_cbs": "#323B45",
-    "conflict": "#9A6B45",
+    "conflict": "#9A6B45", "spatial_mapf_lns2": "#B25D3A",
 }
 LABELS = {
     "fix_order": "Fixed order", "pbs_random": "MSPP + random",
@@ -27,6 +27,7 @@ LABELS = {
     "length": "Length only", "blocker": "Conflict blockers", "adaptive": "Adaptive",
     "pbs_static": "Spatial PBS", "spatial_cbs": "Spatial CBS",
     "conflict": "Conflict graph",
+    "spatial_mapf_lns2": "Spatial LNS2-style",
 }
 DENSITY_COLORS = {"low": "#687480", "medium": "#07877C", "high": "#B43767"}
 
@@ -196,9 +197,9 @@ def ablation_figure(rows: list[dict[str, str]], out_dir: Path) -> None:
 
 def holdout_figure(rows: list[dict[str, str]], out_dir: Path) -> None:
     """Plot holdout success counts and paired differences by method."""
-    methods = ["random", "static_random", "guided", "guided_select_only", "length", "blocker", "conflict", "adaptive", "pbs_static", "spatial_cbs"]
-    labels = ["Random", "Static + random", "Guided", "Guided select only", "Length", "Blocker", "Conflict graph", "Adaptive", "Spatial PBS", "Spatial CBS"]
-    fig, ax = plt.subplots(figsize=(7.2, 3.5), constrained_layout=True)
+    methods = ["random", "static_random", "guided", "guided_select_only", "length", "blocker", "conflict", "adaptive", "spatial_mapf_lns2", "pbs_static", "spatial_cbs"]
+    labels = ["Random", "Static + random", "Guided", "Guided select only", "Length", "Blocker", "Conflict graph", "Adaptive", "Spatial LNS2-style", "Spatial PBS", "Spatial CBS"]
+    fig, ax = plt.subplots(figsize=(7.2, 3.8), constrained_layout=True)
     for i, method in enumerate(methods):
         subset = [r for r in rows if r["method"] == method]
         n = len(subset); k = sum(int(r["success"]) for r in subset)
@@ -284,7 +285,8 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--main", type=Path, required=True)
     parser.add_argument("--sensitivity", type=Path, required=True)
-    parser.add_argument("--holdout", type=Path, required=True)
+    parser.add_argument("--holdout", type=Path, required=True,
+                        help="Use the merged ten-method high-stress holdout for current figures.")
     parser.add_argument("--conflict-neighborhood", type=Path)
     parser.add_argument("--spatial-cbs", type=Path)
     parser.add_argument("--factorial", type=Path, required=True)
