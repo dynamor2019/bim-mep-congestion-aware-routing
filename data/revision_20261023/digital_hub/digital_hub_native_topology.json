@@ -631,5 +631,40 @@
       "interpretation": "Components use explicit port relations plus the stated within-segment/fitting assumption and describe only the extracted graph. Multiple components do not prove that authored systems are physically disconnected; this graph is not a validated route instance or accepted reroute target."
     }
   },
-  "interpretation": "System graphs use explicit port relations plus the documented within-segment/fitting assumption. Multiple components describe the extracted graph only and do not prove physical disconnection; the graphs do not establish accepted route targets or alternatives."
+  "terminal_pair_readiness": {
+    "heating": {
+      "recognized_terminal_types": [
+        "IfcAirTerminal",
+        "IfcSanitaryTerminal",
+        "IfcSpaceHeater",
+        "IfcWasteTerminal"
+      ],
+      "two_terminal_components": 0,
+      "directed_source_sink_pairs": 0,
+      "directed_pairs": []
+    },
+    "plumbing": {
+      "recognized_terminal_types": [
+        "IfcAirTerminal",
+        "IfcSanitaryTerminal",
+        "IfcSpaceHeater",
+        "IfcWasteTerminal"
+      ],
+      "two_terminal_components": 1,
+      "directed_source_sink_pairs": 0,
+      "directed_pairs": []
+    },
+    "ventilation": {
+      "recognized_terminal_types": [
+        "IfcAirTerminal",
+        "IfcSanitaryTerminal",
+        "IfcSpaceHeater",
+        "IfcWasteTerminal"
+      ],
+      "two_terminal_components": 0,
+      "directed_source_sink_pairs": 0,
+      "directed_pairs": []
+    }
+  },
+  "interpretation": "System graphs use explicit port relations plus the documented within-segment/fitting assumption. Multiple components describe the extracted graph only and do not prove physical disconnection; the directed-pair count is a schema-level screen, not evidence of accepted reroute targets or alternatives."
 }

@@ -181,7 +181,14 @@ def validate(data: Path) -> None:
     require(audit["geometry_components"] == 4054, "IFC geometry count mismatch")
     require(audit["native_port_count"] == 8460, "IFC port count mismatch")
     require(audit["explicit_port_edges"] == 4050, "IFC explicit port-edge count mismatch")
-    print("PASS: main/sensitivity/holdout, spatial CBS and exact-MCF diagnostics, factorial/scale stress, and IFC audit counts")
+    topology = json.loads((data / "digital_hub" / "digital_hub_native_topology.json").read_text(encoding="utf-8"))
+    pair_counts = {
+        name: summary["directed_source_sink_pairs"]
+        for name, summary in topology["terminal_pair_readiness"].items()
+    }
+    require(pair_counts == {"heating": 0, "plumbing": 0, "ventilation": 0},
+            "Digital Hub terminal-pair readiness mismatch")
+    print("PASS: main/sensitivity/holdout, spatial CBS and exact-MCF diagnostics, factorial/scale stress, and IFC audit counts/readiness")
 
 
 def main() -> None:
