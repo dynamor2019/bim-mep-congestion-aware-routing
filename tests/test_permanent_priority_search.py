@@ -45,6 +45,20 @@ class PermanentPrioritySearchTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             permanent_priority_search(instance, seed=1, max_nodes=0)
 
+    def test_rejects_nonpositive_time_budget(self):
+        instance = Instance(shape=(2, 2, 1), blocked=set(), commodities=[])
+        with self.assertRaises(ValueError):
+            permanent_priority_search(instance, seed=1, time_budget_s=0)
+
+    def test_respects_expired_time_budget(self):
+        instance = Instance(shape=(2, 2, 1), blocked=set(), commodities=[])
+        paths, expanded, complete = permanent_priority_search(
+            instance, seed=1, time_budget_s=1e-12
+        )
+        self.assertEqual(paths, {})
+        self.assertEqual(expanded, 0)
+        self.assertFalse(complete)
+
     def test_repair_forbids_other_system_terminals(self):
         instance = Instance(
             shape=(4, 2, 1),
