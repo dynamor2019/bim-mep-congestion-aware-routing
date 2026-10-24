@@ -204,3 +204,15 @@ python code/summarize_revision_benchmark.py results/matched_permanent_baselines_
 ```powershell
 python code/plot_repair_convergence.py --data data/revision_20261023/high_stress_holdout_1000.csv --output figures/revision_20261024_convergence
 ```
+
+## Equal-budget permanent-space priority-search cohort
+
+`data/priority_graph_budget_matched_20261024/` archives a rerun of the 100-scene paired comparison (seeds 320000–320099; 200 independently validated outputs) against the current repository code. MSPP-random restarts completed 22/100 scenes and bounded permanent-space priority search 20/100 (four candidate-only, six baseline-only; exact two-sided McNemar `p=0.7539`). Both used a nominal 1.2-s per-scene cap; A* checks the deadline cooperatively, so maximum observed runtimes were 1.233 s and 1.201 s. This exploratory result is inconclusive and is not a canonical temporal MAPF-PBS comparison. The earlier local-runner archive remains separate at `data/priority_graph_budget_matched/`.
+
+Reproduce and check the archived checksums with:
+
+```powershell
+python code/run_priority_graph_pilot.py --scenes 100 --first-seed 320000 --time-budget-s 1.2 --output results/priority_graph_budget_matched_replay
+```
+
+The runner writes paired raw observations and a JSON summary. `data/priority_graph_budget_matched_20261024/SHA256SUMS.txt` records hashes for the archived raw data, summary, and provenance note.
