@@ -1,0 +1,31 @@
+{
+  "scenes": 100,
+  "rows": 200,
+  "seed_range": [
+    320000,
+    320099
+  ],
+  "methods": [
+    "mspp_random_restarts",
+    "permanent_priority_search"
+  ],
+  "per_scene_wallclock_cap_s": 1.2,
+  "completion_counts": {
+    "mspp_random_restarts": 22,
+    "permanent_priority_search": 20
+  },
+  "paired_candidate_wins": 4,
+  "paired_candidate_losses": 6,
+  "completion_mcnemar_exact_two_sided_p": 0.75390625,
+  "mean_runtime_s": {
+    "mspp_random_restarts": 1.0507754900067812,
+    "permanent_priority_search": 1.0284968829969876
+  },
+  "maximum_runtime_s": {
+    "mspp_random_restarts": 1.233114900009241,
+    "permanent_priority_search": 1.2006696999887936
+  },
+  "all_outputs_independently_validated": true,
+  "interpretation": "Exploratory permanent-space comparison with equal per-scene wall-clock caps; not canonical temporal MAPF-PBS.",
+  "raw_csv": "priority_graph_budget_matched_raw.csv"
+}
