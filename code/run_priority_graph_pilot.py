@@ -114,6 +114,111 @@ def summarize_rows(rows: list[dict], first_seed: int, max_nodes: int) -> dict:
     }
 
 
+def _random_restarts(instance, seed: int, time_budget_s: float):
+    """Spend a wall-clock budget on repeated random-repair trials."""
+    started = time.perf_counter()
+    deadline = started + time_budget_s
+    best_paths = {}
+    attempts = 0
+    while attempts == 0 or time.perf_counter() < deadline:
+        candidate, _, _ = solve(
+            instance, "pbs_random", seed + attempts, deadline=deadline
+        )
+        attempts += 1
+        if objective(instance, candidate) < objective(instance, best_paths):
+            best_paths = candidate
+        if len(best_paths) == len(instance.commodities):
+            break
+    return best_paths, time.perf_counter() - started, attempts
+
+
+def run_budget_matched(
+    seed_count: int, first_seed: int, time_budget_s: float, output: Path
+) -> dict:
+    """Compare random restarts and priority search under equal time caps."""
+    rows = []
+    for seed in range(first_seed, first_seed + seed_count):
+        instance = scaled_instance("base", seed)
+        digest = scene_hash(instance)
+        baseline, baseline_seconds, attempts = _random_restarts(
+            instance, seed, time_budget_s
+        )
+        started = time.perf_counter()
+        candidate, expanded, _ = permanent_priority_search(
+            instance, seed, max_nodes=10000, time_budget_s=time_budget_s
+        )
+        candidate_seconds = time.perf_counter() - started
+        outcomes = (
+            ("mspp_random_restarts", baseline, baseline_seconds, attempts),
+            ("permanent_priority_search", candidate, candidate_seconds, expanded),
+        )
+        for method, paths, elapsed, work in outcomes:
+            rows.append({
+                "seed": seed,
+                "scene_hash": digest,
+                "method": method,
+                "success": int(len(paths) == len(instance.commodities)),
+                "routed": len(paths),
+                "total": len(instance.commodities),
+                "objective": objective(instance, paths),
+                "runtime_s": elapsed,
+                "work_units": work,
+                "validated": int(validate_paths(instance, paths)),
+            })
+
+    output.mkdir(parents=True, exist_ok=True)
+    with (output / "priority_graph_budget_matched_raw.csv").open(
+        "w", newline="", encoding="utf-8"
+    ) as handle:
+        writer = csv.DictWriter(handle, fieldnames=rows[0].keys())
+        writer.writeheader()
+        writer.writerows(rows)
+    summary = _summarize_budget_rows(rows, first_seed, time_budget_s)
+    (output / "priority_graph_budget_matched_summary.json").write_text(
+        json.dumps(summary, indent=2), encoding="utf-8"
+    )
+    return summary
+
+
+def _summarize_budget_rows(rows: list[dict], first_seed: int, budget_s: float) -> dict:
+    """Summarize paired completion and observed wall-clock use."""
+    pairs = {}
+    for row in rows:
+        pairs.setdefault(row["seed"], {})[row["method"]] = row
+    methods = ("mspp_random_restarts", "permanent_priority_search")
+    wins = losses = 0
+    for pair in pairs.values():
+        delta = int(pair[methods[1]]["success"]) - int(pair[methods[0]]["success"])
+        wins += delta > 0
+        losses += delta < 0
+    return {
+        "scenes": len(pairs),
+        "rows": len(rows),
+        "seed_range": [first_seed, first_seed + len(pairs) - 1],
+        "methods": list(methods),
+        "per_scene_wallclock_cap_s": budget_s,
+        "completion_counts": {
+            method: sum(int(row["success"]) for row in rows if row["method"] == method)
+            for method in methods
+        },
+        "paired_candidate_wins": wins,
+        "paired_candidate_losses": losses,
+        "completion_mcnemar_exact_two_sided_p": exact_mcnemar_p(wins, losses),
+        "mean_runtime_s": {
+            method: sum(float(row["runtime_s"]) for row in rows if row["method"] == method)
+            / len(pairs)
+            for method in methods
+        },
+        "maximum_runtime_s": {
+            method: max(float(row["runtime_s"]) for row in rows if row["method"] == method)
+            for method in methods
+        },
+        "all_outputs_independently_validated": all(int(row["validated"]) for row in rows),
+        "interpretation": "Exploratory permanent-space comparison with equal per-scene wall-clock caps; not canonical temporal MAPF-PBS.",
+        "raw_csv": "priority_graph_budget_matched_raw.csv",
+    }
+
+
 def run(seed_count: int, first_seed: int, max_nodes: int, output: Path) -> dict:
     """Run paired random-repair and priority-graph outcomes on shared scenes."""
     rows = []
@@ -162,11 +267,20 @@ def main() -> None:
     parser.add_argument("--scenes", type=int, default=100)
     parser.add_argument("--first-seed", type=int, default=300000)
     parser.add_argument("--max-nodes", type=int, default=16)
+    parser.add_argument("--time-budget-s", type=float)
     parser.add_argument("--output", type=Path, default=Path("data/priority_graph_pilot"))
     args = parser.parse_args()
     if args.scenes < 1 or args.first_seed < 0 or args.max_nodes < 1:
         parser.error("scenes, first-seed, and max-nodes must be positive")
-    print(json.dumps(run(args.scenes, args.first_seed, args.max_nodes, args.output), indent=2))
+    if args.time_budget_s is not None:
+        if args.time_budget_s <= 0:
+            parser.error("time-budget-s must be positive")
+        result = run_budget_matched(
+            args.scenes, args.first_seed, args.time_budget_s, args.output
+        )
+    else:
+        result = run(args.scenes, args.first_seed, args.max_nodes, args.output)
+    print(json.dumps(result, indent=2))
 
 
 if __name__ == "__main__":

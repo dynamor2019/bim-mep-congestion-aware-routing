@@ -7,6 +7,7 @@ temporal MAPF solver and should not be reported as canonical MAPF-PBS.
 from __future__ import annotations
 
 import random
+import time
 from collections import deque
 
 from run_routing_experiments import (
@@ -46,6 +47,7 @@ def _route_priority_order(
     instance: Instance,
     order: list[int],
     predicted: dict[Coord, float],
+    deadline: float | None = None,
 ) -> tuple[dict[int, list[Coord]], int | None]:
     """Route in priority order and return first failed commodity if any."""
     paths: dict[int, list[Coord]] = {}
@@ -56,9 +58,11 @@ def _route_priority_order(
         for point in (item.start, item.goal)
     }
     for index in order:
+        if deadline is not None and time.perf_counter() >= deadline:
+            return paths, index
         item = instance.commodities[index]
         forbidden = occupied | (terminals - {item.start, item.goal})
-        path = astar(instance, item, forbidden, predicted, 0.0)
+        path = astar(instance, item, forbidden, predicted, 0.0, deadline=deadline)
         if path is None:
             return paths, index
         paths[index] = path
@@ -67,7 +71,10 @@ def _route_priority_order(
 
 
 def permanent_priority_search(
-    instance: Instance, seed: int, max_nodes: int = 128
+    instance: Instance,
+    seed: int,
+    max_nodes: int = 128,
+    time_budget_s: float | None = None,
 ) -> tuple[dict[int, list[Coord]], int, bool]:
     """Search a bounded tree of pairwise precedence constraints.
 
@@ -76,7 +83,10 @@ def permanent_priority_search(
     """
     if max_nodes < 1:
         raise ValueError("max_nodes must be positive")
+    if time_budget_s is not None and time_budget_s <= 0:
+        raise ValueError("time_budget_s must be positive")
 
+    deadline = time.perf_counter() + time_budget_s if time_budget_s is not None else None
     rng = random.Random(seed)
     tie_order = list(range(len(instance.commodities)))
     rng.shuffle(tie_order)
@@ -87,12 +97,14 @@ def permanent_priority_search(
     best_score = objective(instance, best_paths)
     expanded = 0
 
-    while queue and expanded < max_nodes:
+    while queue and expanded < max_nodes and (
+        deadline is None or time.perf_counter() < deadline
+    ):
         constraints = queue.popleft()
         order = _topological_order(len(instance.commodities), constraints, tie_order)
         if order is None:
             continue
-        paths, failed = _route_priority_order(instance, order, predicted)
+        paths, failed = _route_priority_order(instance, order, predicted, deadline)
         expanded += 1
         score = objective(instance, paths)
         if score < best_score:

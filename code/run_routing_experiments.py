@@ -128,13 +128,14 @@ def astar(
     predicted: dict[Coord, float],
     congestion_weight: float,
     soft_occupied_weight: float = 0.0,
+    deadline: float | None = None,
 ) -> list[Coord] | None:
     """Find a discipline-aware route with optional soft occupancy penalties."""
     start_state = item.start, (0, 0, 0)
     queue = [(0.0, 0.0, start_state)]
     parent: dict[tuple[Coord, Coord], tuple[Coord, Coord] | None] = {start_state: None}
     best = {start_state: 0.0}
-    while queue:
+    while queue and (deadline is None or time.perf_counter() < deadline):
         _, cost, state = heapq.heappop(queue)
         node, previous_direction = state
         if cost != best.get(state):
@@ -190,14 +191,19 @@ def route_order(
     order: list[int],
     predicted: dict[Coord, float],
     congestion_weight: float,
+    deadline: float | None = None,
 ) -> dict[int, list[Coord]]:
     """Route commodities sequentially under a supplied priority order."""
     paths: dict[int, list[Coord]] = {}
     occupied: set[Coord] = set()
     for index in order:
+        if deadline is not None and time.perf_counter() >= deadline:
+            break
         item = instance.commodities[index]
         forbidden = occupied | foreign_terminal_cells(instance, index)
-        path = astar(instance, item, forbidden, predicted, congestion_weight)
+        path = astar(
+            instance, item, forbidden, predicted, congestion_weight, deadline=deadline
+        )
         if path is not None:
             paths[index] = path
             occupied.update(path[1:-1])
@@ -224,11 +230,14 @@ def improve(
     iterations: int = 5,
     destroy_fraction: float = 0.25,
     congestion_weight: float = 2.0,
+    deadline: float | None = None,
 ) -> tuple[dict[int, list[Coord]], list[float]]:
     """Apply random or congestion-guided destroy-and-repair."""
     paths = dict(initial)
     trace = [objective(instance, paths)]
     for _ in range(iterations):
+        if deadline is not None and time.perf_counter() >= deadline:
+            break
         route_demand: dict[Coord, int] = defaultdict(int)
         for path in paths.values():
             for node in path:
@@ -248,9 +257,18 @@ def improve(
         candidate = dict(kept)
         selected.sort(key=lambda index: scores[index], reverse=True)
         for index in selected:
+            if deadline is not None and time.perf_counter() >= deadline:
+                break
             item = instance.commodities[index]
             forbidden = occupied | foreign_terminal_cells(instance, index)
-            path = astar(instance, item, forbidden, predicted, congestion_weight if guided else 0.0)
+            path = astar(
+                instance,
+                item,
+                forbidden,
+                predicted,
+                congestion_weight if guided else 0.0,
+                deadline=deadline,
+            )
             if path is not None:
                 candidate[index] = path
                 occupied.update(path[1:-1])
@@ -270,7 +288,12 @@ def objective(instance: Instance, paths: dict[int, list[Coord]]) -> float:
     return (len(instance.commodities) - len(paths)) * 10000.0 + solution_cost(instance, paths)
 
 
-def solve(instance: Instance, method: str, seed: int) -> tuple[dict[int, list[Coord]], list[float], float]:
+def solve(
+    instance: Instance,
+    method: str,
+    seed: int,
+    deadline: float | None = None,
+) -> tuple[dict[int, list[Coord]], list[float], float]:
     """Run one baseline, ablation, or proposed solver configuration."""
     started = time.perf_counter()
     rng = random.Random(seed)
@@ -282,18 +305,18 @@ def solve(instance: Instance, method: str, seed: int) -> tuple[dict[int, list[Co
         for _ in range(2):
             rng.shuffle(indices)
             weight = 2.0 if method == "proposed" else 0.0
-            result = route_order(instance, list(indices), predicted, weight)
+            result = route_order(instance, list(indices), predicted, weight, deadline)
             candidates.append(result)
         paths = min(candidates, key=lambda value: objective(instance, value))
     else:
         order = sorted(indices, key=lambda i: (-instance.commodities[i].bend_cost, i))
         weight = 2.0 if method == "stage1_only" else 0.0
-        paths = route_order(instance, order, predicted, weight)
+        paths = route_order(instance, order, predicted, weight, deadline)
     trace = [objective(instance, paths)]
     if method == "pbs_random":
-        paths, trace = improve(instance, paths, predicted, False, rng)
+        paths, trace = improve(instance, paths, predicted, False, rng, deadline=deadline)
     elif method in {"stage3_only", "proposed"}:
-        paths, trace = improve(instance, paths, predicted, True, rng)
+        paths, trace = improve(instance, paths, predicted, True, rng, deadline=deadline)
     return paths, trace, time.perf_counter() - started
 
 
