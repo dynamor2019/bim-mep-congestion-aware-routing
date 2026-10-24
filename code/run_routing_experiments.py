@@ -194,15 +194,25 @@ def route_order(
     """Route commodities sequentially under a supplied priority order."""
     paths: dict[int, list[Coord]] = {}
     occupied: set[Coord] = set()
-    terminals = {item.start for item in instance.commodities} | {item.goal for item in instance.commodities}
     for index in order:
         item = instance.commodities[index]
-        forbidden = occupied | (terminals - {item.start, item.goal})
+        forbidden = occupied | foreign_terminal_cells(instance, index)
         path = astar(instance, item, forbidden, predicted, congestion_weight)
         if path is not None:
             paths[index] = path
             occupied.update(path[1:-1])
     return paths
+
+
+def foreign_terminal_cells(instance: Instance, index: int) -> set[Coord]:
+    """Return every other commodity's endpoint that this route must avoid."""
+    item = instance.commodities[index]
+    terminals = {
+        point
+        for commodity in instance.commodities
+        for point in (commodity.start, commodity.goal)
+    }
+    return terminals - {item.start, item.goal}
 
 
 def improve(
@@ -239,8 +249,7 @@ def improve(
         selected.sort(key=lambda index: scores[index], reverse=True)
         for index in selected:
             item = instance.commodities[index]
-            terminals = {p for other in instance.commodities for p in (other.start, other.goal)}
-            forbidden = occupied | (terminals - {item.start, item.goal})
+            forbidden = occupied | foreign_terminal_cells(instance, index)
             path = astar(instance, item, forbidden, predicted, congestion_weight if guided else 0.0)
             if path is not None:
                 candidate[index] = path

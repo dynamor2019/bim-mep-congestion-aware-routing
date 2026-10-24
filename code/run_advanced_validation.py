@@ -16,6 +16,7 @@ from run_routing_experiments import (
     Instance,
     astar,
     estimate_demand,
+    foreign_terminal_cells,
     manhattan,
     objective,
     path_cost,
@@ -104,7 +105,7 @@ def adaptive_repair(instance: Instance, initial: dict, predicted: dict, seed: in
         candidate = dict(kept)
         for index in sorted(selected, key=lambda i: scores.get(i, 1000.0), reverse=True):
             item = instance.commodities[index]
-            forbidden = occupied | (terminals - {item.start, item.goal})
+            forbidden = occupied | foreign_terminal_cells(instance, index)
             path = astar(instance, item, forbidden, predicted, 2.0)
             if path:
                 candidate[index] = path

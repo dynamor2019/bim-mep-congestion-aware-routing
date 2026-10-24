@@ -1,0 +1,27 @@
+{
+  "scenes": 100,
+  "rows": 200,
+  "seed_range": [
+    300000,
+    300099
+  ],
+  "methods": [
+    "mspp_random_repair",
+    "permanent_priority_graph"
+  ],
+  "priority_node_cap": 16,
+  "completion_counts": {
+    "mspp_random_repair": 10,
+    "permanent_priority_graph": 12
+  },
+  "paired_completion_wins": 3,
+  "paired_completion_losses": 1,
+  "paired_completion_ties": 96,
+  "completion_mcnemar_exact_two_sided_p": 0.625,
+  "paired_routed_count_more": 11,
+  "paired_routed_count_fewer": 13,
+  "paired_routed_count_ties": 76,
+  "all_outputs_independently_validated": true,
+  "interpretation": "Exploratory synthetic cohort; permanent-space priority-graph adaptation, not canonical temporal MAPF-PBS.",
+  "raw_csv": "priority_graph_pilot_raw.csv"
+}

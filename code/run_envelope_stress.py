@@ -67,7 +67,8 @@ def solve(router, instance, method, seed, radius):
         occupied = {node for p in kept.values() for node in envelope(p, radius, instance.shape)}
         candidate = dict(kept)
         for i in sorted(selected, key=scores.get, reverse=True):
-            path = router.astar(instance, instance.commodities[i], occupied, predicted, 2.0 if method == "guided" else 0.0)
+            forbidden = occupied | router.foreign_terminal_cells(instance, i)
+            path = router.astar(instance, instance.commodities[i], forbidden, predicted, 2.0 if method == "guided" else 0.0)
             if path is not None:
                 candidate[i] = path
                 occupied.update(envelope(path, radius, instance.shape))
