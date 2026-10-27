@@ -22,7 +22,7 @@ COLORS = {
 }
 LABELS = {
     "fix_order": "Fixed order", "pbs_random": "MSPP + random",
-    "stage1_only": "Static + random", "stage3_only": "Guided repair",
+    "stage1_only": "Static only", "stage3_only": "Guided repair",
     "proposed": "Full method", "random": "Random repair", "guided": "Guided",
     "length": "Length only", "blocker": "Conflict blockers", "adaptive": "Adaptive",
     "pbs_static": "Spatial PBS", "spatial_cbs": "Spatial CBS",
@@ -110,7 +110,7 @@ def main_figure(rows: list[dict[str, str]], out_dir: Path) -> None:
 def paired_figure(rows: list[dict[str, str]], out_dir: Path) -> None:
     """Plot paired feasibility outcomes against random repair by stress level."""
     fig, axes = plt.subplots(1, 3, figsize=(8.7, 3.0), sharey=True, constrained_layout=True)
-    pairs = [("stage3_only", "Guided repair"), ("proposed", "Full method"), ("stage1_only", "Static + random")]
+    pairs = [("stage3_only", "Guided repair"), ("proposed", "Full method"), ("stage1_only", "Static only")]
     for ax, (method, title) in zip(axes, pairs):
         for j, density in enumerate(("low", "medium", "high")):
             subset = [r for r in rows if r["density"] == density]
@@ -176,11 +176,11 @@ def ablation_figure(rows: list[dict[str, str]], out_dir: Path) -> None:
             rate = k / n; lo, hi = wilson(k, n)
             x = i + (j - 1) * 0.07
             axes[0].errorbar(x, rate, yerr=[[rate - lo], [hi - rate]], fmt="o", ms=4,
-                             capsize=2, color=COLORS[method], lw=.8)
+                             capsize=2, color=DENSITY_COLORS[density], lw=.8)
             costs = [float(r["normalized_cost"]) for r in vals]
-            axes[1].plot(x, np.mean(costs), "o", ms=4, color=COLORS[method])
+            axes[1].plot(x, np.mean(costs), "o", ms=4, color=DENSITY_COLORS[density])
             axes[1].vlines(x, np.percentile(costs, 25), np.percentile(costs, 75),
-                           color=COLORS[method], lw=1.2)
+                           color=DENSITY_COLORS[density], lw=1.2)
     for ax in axes:
         ax.set_xticks(range(len(methods)), [LABELS[m] for m in methods], rotation=28, ha="right")
         ax.grid(axis="y", color="#D9DEE3", lw=.55)
