@@ -1,0 +1,24 @@
+{
+  "protocol_frozen": "2026-11-05",
+  "purpose": "Faithful spatial CBS baseline for AIC revision — reviewer request for a stronger conflict-based comparison",
+  "instance_generator": "generate_instance(density, 10000*density_idx + seed)",
+  "density_map": {"low": 0, "medium": 1, "high": 2},
+  "seeds_per_density": 50,
+  "total_scenes": 150,
+  "cbs_variant": "standard CBS (Sharon et al. 2012) adapted to permanent spatial vertex occupancy",
+  "conflict_definition": "shared interior voxel (path[1:-1]) — not temporal; endpoints excluded because foreign terminals are already forbidden in low-level A*",
+  "low_level_solver": "A* with Manhattan heuristic; direction-state to price bends/vertical; congestion_weight=0.0 (CBS constraints handle conflicts explicitly)",
+  "branching": "for each conflict voxel v shared by agents i and j: branch by adding v to constraints[i] OR constraints[v]; deduplicate by constraint signature",
+  "termination": {
+    "per_scene_wall_clock_s": 60,
+    "node_limit": null,
+    "on_timeout": "record success=0, routed=0, status=timeout; no partial result claimed"
+  },
+  "success_definition": "all commodities routed with zero remaining conflicts (validate_paths passes)",
+  "validation": "routing_revision_solvers.validate_paths — checks endpoints, six-connectivity, no blocked voxels, no shared voxels, drainage non-ascending",
+  "primary_comparison": "CBS vs pbs_random on same 150 scenes (same generator, same seeds)",
+  "statistical_tests": ["exact two-sided McNemar per density", "Holm correction across 3 densities", "paired bootstrap CI on physical cost (jointly-completed subset, seed 20261104, 10000 resamples)"],
+  "reporting_rule": "adverse/null results must be reported; do not selectively report densities",
+  "pilot": {"seeds_per_density": 5, "deadline_s": 30, "purpose": "feasibility and code correctness only, not hypothesis testing"},
+  "note": "CBS is all-or-nothing; pbs_random can partially succeed. This structural difference must be stated in the manuscript."
+}
